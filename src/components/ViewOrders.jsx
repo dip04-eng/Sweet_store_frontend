@@ -232,20 +232,30 @@ const ViewOrders = () => {
           <p className="text-gray-600 text-sm sm:text-base">No orders match the selected filter.</p>
         </div>
       ) : (
-        <div className="overflow-x-auto -mx-4 sm:mx-0">
-          <div className="inline-block min-w-full align-middle">
-            <table className="min-w-full bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm">
-              <thead className="bg-gradient-to-r from-purple-500 to-pink-500 text-white">
-                <tr>
-                  <th className="px-3 sm:px-4 md:px-6 py-3 sm:py-4 text-left text-xs sm:text-sm font-semibold">Customer</th>
-                  <th className="px-3 sm:px-4 md:px-6 py-3 sm:py-4 text-left text-xs sm:text-sm font-semibold hidden md:table-cell">Contact</th>
-                  <th className="px-3 sm:px-4 md:px-6 py-3 sm:py-4 text-left text-xs sm:text-sm font-semibold">Order Date</th>
-                  <th className="px-3 sm:px-4 md:px-6 py-3 sm:py-4 text-left text-xs sm:text-sm font-semibold hidden lg:table-cell">Delivery Date</th>
-                  <th className="px-3 sm:px-4 md:px-6 py-3 sm:py-4 text-left text-xs sm:text-sm font-semibold">Amount</th>
-                  <th className="px-3 sm:px-4 md:px-6 py-3 sm:py-4 text-left text-xs sm:text-sm font-semibold hidden sm:table-cell">Status</th>
-                  <th className="px-3 sm:px-4 md:px-6 py-3 sm:py-4 text-left text-xs sm:text-sm font-semibold">Actions</th>
-                </tr>
-              </thead>
+        <>
+          {/* Mobile Scroll Hint */}
+          <div className="block sm:hidden text-center mb-3">
+            <p className="text-xs text-gray-500 flex items-center justify-center">
+              <span className="mr-1">👉</span>
+              Swipe left to see all details
+              <span className="ml-1">👈</span>
+            </p>
+          </div>
+          
+          <div className="overflow-x-auto -mx-4 sm:mx-0 rounded-xl shadow-sm">
+            <div className="inline-block min-w-full align-middle">
+              <table className="w-full bg-white border border-gray-200">
+                <thead className="bg-gradient-to-r from-purple-500 to-pink-500 text-white">
+                  <tr>
+                    <th className="px-3 sm:px-4 md:px-6 py-3 sm:py-4 text-left text-xs sm:text-sm font-semibold whitespace-nowrap">Customer</th>
+                    <th className="px-3 sm:px-4 md:px-6 py-3 sm:py-4 text-left text-xs sm:text-sm font-semibold whitespace-nowrap">Contact</th>
+                    <th className="px-3 sm:px-4 md:px-6 py-3 sm:py-4 text-left text-xs sm:text-sm font-semibold whitespace-nowrap">Order Date</th>
+                    <th className="px-3 sm:px-4 md:px-6 py-3 sm:py-4 text-left text-xs sm:text-sm font-semibold whitespace-nowrap">Delivery Date</th>
+                    <th className="px-3 sm:px-4 md:px-6 py-3 sm:py-4 text-left text-xs sm:text-sm font-semibold whitespace-nowrap">Amount</th>
+                    <th className="px-3 sm:px-4 md:px-6 py-3 sm:py-4 text-left text-xs sm:text-sm font-semibold whitespace-nowrap">Status</th>
+                    <th className="px-3 sm:px-4 md:px-6 py-3 sm:py-4 text-left text-xs sm:text-sm font-semibold whitespace-nowrap">Actions</th>
+                  </tr>
+                </thead>
             <tbody className="divide-y divide-gray-200">
               {filteredOrders.map((order, index) => (
                 <motion.tr 
@@ -257,44 +267,40 @@ const ViewOrders = () => {
                 >
                   <td className="px-3 sm:px-4 md:px-6 py-3 sm:py-4">
                     <div>
-                      <div className="font-semibold text-yellow-600 text-xs sm:text-sm md:text-base truncate max-w-[120px] sm:max-w-none">{order.customerName}</div>
-                      <div className="text-xs text-gray-500 flex items-center mt-1 md:hidden">
-                        <Phone className="h-3 w-3 mr-1" />
-                        {order.mobile}
-                      </div>
+                      <div className="font-semibold text-yellow-600 text-xs sm:text-sm md:text-base whitespace-nowrap">{order.customerName}</div>
                     </div>
                   </td>
-                  <td className="px-3 sm:px-4 md:px-6 py-3 sm:py-4 hidden md:table-cell">
-                    <div className="flex items-center text-xs sm:text-sm text-gray-600">
+                  <td className="px-3 sm:px-4 md:px-6 py-3 sm:py-4">
+                    <div className="flex items-center text-xs sm:text-sm text-gray-600 whitespace-nowrap">
                       <Phone className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
                       {order.mobile}
                     </div>
                   </td>
                   <td className="px-3 sm:px-4 md:px-6 py-3 sm:py-4">
-                    <div className="flex items-center text-xs sm:text-sm text-gray-600">
-                      <Calendar className="h-3 w-3 sm:h-4 sm:w-4 mr-1 hidden sm:inline" />
-                      <span className="truncate">{order.orderDate ? new Date(order.orderDate).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }) : 'N/A'}</span>
-                    </div>
-                  </td>
-                  <td className="px-3 sm:px-4 md:px-6 py-3 sm:py-4 hidden lg:table-cell">
-                    <div className="flex items-center text-xs sm:text-sm text-purple-600 font-semibold">
+                    <div className="flex items-center text-xs sm:text-sm text-gray-600 whitespace-nowrap">
                       <Calendar className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
-                      <span className="truncate">{order.deliveryDate ? new Date(order.deliveryDate).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }) : 'N/A'}</span>
+                      <span>{order.orderDate ? new Date(order.orderDate).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }) : 'N/A'}</span>
                     </div>
                   </td>
                   <td className="px-3 sm:px-4 md:px-6 py-3 sm:py-4">
-                    <div className="font-semibold text-purple-600 text-xs sm:text-sm md:text-base">₹{order.total}</div>
+                    <div className="flex items-center text-xs sm:text-sm text-purple-600 font-semibold whitespace-nowrap">
+                      <Calendar className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
+                      <span>{order.deliveryDate ? new Date(order.deliveryDate).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }) : 'N/A'}</span>
+                    </div>
                   </td>
-                  <td className="px-3 sm:px-4 md:px-6 py-3 sm:py-4 hidden sm:table-cell">
-                    <span className={`px-2 sm:px-3 py-1 rounded-full text-xs font-semibold border ${getStatusColor(order.status)}`}>
+                  <td className="px-3 sm:px-4 md:px-6 py-3 sm:py-4">
+                    <div className="font-semibold text-purple-600 text-xs sm:text-sm md:text-base whitespace-nowrap">₹{order.total}</div>
+                  </td>
+                  <td className="px-3 sm:px-4 md:px-6 py-3 sm:py-4">
+                    <span className={`px-2 sm:px-3 py-1 rounded-full text-xs font-semibold border whitespace-nowrap ${getStatusColor(order.status)}`}>
                       {order.status ? order.status.charAt(0).toUpperCase() + order.status.slice(1) : 'N/A'}
                     </span>
                   </td>
                   <td className="px-3 sm:px-4 md:px-6 py-3 sm:py-4">
-                    <div className="flex flex-wrap items-center gap-2">
+                    <div className="flex flex-nowrap items-center gap-2">
                       <button
                         onClick={() => setSelectedOrder(order)}
-                        className="inline-flex items-center px-2.5 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-purple-600 border border-purple-200 hover:bg-purple-50"
+                        className="inline-flex items-center px-2.5 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-purple-600 border border-purple-200 hover:bg-purple-50 whitespace-nowrap"
                       >
                         <Package className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
                         <span>View</span>
@@ -304,7 +310,7 @@ const ViewOrders = () => {
 
                       <button
                         onClick={() => openEditModal(order)}
-                        className="inline-flex items-center px-2.5 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-blue-600 border border-blue-200 hover:bg-blue-50"
+                        className="inline-flex items-center px-2.5 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-blue-600 border border-blue-200 hover:bg-blue-50 whitespace-nowrap"
                       >
                         <Pencil className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
                         Edit
@@ -317,6 +323,7 @@ const ViewOrders = () => {
           </table>
         </div>
       </div>
+        </>
       )}
 
       {/* Order Details Modal */}
