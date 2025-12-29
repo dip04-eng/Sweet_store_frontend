@@ -1,0 +1,19 @@
+// API Configuration
+export const API_BASE_URL = 'https://server.uemcseaiml.org/store';
+
+// API Endpoints
+export const API_ENDPOINTS = {
+  // User endpoints
+  GET_SWEETS: '/sweets',
+  GET_SERVER_DATE: '/server-date',
+  PLACE_ORDER: '/place_order',
+  
+  // Admin endpoints
+  ADD_SWEET: '/admin/add_sweet',
+  UPDATE_SWEET_STOCK: '/admin/update_stock',
+  REMOVE_SWEET: '/admin/remove_sweet',
+  GET_ORDERS: '/admin/orders',
+  GET_DAILY_SUMMARY: '/admin/daily_summary',
+  UPDATE_ORDER_STATUS: '/admin/update_order_status',
+  EDIT_ORDER: '/admin/edit_order'
+};
