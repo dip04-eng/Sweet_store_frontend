@@ -7,7 +7,8 @@ const ViewOrders = () => {
   const [orders, setOrders] = useState([]);
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [statusFilter, setStatusFilter] = useState('all');
-  const [sortOrder, setSortOrder] = useState('deliveryDate-asc'); // Sort by delivery date ascending by default
+  const [dateFilter, setDateFilter] = useState(''); // Date filter for orders
+  const [sortOrder, setSortOrder] = useState('orderDate-desc'); // Sort by order date descending by default
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isUpdating, setIsUpdating] = useState(false);
@@ -40,7 +41,12 @@ const ViewOrders = () => {
   };
 
   const filteredOrders = orders
-    .filter(order => statusFilter === 'all' || order.status === statusFilter)
+    .filter(order => {
+      const statusMatch = statusFilter === 'all' || order.status === statusFilter;
+      if (!dateFilter) return statusMatch;
+      const deliveryDate = order.deliveryDate ? order.deliveryDate.split('T')[0] : '';
+      return statusMatch && deliveryDate === dateFilter;
+    })
     .sort((a, b) => {
       const [field, direction] = sortOrder.split('-');
       let comparison = 0;
@@ -162,6 +168,25 @@ const ViewOrders = () => {
               <option value="processing">Processing</option>
               <option value="delivered">Delivered</option>
             </select>
+          </div>
+          <div className="flex items-center w-full sm:w-auto">
+            <Calendar className="h-4 w-4 sm:h-5 sm:w-5 text-gray-900 mr-2" />
+            <input
+              type="date"
+              value={dateFilter}
+              onChange={(e) => setDateFilter(e.target.value)}
+              className="bg-white border border-gray-300 rounded-lg px-2 sm:px-3 py-1.5 sm:py-2 text-sm sm:text-base text-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-500 flex-1 sm:flex-none"
+              placeholder="Filter by date"
+            />
+            {dateFilter && (
+              <button
+                onClick={() => setDateFilter('')}
+                className="ml-1 text-gray-500 hover:text-red-500 transition-colors"
+                title="Clear date filter"
+              >
+                <XCircle className="h-4 w-4" />
+              </button>
+            )}
           </div>
           <div className="flex items-center w-full sm:w-auto">
             <Calendar className="h-4 w-4 sm:h-5 sm:w-5 text-gray-900 mr-2" />

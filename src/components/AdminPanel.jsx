@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { ArrowLeft, Plus, Trash, Eye, BarChart3, LogOut, Settings } from 'lucide-react';
+import { ArrowLeft, Plus, Trash, Eye, BarChart3, LogOut, Settings, TrendingUp } from 'lucide-react';
 import AddSweet from './AddSweet';
 import RemoveSweet from './RemoveSweet';
 import ViewOrders from './ViewOrders';
 import DailySummary from './DailySummary';
+import TotalSold from './TotalSold';
 
 const AdminPanel = () => {
   const [activeTab, setActiveTab] = useState('orders');
@@ -18,7 +19,8 @@ const AdminPanel = () => {
 
   const mainTabs = [
     { id: 'orders', label: 'View Orders', icon: Eye, component: ViewOrders },
-    { id: 'summary', label: 'Daily Summary', icon: BarChart3, component: DailySummary }
+    { id: 'summary', label: 'Daily Summary', icon: BarChart3, component: DailySummary },
+    { id: 'totalsold', label: 'Sales Report', icon: TrendingUp, component: TotalSold }
   ];
 
   const manageTabs = [
