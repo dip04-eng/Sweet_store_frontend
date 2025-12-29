@@ -121,7 +121,7 @@ const SweetCard = ({ sweet, onAddToCart }) => {
               {/* Weight input field */}
               <input
                 type="text"
-                value={weight === '' ? '0' : weight}
+                value={weight}
                 onChange={handleWeightChange}
                 placeholder="0"
                 className="w-16 bg-[#2A2A2A] text-[#FFD700] text-center rounded px-2 py-1 text-sm font-bold focus:outline-none focus:ring-2 focus:ring-[#FFD700]"
@@ -149,7 +149,7 @@ const SweetCard = ({ sweet, onAddToCart }) => {
               {/* Quantity input field */}
               <input
                 type="text"
-                value={quantity === '' ? '0' : quantity}
+                value={quantity}
                 onChange={handleQuantityInputChange}
                 placeholder="0"
                 className="w-16 bg-[#2A2A2A] text-[#FFD700] text-center rounded px-2 py-1 font-bold focus:outline-none focus:ring-2 focus:ring-[#FFD700]"
