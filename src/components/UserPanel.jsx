@@ -20,6 +20,17 @@ const UserPanel = () => {
     if (savedCart) {
       setCart(JSON.parse(savedCart));
     }
+
+    // Handle scroll to section if hash is present in URL
+    const hash = window.location.hash;
+    if (hash) {
+      setTimeout(() => {
+        const element = document.querySelector(hash);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }, 100);
+    }
   }, []);
 
   const fetchSweets = async () => {
@@ -57,7 +68,7 @@ const UserPanel = () => {
       <Hero />
 
       {/* Sweets Catalog Section */}
-      <section id="shop" className="py-16 sm:py-20 md:py-24 px-4 relative">
+      <section id="sweets-collection" className="py-16 sm:py-20 md:py-24 px-4 relative">
         {/* Decorative Background Elements */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div className="absolute top-20 left-10 w-64 h-64 bg-[#FFD700]/5 rounded-full blur-3xl"></div>

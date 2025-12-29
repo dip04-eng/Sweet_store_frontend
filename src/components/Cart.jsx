@@ -133,7 +133,7 @@ const Cart = () => {
                 Add some delicious sweets to get started!
               </p>
               <Link
-                to="/"
+                to="/#sweets-collection"
                 className="inline-flex items-center btn-premium bg-gradient-to-r from-[#FFD700] to-[#D2691E] text-[#0D0D0D] px-8 py-3 rounded-full font-bold shadow-lg hover:shadow-[#FFD700]/50"
               >
                 Browse Sweets
