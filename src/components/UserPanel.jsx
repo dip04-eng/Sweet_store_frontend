@@ -58,8 +58,18 @@ const UserPanel = () => {
   };
 
   const addToCart = (sweet, quantity = 1) => {
-    // Add item with specified quantity
-    const updatedCart = [...cart, { ...sweet, quantity }];
+    // Check if item already exists in cart
+    const existingItemIndex = cart.findIndex(item => item._id === sweet._id);
+    
+    let updatedCart;
+    if (existingItemIndex !== -1) {
+      // Item exists, update quantity
+      updatedCart = [...cart];
+      updatedCart[existingItemIndex].quantity += quantity;
+    } else {
+      // Item doesn't exist, add new item
+      updatedCart = [...cart, { ...sweet, quantity }];
+    }
     
     setCart(updatedCart);
     sessionStorage.setItem('sweetCart', JSON.stringify(updatedCart));
