@@ -64,28 +64,22 @@ const Cart = () => {
 
   if (orderPlaced) {
     return (
-      <div className="min-h-screen bg-[#0D0D0D] flex items-center justify-center px-4">
+      <div className="min-h-screen bg-[#FFFBF5] flex items-center justify-center px-4">
         <motion.div
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
-          className="card-premium p-10 sm:p-12 md:p-16 text-center max-w-md w-full"
+          className="bg-white border-2 border-[#C41E3A]/20 rounded-2xl shadow-xl p-10 sm:p-12 md:p-16 text-center max-w-md w-full"
         >
-          <motion.div
-            animate={{ rotate: [0, 10, -10, 0] }}
-            transition={{ duration: 0.5, repeat: 2 }}
-            className="text-6xl sm:text-7xl mb-6"
-          >
-            🎉
-          </motion.div>
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#FFD700] mb-4 font-['Playfair_Display']">
+          <div className="text-6xl sm:text-7xl mb-6">✓</div>
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#C41E3A] mb-4 font-['Playfair_Display']">
             Order Placed Successfully!
           </h2>
-          <p className="text-[#F5F5DC]/70 mb-8 leading-relaxed">
-            Thank you for your order. We'll prepare your delicious sweets with love!
+          <p className="text-gray-600 mb-8 leading-relaxed">
+            Thank you for your order. We'll prepare your delicious sweets with care!
           </p>
           <Link
             to="/"
-            className="inline-flex items-center btn-premium bg-gradient-to-r from-[#FFD700] to-[#D2691E] text-[#0D0D0D] px-8 py-3 rounded-full font-bold shadow-lg hover:shadow-[#FFD700]/50"
+            className="inline-flex items-center bg-[#C41E3A] text-white px-8 py-3 rounded-lg font-semibold shadow-lg hover:bg-[#A01828] transition-colors"
           >
             Continue Shopping
           </Link>
@@ -95,7 +89,7 @@ const Cart = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[#0D0D0D]">
+    <div className="min-h-screen bg-[#FFFBF5]">
       <Navbar cart={cart} />
       
       <div className="pt-24 pb-16 px-4">
@@ -108,13 +102,13 @@ const Cart = () => {
           >
             <Link
               to="/"
-              className="flex items-center text-[#FFD700] hover:text-[#D2691E] transition-colors mr-4"
+              className="flex items-center text-[#C41E3A] hover:text-[#A01828] transition-colors mr-4 font-semibold"
             >
               <ArrowLeft className="h-6 w-6 mr-2" />
               <span>Back to Shop</span>
             </Link>
-            <div className="h-6 w-px bg-[#FFD700]/20 mr-4"></div>
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gold-gradient font-['Playfair_Display']">
+            <div className="h-6 w-px bg-gray-300 mr-4"></div>
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-[#C41E3A] font-['Playfair_Display']">
               Your Sweet Cart
             </h1>
           </motion.div>
@@ -123,18 +117,18 @@ const Cart = () => {
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
-              className="card-premium p-12 sm:p-16 text-center max-w-2xl mx-auto"
+              className="bg-white border-2 border-gray-200 rounded-2xl shadow-lg p-12 sm:p-16 text-center max-w-2xl mx-auto"
             >
-              <ShoppingBag className="h-20 w-20 text-[#FFD700]/30 mx-auto mb-6" />
-              <h2 className="text-2xl sm:text-3xl font-bold text-[#FFD700] mb-4 font-['Playfair_Display']">
+              <ShoppingBag className="h-20 w-20 text-gray-300 mx-auto mb-6" />
+              <h2 className="text-2xl sm:text-3xl font-bold text-[#C41E3A] mb-4 font-['Playfair_Display']">
                 Your cart is empty
               </h2>
-              <p className="text-[#F5F5DC]/70 mb-8">
+              <p className="text-gray-600 mb-8">
                 Add some delicious sweets to get started!
               </p>
               <Link
                 to="/#sweets-collection"
-                className="inline-flex items-center btn-premium bg-gradient-to-r from-[#FFD700] to-[#D2691E] text-[#0D0D0D] px-8 py-3 rounded-full font-bold shadow-lg hover:shadow-[#FFD700]/50"
+                className="inline-flex items-center bg-[#C41E3A] text-white px-8 py-3 rounded-lg font-semibold shadow-lg hover:bg-[#A01828] transition-colors"
               >
                 Browse Sweets
               </Link>
@@ -151,64 +145,63 @@ const Cart = () => {
                       animate={{ opacity: 1, x: 0 }}
                       exit={{ opacity: 0, x: 20 }}
                       transition={{ delay: index * 0.1 }}
-                      className="card-premium p-4 sm:p-6"
+                      className="bg-white border-2 border-gray-200 rounded-xl shadow-md p-4 sm:p-6 hover:shadow-lg transition-shadow"
                     >
                       <div className="flex items-start sm:items-center gap-4">
                         <div className="relative flex-shrink-0">
                           <img
-                            src={item.image || 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="100" height="100"%3E%3Crect fill="%23FFD700" width="100" height="100"/%3E%3Ctext fill="%230D0D0D" font-size="40" x="50%25" y="50%25" text-anchor="middle" dominant-baseline="middle"%3E🍬%3C/text%3E%3C/svg%3E'}
+                            src={item.image || 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="100" height="100"%3E%3Crect fill="%23f0f0f0" width="100" height="100"/%3E%3Ctext fill="%23999" font-size="40" x="50%25" y="50%25" text-anchor="middle" dominant-baseline="middle"%3E🍬%3C/text%3E%3C/svg%3E'}
                             alt={item.name}
-                            className="w-20 h-20 sm:w-24 sm:h-24 object-cover rounded-xl"
+                            className="w-20 h-20 sm:w-24 sm:h-24 object-cover rounded-lg border-2 border-gray-100"
                           />
-                          <div className="absolute inset-0 border-2 border-[#FFD700]/20 rounded-xl"></div>
                         </div>
                         
                         <div className="flex-1 min-w-0">
-                          <h3 className="text-lg sm:text-xl font-bold text-[#FFD700] truncate font-['Playfair_Display']">
+                          <h3 className="text-lg sm:text-xl font-bold text-[#C41E3A] truncate font-['Playfair_Display']">
                             {item.name}
                           </h3>
-                          <p className="text-[#F5F5DC]/70 text-sm">
-                            ₹{item.rate} per {item.unit || 'kg'}
+                          <p className="text-gray-600 text-sm">
+                            ₹{item.rate} per {item.unit || 'piece'}
                           </p>
                           
                           {/* Quantity Controls */}
-                          <div className="flex items-center gap-2 mt-2">
+                          <div className="flex items-center gap-2 mt-3">
                             <motion.button
                               whileHover={{ scale: 1.1 }}
                               whileTap={{ scale: 0.9 }}
                               onClick={() => updateQuantity(index, (item.quantity || 1) - 1)}
                               disabled={(item.quantity || 1) <= 1}
-                              className={`p-1.5 rounded-full transition-colors ${
+                              className={`p-2 rounded-lg transition-all ${
                                 (item.quantity || 1) <= 1
-                                  ? 'text-[#F5F5DC]/30 cursor-not-allowed'
-                                  : 'text-[#FFD700] hover:bg-[#FFD700]/10'
+                                  ? 'bg-gray-100 text-gray-300 cursor-not-allowed'
+                                  : 'bg-[#C41E3A]/10 text-[#C41E3A] hover:bg-[#C41E3A]/20'
                               }`}
                             >
-                              <Trash2 className="h-3.5 w-3.5" />
+                              <Minus className="h-4 w-4" />
                             </motion.button>
-                            <div className="px-3 py-1 bg-[#1A1A1A] rounded-full text-[#FFD700] font-bold text-sm min-w-[50px] text-center">
+                            <div className="px-4 py-2 bg-gray-50 rounded-lg text-[#C41E3A] font-bold text-base min-w-[60px] text-center border-2 border-gray-200">
                               {item.quantity || 1}
                             </div>
                             <motion.button
                               whileHover={{ scale: 1.1 }}
                               whileTap={{ scale: 0.9 }}
                               onClick={() => updateQuantity(index, (item.quantity || 1) + 1)}
-                              className="p-1.5 rounded-full text-[#FFD700] hover:bg-[#FFD700]/10 transition-colors"
+                              className="p-2 rounded-lg bg-[#C41E3A]/10 text-[#C41E3A] hover:bg-[#C41E3A]/20 transition-all"
                             >
-                              <ShoppingCart className="h-3.5 w-3.5" />
+                              <Plus className="h-4 w-4" />
                             </motion.button>
                           </div>
                           
                           {/* Mobile Layout */}
                           <div className="flex items-center justify-between mt-3 sm:hidden">
-                            <div className="text-lg font-bold text-[#FFD700]">
+                            <div className="text-lg font-bold text-[#C41E3A]">
                               ₹{item.rate * (item.quantity || 1)}
                             </div>
                             <motion.button
                               whileHover={{ scale: 1.1 }}
                               whileTap={{ scale: 0.9 }}
                               onClick={() => removeFromCart(index)}
-                              className="p-2 text-red-500 hover:bg-red-500/10 rounded-full transition-colors"
+                              className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
                             >
                               <Trash2 className="h-4 w-4" />
                             </motion.button>
@@ -218,10 +211,10 @@ const Cart = () => {
                         {/* Desktop Layout */}
                         <div className="hidden sm:flex items-center gap-4">
                           <div className="text-right min-w-[100px]">
-                            <div className="text-xl font-bold text-[#FFD700]">
+                            <div className="text-xl font-bold text-[#C41E3A]">
                               ₹{item.rate * (item.quantity || 1)}
                             </div>
-                            <div className="text-xs text-[#F5F5DC]/50">
+                            <div className="text-xs text-gray-500">
                               ₹{item.rate} × {item.quantity || 1}
                             </div>
                           </div>
@@ -229,7 +222,7 @@ const Cart = () => {
                             whileHover={{ scale: 1.1 }}
                             whileTap={{ scale: 0.9 }}
                             onClick={() => removeFromCart(index)}
-                            className="p-2 text-red-500 hover:bg-red-500/10 rounded-full transition-colors"
+                            className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
                           >
                             <Trash2 className="h-5 w-5" />
                           </motion.button>
@@ -245,25 +238,25 @@ const Cart = () => {
                 <motion.div
                   initial={{ opacity: 0, x: 20 }}
                   animate={{ opacity: 1, x: 0 }}
-                  className="card-premium p-6 lg:sticky lg:top-24"
+                  className="bg-white border-2 border-gray-200 rounded-xl shadow-lg p-6 lg:sticky lg:top-24"
                 >
-                  <h3 className="text-2xl font-bold text-[#FFD700] mb-6 font-['Playfair_Display']">
+                  <h3 className="text-2xl font-bold text-[#C41E3A] mb-6 font-['Playfair_Display']">
                     Order Summary
                   </h3>
                   
                   <div className="space-y-4 mb-6">
-                    <div className="flex justify-between text-[#F5F5DC]/70">
+                    <div className="flex justify-between text-gray-600">
                       <span>Items ({getTotalItems()})</span>
-                      <span className="font-semibold text-[#F5F5DC]">₹{getTotalAmount()}</span>
+                      <span className="font-semibold text-gray-900">₹{getTotalAmount()}</span>
                     </div>
-                    <div className="flex justify-between text-[#F5F5DC]/70">
+                    <div className="flex justify-between text-gray-600">
                       <span>Delivery</span>
-                      <span className="font-semibold text-green-500">Free</span>
+                      <span className="font-semibold text-green-600">Free</span>
                     </div>
-                    <div className="h-px bg-gradient-to-r from-transparent via-[#FFD700]/30 to-transparent"></div>
+                    <div className="h-px bg-gray-200"></div>
                     <div className="flex justify-between text-xl font-bold">
-                      <span className="text-[#F5F5DC]">Total</span>
-                      <span className="text-gold-gradient">₹{getTotalAmount()}</span>
+                      <span className="text-gray-900">Total</span>
+                      <span className="text-[#C41E3A]">₹{getTotalAmount()}</span>
                     </div>
                   </div>
                   
@@ -271,16 +264,10 @@ const Cart = () => {
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                     onClick={handlePlaceOrderClick}
-                    className="w-full btn-premium bg-gradient-to-r from-[#FFD700] to-[#D2691E] text-[#0D0D0D] py-4 rounded-full font-bold shadow-lg hover:shadow-[#FFD700]/50 text-lg"
+                    className="w-full bg-[#C41E3A] text-white py-4 rounded-lg font-semibold shadow-lg hover:bg-[#A01828] transition-colors text-lg"
                   >
                     Place Order
                   </motion.button>
-                  
-                  <div className="mt-6 p-4 bg-[#FFD700]/5 rounded-lg border border-[#FFD700]/20">
-                    <p className="text-xs text-[#F5F5DC]/70 text-center">
-                      🎁 Free delivery on all orders!
-                    </p>
-                  </div>
                 </motion.div>
               </div>
             </div>

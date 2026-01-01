@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Eye, Calendar, Phone, MapPin, Package, Filter, CheckCircle2, Pencil, XCircle } from 'lucide-react';
+import { Eye, Calendar, Phone, MapPin, Package, Filter, CheckCircle2, Pencil, XCircle, Search } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { API_BASE_URL, API_ENDPOINTS } from '../config/api';
 
@@ -8,6 +8,7 @@ const ViewOrders = () => {
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [statusFilter, setStatusFilter] = useState('all');
   const [dateFilter, setDateFilter] = useState(''); // Date filter for orders
+  const [searchQuery, setSearchQuery] = useState(''); // Search query
   const [sortOrder, setSortOrder] = useState('orderDate-desc'); // Sort by order date descending by default
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -15,7 +16,7 @@ const ViewOrders = () => {
 
   // Edit modal state
   const [editOrder, setEditOrder] = useState(null);
-  const [editForm, setEditForm] = useState({ customerName: '', mobile: '', total: '', status: 'pending' });
+  const [editForm, setEditForm] = useState({ customerName: '', mobile: '', total: '', advancePaid: '', status: 'pending' });
   const [toast, setToast] = useState(null); // { message, type: 'success' | 'danger' }
 
   useEffect(() => {
@@ -43,9 +44,25 @@ const ViewOrders = () => {
   const filteredOrders = orders
     .filter(order => {
       const statusMatch = statusFilter === 'all' || order.status === statusFilter;
-      if (!dateFilter) return statusMatch;
-      const deliveryDate = order.deliveryDate ? order.deliveryDate.split('T')[0] : '';
-      return statusMatch && deliveryDate === dateFilter;
+      
+      // Date filter
+      let dateMatch = true;
+      if (dateFilter) {
+        const deliveryDate = order.deliveryDate ? order.deliveryDate.split('T')[0] : '';
+        dateMatch = deliveryDate === dateFilter;
+      }
+      
+      // Search filter - search by name, phone, address
+      let searchMatch = true;
+      if (searchQuery) {
+        const query = searchQuery.toLowerCase();
+        const name = (order.customerName || '').toLowerCase();
+        const phone = (order.mobile || '').toLowerCase();
+        const address = (order.address || '').toLowerCase();
+        searchMatch = name.includes(query) || phone.includes(query) || address.includes(query);
+      }
+      
+      return statusMatch && dateMatch && searchMatch;
     })
     .sort((a, b) => {
       const [field, direction] = sortOrder.split('-');
@@ -108,6 +125,7 @@ const ViewOrders = () => {
       customerName: order.customerName || '',
       mobile: order.mobile || '',
       total: order.total ?? '',
+      advancePaid: order.advancePaid ?? 0,
       status: (order.status || 'pending')
     });
   };
@@ -124,6 +142,7 @@ const ViewOrders = () => {
           customerName: editForm.customerName,
           mobile: editForm.mobile,
           total: Number(editForm.total),
+          advancePaid: Number(editForm.advancePaid || 0),
           status: editForm.status
         })
       });
@@ -133,12 +152,16 @@ const ViewOrders = () => {
         customerName: editForm.customerName,
         mobile: editForm.mobile,
         total: Number(editForm.total),
+        advancePaid: Number(editForm.advancePaid || 0),
         status: editForm.status
       } : o));
       setEditOrder(null);
+      setToast({ message: 'Order updated successfully!', type: 'success' });
+      setTimeout(() => setToast(null), 2500);
     } catch (e) {
       console.error(e);
-      alert(e.message || 'Failed to update order');
+      setToast({ message: e.message || 'Failed to update order', type: 'danger' });
+      setTimeout(() => setToast(null), 2500);
     } finally {
       setIsUpdating(false);
     }
@@ -156,6 +179,27 @@ const ViewOrders = () => {
           <h2 className="text-xl sm:text-2xl font-bold text-gray-900">View Orders</h2>
         </div>
         <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4 w-full sm:w-auto">
+          {/* Search Box */}
+          <div className="flex items-center w-full sm:w-auto relative">
+            <Search className="h-4 w-4 sm:h-5 sm:w-5 text-gray-400 absolute left-3" />
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search by name, phone, address..."
+              className="bg-white border border-gray-300 rounded-lg pl-9 pr-3 py-1.5 sm:py-2 text-sm sm:text-base text-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-500 w-full sm:w-64"
+            />
+            {searchQuery && (
+              <button
+                onClick={() => setSearchQuery('')}
+                className="absolute right-2 text-gray-400 hover:text-red-500 transition-colors"
+                title="Clear search"
+              >
+                <XCircle className="h-4 w-4" />
+              </button>
+            )}
+          </div>
+          
           <div className="flex items-center w-full sm:w-auto">
             <Filter className="h-4 w-4 sm:h-5 sm:w-5 text-gray-900 mr-2" />
             <select
@@ -379,7 +423,11 @@ const ViewOrders = () => {
                         {selectedOrder.status ? selectedOrder.status.charAt(0).toUpperCase() + selectedOrder.status.slice(1) : 'N/A'}
                       </span>
                     </div>
-                    <div><strong>Total Amount:</strong> <span className="text-purple-600 font-bold">₹{selectedOrder.total}</span></div>
+                    <div className="pt-2 border-t border-gray-300">
+                      <div className="mb-1"><strong>Total Amount:</strong> <span className="text-purple-600 font-bold">₹{selectedOrder.total}</span></div>
+                      <div className="mb-1"><strong>Advance Paid:</strong> <span className="text-green-600 font-bold">₹{selectedOrder.advancePaid || 0}</span></div>
+                      <div><strong>Due Amount:</strong> <span className="text-red-600 font-bold">₹{(selectedOrder.total || 0) - (selectedOrder.advancePaid || 0)}</span></div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -491,6 +539,18 @@ const ViewOrders = () => {
                     className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base bg-white border border-gray-300 rounded-lg sm:rounded-xl text-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
                     required
                   />
+                </div>
+                <div>
+                  <label className="block text-xs sm:text-sm font-semibold text-yellow-600 mb-1.5 sm:mb-2">Advance Paid</label>
+                  <input
+                    type="number"
+                    min="0"
+                    step="0.01"
+                    value={editForm.advancePaid}
+                    onChange={(e) => setEditForm(f => ({ ...f, advancePaid: e.target.value }))}
+                    className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base bg-white border border-gray-300 rounded-lg sm:rounded-xl text-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+                  />
+                  <p className="text-xs text-gray-500 mt-1">Due: ₹{((parseFloat(editForm.total) || 0) - (parseFloat(editForm.advancePaid) || 0)).toFixed(2)}</p>
                 </div>
                 <div>
                   <label className="block text-xs sm:text-sm font-semibold text-yellow-600 mb-1.5 sm:mb-2">Status</label>

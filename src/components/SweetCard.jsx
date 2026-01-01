@@ -143,20 +143,41 @@ const SweetCard = ({ sweet, onAddToCart }) => {
             </div>
           ) : (
             // Quantity selector for piece items
-            <div className="flex items-center justify-center gap-2 bg-[#2C2C2C] rounded-full px-4 py-2 w-full border-2 border-[#C41E3A]/30">
-              <label className="text-sm text-white/80">Piece:</label>
+            <div className="flex items-center justify-center gap-3 bg-[#2C2C2C] rounded-full px-6 py-3 w-full border-2 border-[#C41E3A]/30">
+              <label className="text-sm text-white/80 font-semibold">Piece:</label>
               
-              {/* Quantity input field */}
-              <input
-                type="text"
-                value={quantity}
-                onChange={handleQuantityInputChange}
-                placeholder="0"
-                className="w-16 bg-[#404040] text-[#FFB300] text-center rounded px-2 py-1 font-bold focus:outline-none focus:ring-2 focus:ring-[#FFB300]"
-              />
+              {/* Minus Button */}
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                onClick={() => handleQuantityChange(-1)}
+                disabled={quantity <= 1}
+                className={`p-2 rounded-full transition-all ${
+                  quantity <= 1
+                    ? 'bg-[#404040]/50 text-white/30 cursor-not-allowed'
+                    : 'bg-[#FFB300] text-[#0D0D0D] hover:bg-[#FFD700]'
+                }`}
+              >
+                <Minus className="h-4 w-4" />
+              </motion.button>
               
-              <span className="text-xs text-white/60">
-                ≈ ₹{quantity === '' ? '0.00' : (sweet.rate * (quantity || 0)).toFixed(2)}
+              {/* Quantity Display */}
+              <div className="min-w-[60px] text-center">
+                <div className="text-2xl font-bold text-[#FFB300]">{quantity}</div>
+              </div>
+              
+              {/* Plus Button */}
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                onClick={() => handleQuantityChange(1)}
+                className="p-2 rounded-full bg-[#FFB300] text-[#0D0D0D] hover:bg-[#FFD700] transition-all"
+              >
+                <Plus className="h-4 w-4" />
+              </motion.button>
+              
+              <span className="text-sm text-white/70 ml-2">
+                ≈ ₹{(sweet.rate * quantity).toFixed(2)}
               </span>
             </div>
           )}

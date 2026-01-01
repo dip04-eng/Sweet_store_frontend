@@ -24,10 +24,11 @@ const TotalSold = () => {
       }
       const data = await response.json();
       
-      // Filter orders by delivery date
+      // Filter orders by delivery date AND exclude cancelled orders
       const filteredOrders = data.filter(order => {
         const deliveryDate = order.deliveryDate ? order.deliveryDate.split('T')[0] : '';
-        return deliveryDate === selectedDate;
+        const isCancelled = order.status === 'Cancelled';
+        return deliveryDate === selectedDate && !isCancelled;
       });
       
       setOrders(filteredOrders);
