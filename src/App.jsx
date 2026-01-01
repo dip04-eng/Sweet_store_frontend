@@ -10,7 +10,7 @@ import Contact from './components/Contact';
 function App() {
   return (
     <Router>
-      <div className="min-h-screen bg-[#0D0D0D]">
+      <div className="min-h-screen bg-[#FFFBF5]">
         <Routes>
           <Route path="/" element={<UserPanel />} />
           <Route path="/cart" element={<Cart />} />

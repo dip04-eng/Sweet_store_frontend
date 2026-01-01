@@ -1,26 +1,7 @@
-import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
 
 const Hero = () => {
-  const [currentImage, setCurrentImage] = useState(0);
-
-  // Premium sweet images (using high-quality Indian sweets images)
-  const heroImages = [
-    'https://images.unsplash.com/photo-1623428454614-abaf00244e52?w=1920&q=80', // Gulab Jamun
-    'https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=1920&q=80', // Rasgulla
-    'https://images.unsplash.com/photo-1599599810769-bcde5a160d32?w=1920&q=80', // Jalebi
-    'https://images.unsplash.com/photo-1631452180519-c014fe946bc7?w=1920&q=80', // Kaju Katli
-  ];
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentImage((prev) => (prev + 1) % heroImages.length);
-    }, 5000); // Change every 5 seconds
-
-    return () => clearInterval(interval);
-  }, []);
-
   const scrollToShop = () => {
     const shopSection = document.getElementById('shop');
     if (shopSection) {
@@ -30,27 +11,110 @@ const Hero = () => {
 
   return (
     <div className="relative h-screen w-full overflow-hidden">
-      {/* Background Slideshow */}
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={currentImage}
-          initial={{ opacity: 0, scale: 1.1 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0, scale: 0.9 }}
-          transition={{ duration: 1.5 }}
-          className="absolute inset-0"
+      {/* Solid Red Background - Om Sweets Style */}
+      <div className="absolute inset-0 bg-[#C41E3A]">
+        
+        {/* Decorative Floral Pattern Overlay */}
+        <div className="absolute inset-0 opacity-10" style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cpath fill='%23000' d='M50 30c-5.5 0-10 4.5-10 10s4.5 10 10 10 10-4.5 10-10-4.5-10-10-10zm0 25c-8.3 0-15 6.7-15 15s6.7 15 15 15 15-6.7 15-15-6.7-15-15-15z'/%3E%3C/svg%3E")`,
+        }}></div>
+
+        {/* Left Side - Floating Sweet Icons */}
+        <motion.div 
+          animate={{ y: [0, -15, 0], rotate: [-12, -8, -12] }}
+          transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute left-8 top-[20%] text-7xl drop-shadow-2xl"
         >
-          <div
-            className="absolute inset-0 bg-cover bg-center parallax"
-            style={{
-              backgroundImage: `url(${heroImages[currentImage]})`,
-              transform: 'translateZ(0)',
-            }}
-          />
-          {/* Dark Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-[#0D0D0D]"></div>
+          🍬
         </motion.div>
-      </AnimatePresence>
+        <motion.div 
+          animate={{ y: [0, 10, 0], rotate: [6, 10, 6] }}
+          transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
+          className="absolute left-12 bottom-[25%] text-6xl drop-shadow-2xl"
+        >
+          🍪
+        </motion.div>
+
+        {/* Right Side - Floating Sweet Icons */}
+        <motion.div 
+          animate={{ y: [0, -10, 0], rotate: [12, 16, 12] }}
+          transition={{ duration: 3.8, repeat: Infinity, ease: "easeInOut", delay: 0.3 }}
+          className="absolute right-8 top-[22%] text-7xl drop-shadow-2xl"
+        >
+          🧁
+        </motion.div>
+        <motion.div 
+          animate={{ y: [0, 12, 0], rotate: [-6, -2, -6] }}
+          transition={{ duration: 4.2, repeat: Infinity, ease: "easeInOut", delay: 0.7 }}
+          className="absolute right-12 bottom-[22%] text-6xl drop-shadow-2xl"
+        >
+          🍩
+        </motion.div>
+
+        {/* Center floating sweets */}
+        <motion.div 
+          animate={{ y: [0, -8, 0] }}
+          transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute top-[12%] left-[45%] text-5xl drop-shadow-xl"
+        >
+          🥧
+        </motion.div>
+        <motion.div 
+          animate={{ y: [0, 8, 0] }}
+          transition={{ duration: 3.2, repeat: Infinity, ease: "easeInOut", delay: 0.4 }}
+          className="absolute bottom-[28%] left-[30%] text-5xl drop-shadow-xl"
+        >
+          🍫
+        </motion.div>
+        <motion.div 
+          animate={{ y: [0, -6, 0] }}
+          transition={{ duration: 2.8, repeat: Infinity, ease: "easeInOut", delay: 0.6 }}
+          className="absolute top-[15%] right-[35%] text-4xl drop-shadow-xl"
+        >
+          🍯
+        </motion.div>
+
+        {/* Decorative Pink Flowers - Left */}
+        <svg className="absolute left-12 bottom-32 w-32 h-32 opacity-80" viewBox="0 0 100 100">
+          <circle cx="50" cy="50" r="20" fill="#E91E63" />
+          <circle cx="30" cy="35" r="15" fill="#E91E63" />
+          <circle cx="70" cy="35" r="15" fill="#E91E63" />
+          <circle cx="30" cy="65" r="15" fill="#E91E63" />
+          <circle cx="70" cy="65" r="15" fill="#E91E63" />
+          <circle cx="50" cy="50" r="8" fill="#FFD700" />
+        </svg>
+
+        {/* Decorative Pink Flowers - Right */}
+        <svg className="absolute right-20 top-40 w-28 h-28 opacity-80" viewBox="0 0 100 100">
+          <circle cx="50" cy="50" r="18" fill="#E91E63" />
+          <circle cx="32" cy="38" r="13" fill="#E91E63" />
+          <circle cx="68" cy="38" r="13" fill="#E91E63" />
+          <circle cx="32" cy="62" r="13" fill="#E91E63" />
+          <circle cx="68" cy="62" r="13" fill="#E91E63" />
+          <circle cx="50" cy="50" r="6" fill="#FFD700" />
+        </svg>
+
+        {/* Golden Snowflake Decorations */}
+        <svg className="absolute top-32 right-1/4 w-12 h-12 opacity-70" viewBox="0 0 24 24" fill="#FFD700">
+          <path d="M12 0L14 8L22 8L16 13L18 21L12 16L6 21L8 13L2 8L10 8Z"/>
+        </svg>
+        <svg className="absolute bottom-40 left-1/3 w-10 h-10 opacity-60" viewBox="0 0 24 24" fill="#FFD700">
+          <path d="M12 0L14 8L22 8L16 13L18 21L12 16L6 21L8 13L2 8L10 8Z"/>
+        </svg>
+
+        {/* Golden Leaf Decorations */}
+        <div className="absolute top-16 right-8 w-20 h-24 opacity-50">
+          <svg viewBox="0 0 50 60" fill="#C4A35A">
+            <path d="M25 0 C40 20, 45 40, 25 60 C5 40, 10 20, 25 0 Z"/>
+          </svg>
+        </div>
+        <div className="absolute bottom-20 right-4 w-16 h-20 opacity-40 transform rotate-45">
+          <svg viewBox="0 0 50 60" fill="#C4A35A">
+            <path d="M25 0 C40 20, 45 40, 25 60 C5 40, 10 20, 25 0 Z"/>
+          </svg>
+        </div>
+
+      </div>
 
       {/* Hero Content */}
       <div className="relative z-10 h-full flex items-center justify-center px-4">
@@ -66,12 +130,12 @@ const Hero = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.5 }}
-              className="text-[#FFD700] text-sm sm:text-base md:text-lg font-semibold tracking-widest uppercase mb-4"
+              className="text-[#FFB300] text-sm sm:text-base md:text-lg font-semibold tracking-widest uppercase mb-4"
             >
               Welcome to
             </motion.p>
 
-            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold text-[#F5F5DC] leading-tight font-['Playfair_Display']">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold text-white leading-tight font-['Playfair_Display']">
               <motion.span
                 initial={{ opacity: 0, x: -50 }}
                 animate={{ opacity: 1, x: 0 }}
@@ -84,7 +148,7 @@ const Hero = () => {
                 initial={{ opacity: 0, x: 50 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.9 }}
-                className="block text-gold-gradient"
+                className="block text-[#FFB300]"
               >
                 & SWEETS
               </motion.span>
@@ -94,7 +158,7 @@ const Hero = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 1.1 }}
-              className="text-xl sm:text-2xl md:text-3xl text-[#FFD700]/90 font-['Playfair_Display'] italic mt-4"
+              className="text-xl sm:text-2xl md:text-3xl text-[#FFB300]/90 font-['Playfair_Display'] italic mt-4"
             >
               MANSOOR & SONS
             </motion.p>
@@ -105,10 +169,10 @@ const Hero = () => {
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 1.3 }}
-            className="text-lg sm:text-xl md:text-2xl text-[#F5F5DC]/80 mt-8 mb-12 max-w-3xl mx-auto leading-relaxed"
+            className="text-lg sm:text-xl md:text-2xl text-white/90 mt-8 mb-12 max-w-3xl mx-auto leading-relaxed"
           >
             Taste Happiness in Every Bite 🍬
-            <span className="block mt-2 text-base sm:text-lg text-[#FFD700]/70">
+            <span className="block mt-2 text-base sm:text-lg text-[#FFB300]/80">
               Crafted with love, tradition, and the finest ingredients
             </span>
           </motion.p>
@@ -124,32 +188,10 @@ const Hero = () => {
               onClick={scrollToShop}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="btn-premium bg-gradient-to-r from-[#FFD700] to-[#D2691E] text-[#0D0D0D] px-8 sm:px-12 py-4 sm:py-5 rounded-full text-lg sm:text-xl font-bold shadow-2xl hover:shadow-[#FFD700]/50 animate-glow"
+              className="btn-premium bg-gradient-to-r from-[#FFB300] to-[#FF6B35] text-white px-8 sm:px-12 py-4 sm:py-5 rounded-full text-lg sm:text-xl font-bold shadow-2xl hover:shadow-[#FFB300]/50 animate-glow"
             >
               Shop Now
             </motion.button>
-
-           
-          </motion.div>
-
-          {/* Slideshow Indicators */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1.7 }}
-            className="flex justify-center space-x-3 mt-12"
-          >
-            {heroImages.map((_, index) => (
-              <button
-                key={index}
-                onClick={() => setCurrentImage(index)}
-                className={`transition-all duration-300 ${
-                  currentImage === index
-                    ? 'w-12 h-2 bg-[#FFD700] rounded-full'
-                    : 'w-2 h-2 bg-[#F5F5DC]/30 rounded-full hover:bg-[#F5F5DC]/60'
-                }`}
-              />
-            ))}
           </motion.div>
         </div>
       </div>
@@ -167,14 +209,20 @@ const Hero = () => {
           className="flex flex-col items-center cursor-pointer"
           onClick={scrollToShop}
         >
-          <span className="text-[#FFD700] text-sm mb-2 font-semibold">Scroll Down</span>
-          <ChevronDown className="h-8 w-8 text-[#FFD700]" />
+          <span className="text-[#FFC107] text-sm mb-2 font-semibold">Scroll Down</span>
+          <ChevronDown className="h-8 w-8 text-[#FFC107]" />
         </motion.div>
       </motion.div>
 
-      {/* Decorative Elements */}
-      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#0D0D0D] to-transparent z-10"></div>
-    </div>
+      {/* Decorative Wavy Border at Bottom - Om Sweets Style */}
+      <div className="absolute bottom-0 left-0 right-0 z-20">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 120" className="w-full" preserveAspectRatio="none">
+          <path 
+            fill="#FFFBF5" 
+            d="M0,64L48,69.3C96,75,192,85,288,80C384,75,480,53,576,48C672,43,768,53,864,58.7C960,64,1056,64,1152,58.7C1248,53,1344,43,1392,37.3L1440,32L1440,120L1392,120C1344,120,1248,120,1152,120C1056,120,960,120,864,120C768,120,672,120,576,120C480,120,384,120,288,120C192,120,96,120,48,120L0,120Z"
+          ></path>
+        </svg>
+      </div>    </div>
   );
 };
 

@@ -41,11 +41,7 @@ const Navbar = ({ cart = [] }) => {
     <motion.nav
       initial={{ y: -100 }}
       animate={{ y: 0 }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled
-          ? 'glass-effect shadow-2xl border-b border-[#FFD700]/20'
-          : 'bg-transparent'
-      }`}
+      className="fixed top-0 left-0 right-0 z-50 transition-all duration-300 glass-effect shadow-lg border-b border-[#8B0000]/10"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
@@ -56,14 +52,14 @@ const Navbar = ({ cart = [] }) => {
               transition={{ duration: 0.6 }}
               className="relative"
             >
-              <GiCupcake className="h-10 w-10 text-[#FFD700] drop-shadow-lg" />
-              <div className="absolute inset-0 bg-[#FFD700] blur-xl opacity-50 group-hover:opacity-70 transition-opacity"></div>
+              <GiCupcake className="h-10 w-10 text-[#8B0000] drop-shadow-lg" />
+              <div className="absolute inset-0 bg-[#8B0000] blur-xl opacity-50 group-hover:opacity-70 transition-opacity"></div>
             </motion.div>
             <div>
-              <h1 className="text-xl sm:text-2xl font-bold text-gold-gradient font-['Playfair_Display']">
+              <h1 className="text-xl sm:text-2xl font-bold text-[#8B0000] font-['Playfair_Display']">
                 MANSOOR HOTEL
               </h1>
-              <p className="text-xs text-[#FFD700]/80 font-light tracking-wider">& SWEETS</p>
+              <p className="text-xs text-[#A52A2A] font-light tracking-wider">& SWEETS</p>
             </div>
           </Link>
 
@@ -74,12 +70,12 @@ const Navbar = ({ cart = [] }) => {
                 key={link.name}
                 to={link.path}
                 onClick={(e) => scrollToSection(e, link.path)}
-                className={`relative text-[#F5F5DC] hover:text-[#FFD700] transition-all duration-300 font-medium group ${
-                  location.pathname === link.path ? 'text-[#FFD700]' : ''
+                className={`relative text-[#2B1B17] hover:text-[#8B0000] transition-all duration-300 font-medium group ${
+                  location.pathname === link.path ? 'text-[#8B0000]' : ''
                 }`}
               >
                 {link.name}
-                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-[#FFD700] to-[#D2691E] group-hover:w-full transition-all duration-300"></span>
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-[#8B0000] to-[#A52A2A] group-hover:w-full transition-all duration-300"></span>
               </Link>
             ))}
           </div>
@@ -103,7 +99,7 @@ const Navbar = ({ cart = [] }) => {
               <motion.div
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
-                className="btn-premium bg-gradient-to-r from-[#FFD700] to-[#D2691E] text-[#0D0D0D] px-3 sm:px-6 py-2.5 sm:py-3 rounded-full font-semibold shadow-lg hover:shadow-[#FFD700]/50 flex items-center space-x-1 sm:space-x-2"
+                className="btn-premium bg-gradient-to-r from-[#8B0000] to-[#A52A2A] text-white px-3 sm:px-6 py-2.5 sm:py-3 rounded-full font-semibold shadow-lg hover:shadow-[#8B0000]/50 flex items-center space-x-1 sm:space-x-2"
               >
                 <ShoppingCart className="h-4 w-4 sm:h-5 sm:w-5" />
                 <span className="hidden sm:inline">Cart</span>
@@ -111,7 +107,7 @@ const Navbar = ({ cart = [] }) => {
                   <motion.span
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
-                    className="animate-pulse-gold bg-[#0D0D0D] text-[#FFD700] px-2 py-0.5 rounded-full text-xs font-bold"
+                    className="animate-pulse-gold bg-white text-[#8B0000] px-2 py-0.5 rounded-full text-xs font-bold"
                   >
                     {cartItemCount}
                   </motion.span>
@@ -122,7 +118,7 @@ const Navbar = ({ cart = [] }) => {
             {/* Mobile Menu Button */}
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="md:hidden text-[#FFD700] p-2"
+              className="md:hidden text-[#8B0000] p-2"
             >
               {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
             </button>
@@ -153,8 +149,8 @@ const Navbar = ({ cart = [] }) => {
                       scrollToSection(e, link.path);
                       setIsMobileMenuOpen(false);
                     }}
-                    className={`block text-[#F5F5DC] hover:text-[#FFD700] transition-colors font-medium py-2 ${
-                      location.pathname === link.path ? 'text-[#FFD700]' : ''
+                    className={`block text-[#2B1B17] hover:text-[#8B0000] transition-colors font-medium py-2 ${
+                      location.pathname === link.path ? 'text-[#8B0000]' : ''
                     }`}
                   >
                     {link.name}

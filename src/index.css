@@ -5,12 +5,12 @@
 @tailwind utilities;
 
 :root {
-  --rich-black: #0D0D0D;
-  --chocolate: #3E2723;
-  --gold: #FFD700;
-  --caramel: #D2691E;
-  --off-white: #F5F5DC;
-  --dark-brown: #1A0F0A;
+  --rich-black: #FFFBF5;
+  --chocolate: #8B0000;
+  --gold: #FFC107;
+  --caramel: #FF9800;
+  --off-white: #2B1B17;
+  --dark-brown: #A52A2A;
 }
 
 * {
@@ -154,16 +154,25 @@ html {
 
 /* Premium Gold Gradient */
 .gold-gradient {
-  background: linear-gradient(135deg, #FFD700 0%, #FFA500 50%, #FFD700 100%);
+  background: linear-gradient(135deg, #C62828 0%, #FF6B35 50%, #FFB300 100%);
   background-size: 200% 200%;
   animation: shimmer 3s ease infinite;
 }
 
-/* Glass Effect */
+/* Glass Effect - Cream for Navbar */
 .glass-effect {
-  background: rgba(13, 13, 13, 0.7);
+  background: #FFFAE6;
+  backdrop-filter: blur(10px);
+  border-bottom: 2px solid rgba(139, 0, 0, 0.15);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+/* Glass Effect - Dark for Admin Login */
+.glass-effect-dark {
+  background: rgba(13, 13, 13, 0.95);
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 215, 0, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
 }
 
 /* Hover Glow Effect */
@@ -172,13 +181,13 @@ html {
 }
 
 .hover-glow:hover {
-  box-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
+  box-shadow: 0 0 30px rgba(255, 107, 53, 0.5);
   transform: translateY(-5px);
 }
 
 /* Text Gradient */
 .text-gold-gradient {
-  background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+  background: linear-gradient(135deg, #C62828 0%, #FF6B35 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -208,15 +217,17 @@ html {
 
 /* Card Premium Styles */
 .card-premium {
-  background: linear-gradient(145deg, #1a1a1a, #0d0d0d);
-  border: 1px solid rgba(255, 215, 0, 0.1);
+  background: #FFFAE6;
+  border: 1px solid rgba(139, 69, 19, 0.1);
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
   transition: all 0.4s ease;
 }
 
 .card-premium:hover {
-  border-color: rgba(255, 215, 0, 0.5);
-  box-shadow: 0 10px 40px rgba(255, 215, 0, 0.2);
-  transform: translateY(-8px) scale(1.02);
+  border-color: rgba(255, 165, 0, 0.4);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.18), 0 0 20px rgba(255, 165, 0, 0.15);
+  transform: translateY(-10px) scale(1.02);
 }
 
 @layer utilities {
@@ -232,4 +243,90 @@ html {
     transform: translateZ(0);
     will-change: transform;
   }
+
+  /* 3D Image Effects */
+  .perspective-1000 {
+    perspective: 1000px;
+  }
+
+  .preserve-3d {
+    transform-style: preserve-3d;
+  }
+
+  .backface-hidden {
+    backface-visibility: hidden;
+  }
+}
+
+/* 3D Card Styles */
+.card-3d {
+  transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+  transform-style: preserve-3d;
+}
+
+.card-3d:hover {
+  transform: perspective(1000px) rotateY(10deg) rotateX(5deg) scale(1.05);
+}
+
+/* 3D Shine Effect */
+.shine-effect {
+  position: relative;
+  overflow: hidden;
+}
+
+.shine-effect::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    to right,
+    transparent 0%,
+    rgba(255, 255, 255, 0.1) 45%,
+    rgba(255, 255, 255, 0.3) 50%,
+    rgba(255, 255, 255, 0.1) 55%,
+    transparent 100%
+  );
+  transform: rotate(45deg) translateX(-100%);
+  transition: transform 0.6s;
+}
+
+.shine-effect:hover::after {
+  transform: rotate(45deg) translateX(100%);
+}
+
+/* 3D Float Animation */
+@keyframes float3d {
+  0%, 100% {
+    transform: translateY(0) rotateX(0) rotateY(0);
+  }
+  25% {
+    transform: translateY(-10px) rotateX(2deg) rotateY(-2deg);
+  }
+  50% {
+    transform: translateY(-5px) rotateX(-2deg) rotateY(2deg);
+  }
+  75% {
+    transform: translateY(-15px) rotateX(1deg) rotateY(-1deg);
+  }
+}
+
+.animate-float3d {
+  animation: float3d 6s ease-in-out infinite;
+}
+
+/* Glow Pulse */
+@keyframes glowPulse {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.3), 0 0 40px rgba(255, 215, 0, 0.1);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(255, 215, 0, 0.5), 0 0 80px rgba(255, 215, 0, 0.3);
+  }
+}
+
+.animate-glowPulse {
+  animation: glowPulse 3s ease-in-out infinite;
 }

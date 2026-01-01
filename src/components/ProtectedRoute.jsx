@@ -1,10 +1,12 @@
-import { Navigate } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 
 const ProtectedRoute = ({ children }) => {
   const isAuthenticated = sessionStorage.getItem('isAdminAuthenticated') === 'true';
+  const location = useLocation();
   
   if (!isAuthenticated) {
-    return <Navigate to="/admin-login" replace />;
+    // Save the attempted URL to redirect back after login
+    return <Navigate to="/admin-login" state={{ from: location }} replace />;
   }
   
   return children;

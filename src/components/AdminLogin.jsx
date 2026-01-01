@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useNavigate, Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Lock, Mail, Eye, EyeOff, ShieldCheck, ArrowLeft } from 'lucide-react';
 import { GiCupcake } from 'react-icons/gi';
@@ -11,6 +11,18 @@ const AdminLogin = () => {
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // Get the page user came from (or default to admin)
+  const from = location.state?.from?.pathname || '/admin';
+
+  // Redirect if already authenticated
+  useEffect(() => {
+    const isAuthenticated = sessionStorage.getItem('isAdminAuthenticated') === 'true';
+    if (isAuthenticated) {
+      navigate(from, { replace: true });
+    }
+  }, [navigate, from]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -22,7 +34,7 @@ const AdminLogin = () => {
       if (email === 'admin@gmail.com' && password === 'admin') {
         // Set authentication flag in sessionStorage
         sessionStorage.setItem('isAdminAuthenticated', 'true');
-        navigate('/admin');
+        navigate(from, { replace: true }); // Go back to where user came from
       } else {
         setError('Invalid email or password. Please try again.');
         setIsLoading(false);
@@ -76,7 +88,7 @@ const AdminLogin = () => {
         transition={{ duration: 0.6 }}
         className="relative z-10 w-full max-w-md"
       >
-        <div className="glass-effect border border-[#FFD700]/20 rounded-3xl shadow-2xl overflow-hidden">
+        <div className="glass-effect-dark border border-[#FFD700]/20 rounded-3xl shadow-2xl overflow-hidden">
           {/* Header */}
           <div className="bg-gradient-to-r from-[#FFD700] to-[#D2691E] px-8 py-10 text-center relative">
             <motion.div

@@ -68,11 +68,11 @@ const UserPanel = () => {
       <Hero />
 
       {/* Sweets Catalog Section */}
-      <section id="sweets-collection" className="py-16 sm:py-20 md:py-24 px-4 relative">
+      <section id="sweets-collection" className="py-16 sm:py-20 md:py-24 px-4 relative bg-[#E08B8B]">
         {/* Decorative Background Elements */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-20 left-10 w-64 h-64 bg-[#FFD700]/5 rounded-full blur-3xl"></div>
-          <div className="absolute bottom-20 right-10 w-80 h-80 bg-[#D2691E]/5 rounded-full blur-3xl"></div>
+          <div className="absolute top-20 left-10 w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
+          <div className="absolute bottom-20 right-10 w-80 h-80 bg-white/10 rounded-full blur-3xl"></div>
         </div>
 
         <div className="max-w-7xl mx-auto relative z-10">
@@ -84,16 +84,16 @@ const UserPanel = () => {
             className="text-center mb-12 sm:mb-16"
           >
             <div className="flex items-center justify-center mb-4">
-              <Sparkles className="h-6 w-6 text-[#FFD700] mr-2" />
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gold-gradient font-['Playfair_Display']">
+              <Sparkles className="h-6 w-6 text-white mr-2" />
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white font-['Playfair_Display']">
                 Our Sweet Collection
               </h2>
-              <Sparkles className="h-6 w-6 text-[#FFD700] ml-2" />
+              <Sparkles className="h-6 w-6 text-white ml-2" />
             </div>
-            <p className="text-[#F5F5DC]/70 text-lg max-w-2xl mx-auto">
+            <p className="text-white/80 text-lg max-w-2xl mx-auto">
               Handcrafted with love, tradition, and the finest ingredients
             </p>
-            <div className="w-24 h-1 bg-gradient-to-r from-[#FFD700] to-[#D2691E] mx-auto mt-4 rounded-full"></div>
+            <div className="w-24 h-1 bg-white/50 mx-auto mt-4 rounded-full"></div>
           </motion.div>
           
           {/* Loading State */}

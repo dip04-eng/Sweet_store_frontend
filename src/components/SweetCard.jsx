@@ -62,7 +62,7 @@ const SweetCard = ({ sweet, onAddToCart }) => {
       className="card-premium overflow-hidden group"
     >
       {/* Image Container */}
-      <div className="relative overflow-hidden">
+      <div className="relative overflow-hidden border-b-2 border-[#C41E3A]/20">
         <motion.img
           whileHover={{ scale: 1.1 }}
           transition={{ duration: 0.4 }}
@@ -91,23 +91,23 @@ const SweetCard = ({ sweet, onAddToCart }) => {
       {/* Content */}
       <div className="p-5 sm:p-6">
         {/* Title */}
-        <h3 className="text-lg sm:text-xl font-bold text-[#FFD700] mb-2 truncate font-['Playfair_Display']">
+        <h3 className="text-lg sm:text-xl font-bold text-[#C41E3A] mb-2 truncate font-['Playfair_Display']">
           {sweet.name}
         </h3>
         
         {/* Description */}
-        <p className="text-[#F5F5DC]/70 text-sm mb-4 line-clamp-2 leading-relaxed">
+        <p className="text-gray-600 text-sm mb-4 line-clamp-2 leading-relaxed">
           {sweet.description}
         </p>
 
         {/* Divider */}
-        <div className="h-px bg-gradient-to-r from-transparent via-[#FFD700]/30 to-transparent mb-4"></div>
+        <div className="h-px bg-gradient-to-r from-transparent via-[#C41E3A]/20 to-transparent mb-4"></div>
         
         {/* Price Display */}
-        <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center justify-between mb-4 p-3 border border-[#C41E3A]/20 rounded-xl bg-[#FFF8F0]">
           <div className="text-left">
-            <div className="text-xs text-[#F5F5DC]/50">Price</div>
-            <div className="text-xl font-bold text-gold-gradient">₹{sweet.rate}/{sweet.unit === 'piece' ? 'piece' : 'kg'}</div>
+            <div className="text-xs text-gray-500">Price</div>
+            <div className="text-xl font-bold text-[#C41E3A]">₹{sweet.rate}<span className="text-sm text-gray-600">/{sweet.unit === 'piece' ? 'piece' : 'kg'}</span></div>
           </div>
         </div>
 
@@ -115,8 +115,8 @@ const SweetCard = ({ sweet, onAddToCart }) => {
         <div className="flex items-center justify-center mb-4 -mx-4">
           {isKgItem ? (
             // Weight input for kg items
-            <div className="flex items-center gap-2 bg-[#1A1A1A] rounded-full px-8 py-3 justify-center min-w-full whitespace-nowrap overflow-hidden">
-              <label className="text-xs text-[#F5F5DC]/70">Weight:</label>
+            <div className="flex items-center gap-2 bg-[#2C2C2C] rounded-full px-8 py-3 justify-center min-w-full whitespace-nowrap overflow-hidden border-2 border-[#C41E3A]/30">
+              <label className="text-xs text-white/80">Weight:</label>
               
               {/* Weight input field */}
               <input
@@ -124,27 +124,27 @@ const SweetCard = ({ sweet, onAddToCart }) => {
                 value={weight}
                 onChange={handleWeightChange}
                 placeholder="0"
-                className="w-16 bg-[#2A2A2A] text-[#FFD700] text-center rounded px-2 py-1 text-sm font-bold focus:outline-none focus:ring-2 focus:ring-[#FFD700]"
+                className="w-16 bg-[#404040] text-[#FFB300] text-center rounded px-2 py-1 text-sm font-bold focus:outline-none focus:ring-2 focus:ring-[#FFB300]"
               />
               
               {/* Unit selector */}
               <select
                 value={weightUnit}
                 onChange={handleWeightUnitChange}
-                className="bg-[#2A2A2A] text-[#FFD700] rounded px-2 py-1 font-bold focus:outline-none focus:ring-2 focus:ring-[#FFD700] text-xs"
+                className="bg-[#404040] text-[#FFB300] rounded px-2 py-1 font-bold focus:outline-none focus:ring-2 focus:ring-[#FFB300] text-xs"
               >
                 <option value="grams">grams</option>
                 <option value="kg">kg</option>
               </select>
               
-              <span className="text-xs text-[#F5F5DC]/50">
+              <span className="text-xs text-white/60">
                 ≈ ₹{weight === '' ? '0.00' : (sweet.rate * getWeightInKg()).toFixed(2)}
               </span>
             </div>
           ) : (
             // Quantity selector for piece items
-            <div className="flex items-center justify-center gap-2 bg-[#1A1A1A] rounded-full px-4 py-2 w-full">
-              <label className="text-sm text-[#F5F5DC]/70">Piece:</label>
+            <div className="flex items-center justify-center gap-2 bg-[#2C2C2C] rounded-full px-4 py-2 w-full border-2 border-[#C41E3A]/30">
+              <label className="text-sm text-white/80">Piece:</label>
               
               {/* Quantity input field */}
               <input
@@ -152,10 +152,10 @@ const SweetCard = ({ sweet, onAddToCart }) => {
                 value={quantity}
                 onChange={handleQuantityInputChange}
                 placeholder="0"
-                className="w-16 bg-[#2A2A2A] text-[#FFD700] text-center rounded px-2 py-1 font-bold focus:outline-none focus:ring-2 focus:ring-[#FFD700]"
+                className="w-16 bg-[#404040] text-[#FFB300] text-center rounded px-2 py-1 font-bold focus:outline-none focus:ring-2 focus:ring-[#FFB300]"
               />
               
-              <span className="text-xs text-[#F5F5DC]/50">
+              <span className="text-xs text-white/60">
                 ≈ ₹{quantity === '' ? '0.00' : (sweet.rate * (quantity || 0)).toFixed(2)}
               </span>
             </div>
@@ -193,7 +193,7 @@ const SweetCard = ({ sweet, onAddToCart }) => {
       </div>
 
       {/* Decorative Corner */}
-      <div className="absolute top-0 left-0 w-20 h-20 bg-gradient-to-br from-[#FFD700]/10 to-transparent rounded-br-full opacity-0 group-hover:opacity-100 transition-opacity"></div>
+      <div className="absolute top-0 left-0 w-20 h-20 bg-gradient-to-br from-[#C41E3A]/10 to-transparent rounded-br-full opacity-0 group-hover:opacity-100 transition-opacity"></div>
     </motion.div>
   );
 };

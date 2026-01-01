@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Trash, AlertTriangle, Search } from 'lucide-react';
+import { Trash, AlertTriangle, Search, Calendar, PartyPopper } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { API_BASE_URL, API_ENDPOINTS } from '../config/api';
 
@@ -10,6 +10,7 @@ const RemoveSweet = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [selectedType, setSelectedType] = useState('normal'); // Default to 'normal'
 
   useEffect(() => {
     fetchSweets();
@@ -33,9 +34,18 @@ const RemoveSweet = () => {
     }
   };
 
-  const filteredSweets = sweets.filter(sweet =>
-    sweet.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredSweets = sweets.filter(sweet => {
+    if (!selectedType) return false; // Don't show any sweets until type is selected
+    
+    // First filter by sweet type (normal or festival)
+    const isFestival = sweet.isFestival === true;
+    const typeMatch = selectedType === 'festival' ? isFestival : !isFestival;
+    
+    // Then filter by search term
+    const searchMatch = sweet.name.toLowerCase().includes(searchTerm.toLowerCase());
+    
+    return typeMatch && searchMatch;
+  });
 
   const handleDelete = (sweet) => {
     setSweetToDelete(sweet);
@@ -73,6 +83,7 @@ const RemoveSweet = () => {
 
   return (
     <div>
+      {/* Header */}
       <motion.div 
         className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4 sm:mb-6 gap-2"
         initial={{ opacity: 0, y: -20 }}
@@ -80,29 +91,67 @@ const RemoveSweet = () => {
       >
         <div className="flex items-center">
           <Trash className="h-5 w-5 sm:h-6 sm:w-6 text-red-500 mr-2" />
-          <h2 className="text-xl sm:text-2xl font-bold text-yellow-500">Remove Sweets</h2>
+          <h2 className="text-xl sm:text-2xl font-bold text-yellow-500">Remove Items</h2>
         </div>
-        <div className="text-xs sm:text-sm text-gray-600">
-          Total Sweets: {sweets.length}
-        </div>
+        {selectedType && (
+          <div className="text-xs sm:text-sm text-gray-600">
+            Total: {filteredSweets.length} sweets
+          </div>
+        )}
       </motion.div>
 
-      {/* Search Bar */}
-      <div className="mb-4 sm:mb-6">
-        <div className="relative">
-          <Search className="h-4 w-4 sm:h-5 sm:w-5 text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2" />
-          <input
-            type="text"
-            placeholder="Search sweets..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-9 sm:pl-10 pr-3 sm:pr-4 py-2 sm:py-3 text-sm sm:text-base bg-white border border-gray-300 rounded-lg sm:rounded-xl text-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
-          />
-        </div>
+      {/* Type Selection Buttons */}
+      <div className="flex gap-2 mb-4 sm:mb-6">
+        <button
+          onClick={() => setSelectedType('normal')}
+          className={`px-4 py-2 rounded-full font-semibold transition-all duration-300 text-sm ${
+            selectedType === 'normal'
+              ? 'bg-[#8B7355] text-white'
+              : 'bg-white text-gray-600 border border-gray-300 hover:bg-gray-100'
+          }`}
+        >
+          Normal Days
+        </button>
+
+        <button
+          onClick={() => setSelectedType('festival')}
+          className={`px-4 py-2 rounded-full font-semibold transition-all duration-300 text-sm ${
+            selectedType === 'festival'
+              ? 'bg-[#8B7355] text-white'
+              : 'bg-white text-gray-600 border border-gray-300 hover:bg-gray-100'
+          }`}
+        >
+          Festival Special
+        </button>
       </div>
 
-      {/* Sweets Grid */}
-      {loading ? (
+      {/* Search Bar - Only show when type is selected */}
+      {selectedType && (
+        <div className="mb-4 sm:mb-6">
+          <div className="relative">
+            <Search className="h-4 w-4 sm:h-5 sm:w-5 text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2" />
+            <input
+              type="text"
+              placeholder={`Search ${selectedType === 'festival' ? 'festival special' : 'normal days'} sweets...`}
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full pl-9 sm:pl-10 pr-3 sm:pr-4 py-2 sm:py-3 text-sm sm:text-base bg-white border border-gray-300 rounded-lg sm:rounded-xl text-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+            />
+          </div>
+        </div>
+      )}
+
+      {/* Show message if no type selected */}
+      {!selectedType && !loading && (
+        <div className="text-center py-12">
+          <div className="text-4xl sm:text-6xl mb-4">👆</div>
+          <h3 className="text-lg sm:text-xl font-semibold text-gray-800 mb-2">Select a Category</h3>
+          <p className="text-gray-600 text-sm sm:text-base">Choose Normal Days or Festival Special to view sweets</p>
+        </div>
+      )}
+
+      {/* Sweets Grid - Only show when type is selected */}
+      {selectedType && loading ? (
         <div className="text-center py-12">
           <div className="animate-spin rounded-full h-12 w-12 sm:h-16 sm:w-16 border-4 border-purple-500 border-t-transparent mx-auto mb-4"></div>
           <p className="text-gray-600 text-sm sm:text-base">Loading sweets...</p>

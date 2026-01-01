@@ -1,15 +1,16 @@
 import { useState, useEffect } from 'react';
-import { Upload, Eye } from 'lucide-react';
+import { Upload, Eye, Calendar, PartyPopper } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { API_BASE_URL, API_ENDPOINTS } from '../config/api';
 
-const AddSweet = () => {
+const AddSweet = ({ sweetType = 'normal' }) => {
   const [formData, setFormData] = useState({
     name: '',
     category: '',
     rate: '',
     unit: '',
-    image: ''
+    image: '',
+    isFestival: sweetType === 'festival'
   });
   const [imagePreview, setImagePreview] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -17,6 +18,14 @@ const AddSweet = () => {
   const [success, setSuccess] = useState(false);
   const [selectedSweetId, setSelectedSweetId] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState('');
+
+  // Update isFestival when sweetType prop changes
+  useEffect(() => {
+    setFormData(prev => ({
+      ...prev,
+      isFestival: sweetType === 'festival'
+    }));
+  }, [sweetType]);
 
   // All products organized by category
   const allProducts = {
@@ -145,8 +154,21 @@ const AddSweet = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-yellow-500 mb-2">Add New Sweet</h1>
-        <p className="text-sm sm:text-base text-gray-600">Fill in the details below to add a new sweet to your collection</p>
+        <div className="flex items-center gap-3 mb-2">
+          {sweetType === 'festival' ? (
+            <PartyPopper className="h-8 w-8 text-[#E91E63]" />
+          ) : (
+            <Calendar className="h-8 w-8 text-[#FFD700]" />
+          )}
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-yellow-500">
+            {sweetType === 'festival' ? 'Add Festival Special' : 'Add Normal Day Sweet'}
+          </h1>
+        </div>
+        <p className="text-sm sm:text-base text-gray-600">
+          {sweetType === 'festival' 
+            ? 'Fill in the details for your festival special item' 
+            : 'Fill in the details below to add a new sweet to your collection'}
+        </p>
       </motion.div>
 
       <motion.form 
