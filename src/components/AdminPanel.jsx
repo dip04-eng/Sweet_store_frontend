@@ -94,7 +94,8 @@ const AdminPanel = () => {
 
   // Handle back button in header
   const handleBack = () => {
-    window.history.back();
+    // Always navigate to home page
+    navigate('/');
   };
 
   const handleLogout = () => {
@@ -127,7 +128,7 @@ const AdminPanel = () => {
                 className="flex items-center text-purple-600 hover:text-purple-800 transition-colors text-sm sm:text-base"
               >
                 <ArrowLeft className="h-4 w-4 sm:h-5 sm:w-5 mr-1 sm:mr-2" />
-                <span className="hidden sm:inline">Back</span>
+                <span className="hidden sm:inline">Back to Home</span>
               </button>
               <h1 className="text-base sm:text-xl md:text-2xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
                 Admin Dashboard
