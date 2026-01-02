@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Loader2, RefreshCw, Sparkles, Filter } from 'lucide-react';
+import { Loader2, RefreshCw, Sparkles, Filter, PartyPopper } from 'lucide-react';
 import SweetCard from './SweetCard';
+import FestivalCard from './FestivalCard';
 import Hero from './Hero';
 import Navbar from './Navbar';
 import Footer from './Footer';
@@ -231,13 +232,14 @@ const UserPanel = () => {
         </div>
       </section>
 
-      {/* Festival Special Sweets Section */}
-      {!loading && festivalSweets.length > 0 && (
-        <section id="festival-collection" className="py-16 sm:py-20 md:py-24 px-4 relative bg-gradient-to-br from-pink-500 via-purple-500 to-indigo-600">
-          {/* Decorative Background Elements */}
-          <div className="absolute inset-0 overflow-hidden pointer-events-none">
-            <div className="absolute top-20 left-10 w-64 h-64 bg-yellow-300/20 rounded-full blur-3xl"></div>
-            <div className="absolute bottom-20 right-10 w-80 h-80 bg-white/20 rounded-full blur-3xl"></div>
+      {/* Festival Special Sweets Section - Om Sweets Style */}
+      {!loading && (
+        <section id="festival-collection" className="py-16 sm:py-20 md:py-24 px-4 relative bg-[#D4A017]">
+          {/* Decorative Background Pattern */}
+          <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-10">
+            <div className="absolute inset-0" style={{
+              backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000000' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+            }}></div>
           </div>
 
           <div className="max-w-7xl mx-auto relative z-10">
@@ -248,36 +250,49 @@ const UserPanel = () => {
               viewport={{ once: true }}
               className="text-center mb-12 sm:mb-16"
             >
-              <div className="flex items-center justify-center mb-4">
-                <Sparkles className="h-6 w-6 text-yellow-300 mr-2" />
-                <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white font-['Playfair_Display']">
-                  Festival Special Collection
-                </h2>
-                <Sparkles className="h-6 w-6 text-yellow-300 ml-2" />
-              </div>
-              <p className="text-white/90 text-lg max-w-2xl mx-auto">
-                Celebrate special occasions with our exclusive festival sweets
+              <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold text-[#5C3317] font-['Playfair_Display'] mb-4">
+                Festival Special
+              </h2>
+              <p className="text-[#5C3317]/80 text-base sm:text-lg max-w-2xl mx-auto">
+                Our festival special treats will instantly sweeten your day!
               </p>
-              <div className="w-24 h-1 bg-yellow-300/70 mx-auto mt-4 rounded-full"></div>
             </motion.div>
 
-            {/* Festival Sweets Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8">
-              {festivalSweets.map((sweet, index) => (
-                <motion.div
-                  key={`festival-${sweet.id || sweet._id || sweet.name}-${index}`}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.1 }}
-                >
-                  <SweetCard
-                    sweet={sweet}
-                    onAddToCart={addToCart}
-                  />
-                </motion.div>
-              ))}
-            </div>
+            {/* Festival Sweets Grid or Empty State */}
+            {festivalSweets.length > 0 ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8">
+                {festivalSweets.map((sweet, index) => (
+                  <motion.div
+                    key={`festival-${sweet.id || sweet._id || sweet.name}-${index}`}
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: index * 0.1 }}
+                  >
+                    <FestivalCard
+                      sweet={sweet}
+                      onAddToCart={addToCart}
+                    />
+                  </motion.div>
+                ))}
+              </div>
+            ) : (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="text-center py-12"
+              >
+                <div className="bg-white/90 backdrop-blur-sm rounded-2xl max-w-md mx-auto p-8 shadow-xl">
+                  <div className="text-6xl mb-4">🎉</div>
+                  <h3 className="text-2xl font-bold text-[#5C3317] mb-3 font-['Playfair_Display']">
+                    Coming Soon!
+                  </h3>
+                  <p className="text-[#5C3317]/70">
+                    Festival special sweets will be available during upcoming festivals. Stay tuned!
+                  </p>
+                </div>
+              </motion.div>
+            )}
           </div>
         </section>
       )}
