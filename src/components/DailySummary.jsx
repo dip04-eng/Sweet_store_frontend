@@ -213,7 +213,9 @@ const DailySummary = () => {
                     </div>
                     <span className="font-semibold text-gray-800 text-xs sm:text-sm md:text-base truncate">{sweet.name}</span>
                   </div>
-                  <span className="text-purple-600 font-bold text-xs sm:text-sm md:text-base flex-shrink-0 ml-2">{sweet.quantity} orders</span>
+                  <span className="text-purple-600 font-bold text-xs sm:text-sm md:text-base flex-shrink-0 ml-2">
+                    {sweet.quantity} {sweet.unit || 'pcs'}
+                  </span>
                 </motion.div>
               )) : (
                 <p className="text-gray-500 text-center py-4 text-sm">No popular sweets yet</p>
