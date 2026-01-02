@@ -104,7 +104,7 @@ const SweetCard = ({ sweet, onAddToCart }) => {
         <div className="h-px bg-gradient-to-r from-transparent via-[#C41E3A]/20 to-transparent mb-4"></div>
         
         {/* Price Display */}
-        <div className="flex items-center justify-between mb-4 p-3 border border-[#C41E3A]/20 rounded-xl bg-[#FFF8F0]">
+        <div className="flex items-center justify-between mb-4 p-3 border border-[#FFD700]/30 rounded-xl bg-gradient-to-br from-[#FFF8F0] to-[#FFFAE6]">
           <div className="text-left">
             <div className="text-xs text-gray-500">Price</div>
             <div className="text-xl font-bold text-[#C41E3A]">₹{sweet.rate}<span className="text-sm text-gray-600">/{sweet.unit === 'piece' ? 'piece' : 'kg'}</span></div>
@@ -115,8 +115,8 @@ const SweetCard = ({ sweet, onAddToCart }) => {
         <div className="flex items-center justify-center mb-4 -mx-4">
           {isKgItem ? (
             // Weight input for kg items
-            <div className="flex items-center gap-2 bg-[#2C2C2C] rounded-full px-8 py-3 justify-center min-w-full whitespace-nowrap overflow-hidden border-2 border-[#C41E3A]/30">
-              <label className="text-xs text-white/80">Weight:</label>
+            <div className="flex items-center gap-2 bg-gradient-to-r from-[#C41E3A] to-[#8B0000] rounded-full px-8 py-3 justify-center min-w-full whitespace-nowrap overflow-hidden border-2 border-[#FFD700]/50">
+              <label className="text-xs text-white/90 font-semibold">Weight:</label>
               
               {/* Weight input field */}
               <input
@@ -124,27 +124,27 @@ const SweetCard = ({ sweet, onAddToCart }) => {
                 value={weight}
                 onChange={handleWeightChange}
                 placeholder="0"
-                className="w-16 bg-[#404040] text-[#FFB300] text-center rounded px-2 py-1 text-sm font-bold focus:outline-none focus:ring-2 focus:ring-[#FFB300]"
+                className="w-16 bg-white/20 text-[#FFD700] text-center rounded px-2 py-1 text-sm font-bold focus:outline-none focus:ring-2 focus:ring-[#FFD700] backdrop-blur-sm"
               />
               
               {/* Unit selector */}
               <select
                 value={weightUnit}
                 onChange={handleWeightUnitChange}
-                className="bg-[#404040] text-[#FFB300] rounded px-2 py-1 font-bold focus:outline-none focus:ring-2 focus:ring-[#FFB300] text-xs"
+                className="bg-white/20 text-[#FFD700] rounded px-2 py-1 font-bold focus:outline-none focus:ring-2 focus:ring-[#FFD700] text-xs backdrop-blur-sm"
               >
-                <option value="grams">grams</option>
-                <option value="kg">kg</option>
+                <option value="grams" className="text-[#C41E3A]">grams</option>
+                <option value="kg" className="text-[#C41E3A]">kg</option>
               </select>
               
-              <span className="text-xs text-white/60">
+              <span className="text-xs text-white/80 font-semibold">
                 ≈ ₹{weight === '' ? '0.00' : (sweet.rate * getWeightInKg()).toFixed(2)}
               </span>
             </div>
           ) : (
             // Quantity selector for piece items
-            <div className="flex items-center justify-center gap-3 bg-[#2C2C2C] rounded-full px-6 py-3 w-full border-2 border-[#C41E3A]/30">
-              <label className="text-sm text-white/80 font-semibold">Piece:</label>
+            <div className="flex items-center justify-center gap-3 bg-gradient-to-r from-[#C41E3A] to-[#8B0000] rounded-full px-6 py-3 w-full border-2 border-[#FFD700]/50">
+              <label className="text-sm text-white/90 font-semibold">Piece:</label>
               
               {/* Minus Button */}
               <motion.button
@@ -154,8 +154,8 @@ const SweetCard = ({ sweet, onAddToCart }) => {
                 disabled={quantity <= 1}
                 className={`p-2 rounded-full transition-all ${
                   quantity <= 1
-                    ? 'bg-[#404040]/50 text-white/30 cursor-not-allowed'
-                    : 'bg-[#FFB300] text-[#0D0D0D] hover:bg-[#FFD700]'
+                    ? 'bg-white/20 text-white/30 cursor-not-allowed'
+                    : 'bg-[#FFD700] text-[#C41E3A] hover:bg-[#FFC107]'
                 }`}
               >
                 <Minus className="h-4 w-4" />
@@ -163,7 +163,7 @@ const SweetCard = ({ sweet, onAddToCart }) => {
               
               {/* Quantity Display */}
               <div className="min-w-[60px] text-center">
-                <div className="text-2xl font-bold text-[#FFB300]">{quantity}</div>
+                <div className="text-2xl font-bold text-[#FFD700]">{quantity}</div>
               </div>
               
               {/* Plus Button */}
@@ -171,12 +171,12 @@ const SweetCard = ({ sweet, onAddToCart }) => {
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
                 onClick={() => handleQuantityChange(1)}
-                className="p-2 rounded-full bg-[#FFB300] text-[#0D0D0D] hover:bg-[#FFD700] transition-all"
+                className="p-2 rounded-full bg-[#FFD700] text-[#C41E3A] hover:bg-[#FFC107] transition-all"
               >
                 <Plus className="h-4 w-4" />
               </motion.button>
               
-              <span className="text-sm text-white/70 ml-2">
+              <span className="text-sm text-white/90 ml-2 font-semibold">
                 ≈ ₹{(sweet.rate * quantity).toFixed(2)}
               </span>
             </div>
@@ -189,10 +189,10 @@ const SweetCard = ({ sweet, onAddToCart }) => {
           disabled={isAdding}
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
-          className={`w-full btn-premium flex items-center justify-center py-3 px-6 rounded-full font-bold transition-all duration-300 shadow-lg text-sm sm:text-base ${
+          className={`w-full btn-premium flex items-center justify-center py-3 px-6 rounded-full font-bold transition-all duration-300 shadow-lg text-sm sm:text-base border-2 ${
             isAdding
-              ? 'bg-green-600 text-white'
-              : 'bg-gradient-to-r from-[#FFD700] to-[#D2691E] text-[#0D0D0D] hover:shadow-[#FFD700]/50'
+              ? 'bg-green-600 text-white border-green-700'
+              : 'bg-gradient-to-r from-[#FFD700] to-[#FFC107] text-[#8B0000] hover:shadow-[#FFD700]/50 border-[#C41E3A]/30'
           }`}
         >
           {isAdding ? (

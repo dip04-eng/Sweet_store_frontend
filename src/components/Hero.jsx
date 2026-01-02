@@ -11,38 +11,45 @@ const Hero = () => {
 
   return (
     <div className="relative h-screen w-full overflow-hidden">
-      {/* Solid Red Background - Om Sweets Style */}
-      <div className="absolute inset-0 bg-[#C41E3A]">
-        
-
-
+      {/* Background Image */}
+      <div className="absolute inset-0">
+        <img 
+          src="/Background.png" 
+          alt="Sweet Store Background" 
+          className="w-full h-full object-cover object-center md:object-cover"
+          style={{
+            objectPosition: 'center center',
+          }}
+        />
+        {/* Overlay for better text visibility - stronger on mobile */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/10 to-black/50 md:from-black/20 md:via-transparent md:to-black/40"></div>
       </div>
 
       {/* Hero Content */}
-      <div className="relative z-10 h-full flex items-center justify-center px-4">
+      <div className="relative z-10 h-full flex items-center justify-center px-4 sm:px-6 py-20">
         <div className="max-w-5xl mx-auto text-center">
           {/* Animated Title */}
           <motion.div
             initial={{ opacity: 0, y: -50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.3 }}
-            className="space-y-4"
+            className="space-y-2 sm:space-y-4"
           >
             <motion.p
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.5 }}
-              className="text-[#FFB300] text-sm sm:text-base md:text-lg font-semibold tracking-widest uppercase mb-4"
+              className="text-[#FFD700] text-sm sm:text-base md:text-lg font-semibold tracking-widest uppercase mb-4 drop-shadow-lg"
             >
               Welcome to
             </motion.p>
 
-            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold text-white leading-tight font-['Playfair_Display']">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white leading-tight font-['Playfair_Display'] drop-shadow-2xl px-2">
               <motion.span
                 initial={{ opacity: 0, x: -50 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.7 }}
-                className="block"
+                className="block text-shadow-strong"
               >
                 MANSOOR HOTEL
               </motion.span>
@@ -50,7 +57,7 @@ const Hero = () => {
                 initial={{ opacity: 0, x: 50 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.9 }}
-                className="block text-[#FFB300]"
+                className="block text-[#FFD700] text-shadow-strong"
               >
                 & SWEETS
               </motion.span>
@@ -60,7 +67,7 @@ const Hero = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 1.1 }}
-              className="text-xl sm:text-2xl md:text-3xl text-[#FFB300]/90 font-['Playfair_Display'] italic mt-4"
+              className="text-lg sm:text-xl md:text-2xl lg:text-3xl text-[#FFD700] font-['Playfair_Display'] italic mt-2 sm:mt-4 drop-shadow-lg"
             >
               MANSOOR & SONS
             </motion.p>
@@ -71,10 +78,10 @@ const Hero = () => {
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 1.3 }}
-            className="text-lg sm:text-xl md:text-2xl text-white/90 mt-8 mb-12 max-w-3xl mx-auto leading-relaxed"
+            className="text-base sm:text-lg md:text-xl lg:text-2xl text-white mt-4 sm:mt-6 md:mt-8 mb-8 sm:mb-10 md:mb-12 max-w-3xl mx-auto leading-relaxed drop-shadow-lg px-4"
           >
-            Taste Happiness in Every Bite
-            <span className="block mt-2 text-base sm:text-lg text-[#FFB300]/80">
+            <span className="text-shadow-strong">Taste Happiness in Every Bite</span>
+            <span className="block mt-2 text-sm sm:text-base md:text-lg text-[#FFD700] drop-shadow-lg">
               Crafted with love, tradition, and the finest ingredients
             </span>
           </motion.p>
@@ -90,7 +97,7 @@ const Hero = () => {
               onClick={scrollToShop}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="btn-premium bg-gradient-to-r from-[#FFB300] to-[#FF6B35] text-white px-8 sm:px-12 py-4 sm:py-5 rounded-full text-lg sm:text-xl font-bold shadow-2xl hover:shadow-[#FFB300]/50 animate-glow"
+              className="btn-premium bg-gradient-to-r from-[#C41E3A] via-[#DC143C] to-[#8B0000] text-white px-8 sm:px-12 py-4 sm:py-5 rounded-full text-lg sm:text-xl font-bold shadow-2xl hover:shadow-[#FFD700]/50 border-2 border-[#FFD700] animate-glow"
             >
               Shop Now
             </motion.button>
@@ -111,8 +118,8 @@ const Hero = () => {
           className="flex flex-col items-center cursor-pointer"
           onClick={scrollToShop}
         >
-          <span className="text-[#FFC107] text-sm mb-2 font-semibold">Scroll Down</span>
-          <ChevronDown className="h-8 w-8 text-[#FFC107]" />
+          <span className="text-[#FFD700] text-sm mb-2 font-semibold drop-shadow-lg">Scroll Down</span>
+          <ChevronDown className="h-8 w-8 text-[#FFD700] drop-shadow-lg" />
         </motion.div>
       </motion.div>
 

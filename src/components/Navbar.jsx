@@ -52,14 +52,14 @@ const Navbar = ({ cart = [] }) => {
               transition={{ duration: 0.6 }}
               className="relative"
             >
-              <GiCupcake className="h-10 w-10 text-[#8B0000] drop-shadow-lg" />
-              <div className="absolute inset-0 bg-[#8B0000] blur-xl opacity-50 group-hover:opacity-70 transition-opacity"></div>
+              <GiCupcake className="h-10 w-10 text-[#C41E3A] drop-shadow-lg" />
+              <div className="absolute inset-0 bg-[#C41E3A] blur-xl opacity-50 group-hover:opacity-70 transition-opacity"></div>
             </motion.div>
             <div>
-              <h1 className="text-xl sm:text-2xl font-bold text-[#8B0000] font-['Playfair_Display']">
+              <h1 className="text-xl sm:text-2xl font-bold text-[#C41E3A] font-['Playfair_Display']">
                 MANSOOR HOTEL
               </h1>
-              <p className="text-xs text-[#A52A2A] font-light tracking-wider">& SWEETS</p>
+              <p className="text-xs text-[#8B0000] font-light tracking-wider">& SWEETS</p>
             </div>
           </Link>
 
@@ -70,12 +70,12 @@ const Navbar = ({ cart = [] }) => {
                 key={link.name}
                 to={link.path}
                 onClick={(e) => scrollToSection(e, link.path)}
-                className={`relative text-[#2B1B17] hover:text-[#8B0000] transition-all duration-300 font-medium group ${
-                  location.pathname === link.path ? 'text-[#8B0000]' : ''
+                className={`relative text-[#2B1B17] hover:text-[#C41E3A] transition-all duration-300 font-medium group ${
+                  location.pathname === link.path ? 'text-[#C41E3A]' : ''
                 }`}
               >
                 {link.name}
-                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-[#8B0000] to-[#A52A2A] group-hover:w-full transition-all duration-300"></span>
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-[#C41E3A] to-[#FFD700] group-hover:w-full transition-all duration-300"></span>
               </Link>
             ))}
           </div>
@@ -87,7 +87,7 @@ const Navbar = ({ cart = [] }) => {
               <motion.div
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
-                className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-3 sm:px-5 py-2.5 sm:py-3 rounded-full font-semibold shadow-lg hover:shadow-purple-500/50 flex items-center space-x-1 sm:space-x-2 transition-all"
+                className="bg-gradient-to-r from-[#8B0000] to-[#C41E3A] text-white px-3 sm:px-5 py-2.5 sm:py-3 rounded-full font-semibold shadow-lg hover:shadow-[#FFD700]/50 flex items-center space-x-1 sm:space-x-2 transition-all border border-[#FFD700]/30"
               >
                 <ShieldCheck className="h-4 w-4 sm:h-5 sm:w-5" />
                 <span className="hidden sm:inline">Admin</span>
@@ -99,7 +99,7 @@ const Navbar = ({ cart = [] }) => {
               <motion.div
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
-                className="btn-premium bg-gradient-to-r from-[#8B0000] to-[#A52A2A] text-white px-3 sm:px-6 py-2.5 sm:py-3 rounded-full font-semibold shadow-lg hover:shadow-[#8B0000]/50 flex items-center space-x-1 sm:space-x-2"
+                className="btn-premium bg-gradient-to-r from-[#C41E3A] to-[#8B0000] text-white px-3 sm:px-6 py-2.5 sm:py-3 rounded-full font-semibold shadow-lg hover:shadow-[#FFD700]/50 flex items-center space-x-1 sm:space-x-2 border border-[#FFD700]/30"
               >
                 <ShoppingCart className="h-4 w-4 sm:h-5 sm:w-5" />
                 <span className="hidden sm:inline">Cart</span>
@@ -107,7 +107,7 @@ const Navbar = ({ cart = [] }) => {
                   <motion.span
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
-                    className="animate-pulse-gold bg-white text-[#8B0000] px-2 py-0.5 rounded-full text-xs font-bold"
+                    className="animate-pulse-gold bg-[#FFD700] text-[#C41E3A] px-2 py-0.5 rounded-full text-xs font-bold"
                   >
                     {cartItemCount}
                   </motion.span>
@@ -118,7 +118,7 @@ const Navbar = ({ cart = [] }) => {
             {/* Mobile Menu Button */}
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="md:hidden text-[#8B0000] p-2"
+              className="md:hidden text-[#C41E3A] p-2"
             >
               {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
             </button>
@@ -149,8 +149,8 @@ const Navbar = ({ cart = [] }) => {
                       scrollToSection(e, link.path);
                       setIsMobileMenuOpen(false);
                     }}
-                    className={`block text-[#2B1B17] hover:text-[#8B0000] transition-colors font-medium py-2 ${
-                      location.pathname === link.path ? 'text-[#8B0000]' : ''
+                    className={`block text-[#2B1B17] hover:text-[#C41E3A] transition-colors font-medium py-2 ${
+                      location.pathname === link.path ? 'text-[#C41E3A]' : ''
                     }`}
                   >
                     {link.name}
