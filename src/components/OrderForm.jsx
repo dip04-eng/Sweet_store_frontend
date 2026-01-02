@@ -63,7 +63,8 @@ const OrderForm = ({ cart, totalAmount, onClose, onSuccess }) => {
         sweetId: item.name,  // Use name as ID (backend will find by name)
         sweetName: item.name,
         quantity: item.quantity || 1,
-        price: item.rate
+        price: item.rate,
+        unit: item.unit || 'piece'  // Include unit field
       })),
       total: totalAmount,
       status: 'pending'

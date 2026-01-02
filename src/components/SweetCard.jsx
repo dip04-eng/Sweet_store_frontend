@@ -5,8 +5,8 @@ import { ShoppingCart, Sparkles, Plus, Minus } from 'lucide-react';
 const SweetCard = ({ sweet, onAddToCart }) => {
   const [isAdding, setIsAdding] = useState(false);
   const [quantity, setQuantity] = useState(1);
-  const [weight, setWeight] = useState('500'); // Weight as string for better input handling
-  const [weightUnit, setWeightUnit] = useState('grams'); // 'kg' or 'grams'
+  const [weight, setWeight] = useState('1'); // Weight as string for better input handling
+  const [weightUnit, setWeightUnit] = useState('kg'); // 'kg' or 'grams'
   const isKgItem = sweet.unit === 'kg';
 
   const handleQuantityChange = (change) => {
@@ -49,8 +49,8 @@ const SweetCard = ({ sweet, onAddToCart }) => {
     setTimeout(() => {
       setIsAdding(false);
       setQuantity(1);
-      setWeight('500');
-      setWeightUnit('grams');
+      setWeight('1');
+      setWeightUnit('kg');
     }, 1000);
   };
 
@@ -62,13 +62,13 @@ const SweetCard = ({ sweet, onAddToCart }) => {
       className="card-premium overflow-hidden group"
     >
       {/* Image Container */}
-      <div className="relative overflow-hidden border-b-2 border-[#C41E3A]/20">
+      <div className="relative overflow-hidden border-b-2 border-[#C41E3A]/20 bg-white">
         <motion.img
-          whileHover={{ scale: 1.1 }}
+          whileHover={{ scale: 1.05 }}
           transition={{ duration: 0.4 }}
           src={sweet.image || 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="300"%3E%3Crect fill="%23FFD700" width="400" height="300"/%3E%3Ctext fill="%230D0D0D" font-size="24" font-weight="bold" x="50%25" y="50%25" text-anchor="middle" dominant-baseline="middle"%3E🍬 Sweet%3C/text%3E%3C/svg%3E'}
           alt={sweet.name}
-          className="w-full h-48 sm:h-52 md:h-56 object-cover"
+          className="w-full h-48 sm:h-52 md:h-56 object-contain"
           onError={(e) => {
             console.error('❌ Image load error for:', sweet.name);
             console.error('Image data:', {

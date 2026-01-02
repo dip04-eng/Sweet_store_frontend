@@ -15,7 +15,7 @@ const FestivalCard = ({ sweet, onAddToCart }) => {
     : null;
 
   const getWeightInKg = (weightStr) => {
-    if (!weightStr) return 0.5; // Default 500g
+    if (!weightStr) return 1; // Default 1kg
     const numValue = parseInt(weightStr);
     return weightStr.includes('kg') ? numValue : numValue / 1000;
   };
@@ -66,13 +66,13 @@ const FestivalCard = ({ sweet, onAddToCart }) => {
         {/* Content Container */}
         <div className="p-4 pt-5">
           {/* Image Container */}
-          <div className="relative overflow-hidden rounded-lg mb-4">
+          <div className="relative overflow-hidden rounded-lg mb-4 bg-white">
             <motion.img
               whileHover={{ scale: 1.05 }}
               transition={{ duration: 0.4 }}
               src={sweet.image || 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="300"%3E%3Crect fill="%23FFD700" width="400" height="300"/%3E%3Ctext fill="%230D0D0D" font-size="24" font-weight="bold" x="50%25" y="50%25" text-anchor="middle" dominant-baseline="middle"%3E🍬 Sweet%3C/text%3E%3C/svg%3E'}
               alt={sweet.name}
-              className="w-full h-44 sm:h-48 object-cover rounded-lg"
+              className="w-full h-44 sm:h-48 object-contain rounded-lg"
               onError={(e) => {
                 e.target.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="300"%3E%3Crect fill="%23FFD700" width="400" height="300"/%3E%3Ctext fill="%230D0D0D" font-size="24" font-weight="bold" x="50%25" y="50%25" text-anchor="middle" dominant-baseline="middle"%3E🍬 Sweet%3C/text%3E%3C/svg%3E';
               }}

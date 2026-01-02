@@ -47,8 +47,13 @@ const DailySummary = () => {
   const totalOrders = summaryData?.total_orders || 0;
   const totalRevenue = summaryData?.total_revenue || 0;
   const totalItemsSold = summaryData?.total_items_sold || 0;
+  const totalKgSold = summaryData?.total_kg_sold || 0;
+  const totalPiecesSold = summaryData?.total_pieces_sold || 0;
   const popularSweets = summaryData?.popular_sweets || [];
   const ordersList = summaryData?.orders || [];
+
+  // Debug log to check values
+  console.log('Daily Summary Data:', { totalKgSold, totalPiecesSold, totalItemsSold, summaryData });
 
   const getStatusColor = (status) => {
     switch (status) {
@@ -149,7 +154,17 @@ const DailySummary = () => {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-gray-500 text-xs sm:text-sm">Items Sold</p>
-                <p className="text-2xl sm:text-3xl font-bold text-blue-600">{totalItemsSold} kg</p>
+                <p className="text-2xl sm:text-3xl font-bold text-blue-600">
+                  {(totalKgSold > 0 || totalPiecesSold > 0) ? (
+                    totalKgSold > 0 && totalPiecesSold > 0 
+                      ? `${totalKgSold} kg + ${totalPiecesSold} pcs`
+                      : totalKgSold > 0 
+                      ? `${totalKgSold} kg`
+                      : `${totalPiecesSold} pcs`
+                  ) : (
+                    totalItemsSold > 0 ? totalItemsSold : '0'
+                  )}
+                </p>
               </div>
               <BarChart3 className="h-8 w-8 sm:h-10 sm:w-10 text-blue-400" />
             </div>

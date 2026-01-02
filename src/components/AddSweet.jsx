@@ -356,7 +356,7 @@ const AddSweet = ({ sweetType = 'normal' }) => {
                     <img
                       src={imagePreview}
                       alt="Preview"
-                      className="w-full h-40 sm:h-48 object-cover rounded-lg mx-auto"
+                      className="w-full max-h-96 object-contain rounded-lg mx-auto"
                     />
                     <div className="flex items-center justify-center text-yellow-600 text-sm sm:text-base">
                       <Eye className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />

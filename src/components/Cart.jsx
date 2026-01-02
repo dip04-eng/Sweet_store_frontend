@@ -11,6 +11,7 @@ const Cart = () => {
   const [cart, setCart] = useState([]);
   const [showOrderForm, setShowOrderForm] = useState(false);
   const [orderPlaced, setOrderPlaced] = useState(false);
+  const [weightInputs, setWeightInputs] = useState({});
 
   useEffect(() => {
     const savedCart = sessionStorage.getItem('sweetCart');
@@ -30,7 +31,7 @@ const Cart = () => {
   };
 
   const updateQuantity = (index, newQuantity) => {
-    if (newQuantity < 1) return;
+    if (newQuantity <= 0) return;
     const updatedCart = [...cart];
     updatedCart[index].quantity = newQuantity;
     updateCart(updatedCart);
@@ -38,13 +39,13 @@ const Cart = () => {
 
   const getTotalAmount = () => {
     return cart.reduce((total, item) => {
-      const itemQuantity = item.quantity || 1;
+      const itemQuantity = item.quantity ?? 0;
       return total + (Number(item.rate) * itemQuantity);
     }, 0);
   };
 
   const getTotalItems = () => {
-    return cart.reduce((total, item) => total + (item.quantity || 1), 0);
+    return cart.reduce((total, item) => total + (item.quantity ?? 0), 0);
   };
 
   const handlePlaceOrderClick = () => {
@@ -164,38 +165,98 @@ const Cart = () => {
                             ₹{item.rate} per {item.unit || 'piece'}
                           </p>
                           
-                          {/* Quantity Controls */}
-                          <div className="flex items-center gap-2 mt-3">
-                            <motion.button
-                              whileHover={{ scale: 1.1 }}
-                              whileTap={{ scale: 0.9 }}
-                              onClick={() => updateQuantity(index, (item.quantity || 1) - 1)}
-                              disabled={(item.quantity || 1) <= 1}
-                              className={`p-2 rounded-lg transition-all ${
-                                (item.quantity || 1) <= 1
-                                  ? 'bg-gray-100 text-gray-300 cursor-not-allowed'
-                                  : 'bg-[#C41E3A]/10 text-[#C41E3A] hover:bg-[#C41E3A]/20'
-                              }`}
-                            >
-                              <Minus className="h-4 w-4" />
-                            </motion.button>
-                            <div className="px-4 py-2 bg-gray-50 rounded-lg text-[#C41E3A] font-bold text-base min-w-[60px] text-center border-2 border-gray-200">
-                              {item.quantity || 1}
+                          {/* Quantity/Weight Controls */}
+                          {item.unit === 'kg' ? (
+                            // Weight input with unit selector for kg items
+                            <div className="mt-3">
+                              <div className="flex items-center gap-2 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-full px-4 py-2 w-fit">
+                                <span className="text-white text-sm font-semibold">Weight:</span>
+                                <input
+                                  type="text"
+                                  value={weightInputs[index] !== undefined ? weightInputs[index] : (item.quantity > 0 ? (item.weightUnit === 'kg' ? item.quantity : Math.round(item.quantity * 1000)) : '0')}
+                                  onFocus={(e) => e.target.select()}
+                                  onChange={(e) => {
+                                    const inputValue = e.target.value;
+                                    setWeightInputs({ ...weightInputs, [index]: inputValue });
+                                    
+                                    if (inputValue === '' || inputValue === '0') {
+                                      // Set quantity to 0 when input is empty or 0
+                                      const updatedCart = [...cart];
+                                      updatedCart[index].quantity = 0;
+                                      setCart(updatedCart);
+                                      sessionStorage.setItem('sweetCart', JSON.stringify(updatedCart));
+                                    } else {
+                                      const value = parseFloat(inputValue);
+                                      if (!isNaN(value) && value > 0) {
+                                        const weightInKg = item.weightUnit === 'kg' ? value : value / 1000;
+                                        updateQuantity(index, weightInKg);
+                                      }
+                                    }
+                                  }}
+                                  onBlur={() => {
+                                    // Reset input to show "0" if quantity is 0 or empty
+                                    if (cart[index].quantity === 0 || weightInputs[index] === '' || weightInputs[index] === '0') {
+                                      setWeightInputs({ ...weightInputs, [index]: '0' });
+                                    } else {
+                                      setWeightInputs({ ...weightInputs, [index]: undefined });
+                                    }
+                                  }}
+                                  className="w-16 px-2 py-1 text-center bg-white text-gray-900 font-bold rounded border-0 focus:outline-none focus:ring-2 focus:ring-white"
+                                />
+                                <select
+                                  value={item.weightUnit || 'grams'}
+                                  onChange={(e) => {
+                                    const newUnit = e.target.value;
+                                    const updatedCart = [...cart];
+                                    updatedCart[index] = { ...updatedCart[index], weightUnit: newUnit };
+                                    setCart(updatedCart);
+                                    sessionStorage.setItem('sweetCart', JSON.stringify(updatedCart));
+                                    setWeightInputs({ ...weightInputs, [index]: undefined });
+                                  }}
+                                  className="bg-red-700 text-white px-2 py-1 rounded font-semibold text-sm border-0 focus:outline-none focus:ring-2 focus:ring-white cursor-pointer"
+                                >
+                                  <option value="grams">grams</option>
+                                  <option value="kg">kg</option>
+                                </select>
+                                <span className="text-white text-sm font-semibold">
+                                  ≈₹{(item.rate * (item.quantity ?? 0.5)).toFixed(2)}
+                                </span>
+                              </div>
                             </div>
-                            <motion.button
-                              whileHover={{ scale: 1.1 }}
-                              whileTap={{ scale: 0.9 }}
-                              onClick={() => updateQuantity(index, (item.quantity || 1) + 1)}
-                              className="p-2 rounded-lg bg-[#C41E3A]/10 text-[#C41E3A] hover:bg-[#C41E3A]/20 transition-all"
-                            >
-                              <Plus className="h-4 w-4" />
-                            </motion.button>
-                          </div>
+                          ) : (
+                            // Quantity controls for piece items
+                            <div className="flex items-center gap-2 mt-3">
+                              <motion.button
+                                whileHover={{ scale: 1.1 }}
+                                whileTap={{ scale: 0.9 }}
+                                onClick={() => updateQuantity(index, (item.quantity || 1) - 1)}
+                                disabled={(item.quantity || 1) <= 1}
+                                className={`p-2 rounded-lg transition-all ${
+                                  (item.quantity || 1) <= 1
+                                    ? 'bg-gray-100 text-gray-300 cursor-not-allowed'
+                                    : 'bg-[#C41E3A]/10 text-[#C41E3A] hover:bg-[#C41E3A]/20'
+                                }`}
+                              >
+                                <Minus className="h-4 w-4" />
+                              </motion.button>
+                              <div className="px-4 py-2 bg-gray-50 rounded-lg text-[#C41E3A] font-bold text-base min-w-[60px] text-center border-2 border-gray-200">
+                                {item.quantity || 1}
+                              </div>
+                              <motion.button
+                                whileHover={{ scale: 1.1 }}
+                                whileTap={{ scale: 0.9 }}
+                                onClick={() => updateQuantity(index, (item.quantity || 1) + 1)}
+                                className="p-2 rounded-lg bg-[#C41E3A]/10 text-[#C41E3A] hover:bg-[#C41E3A]/20 transition-all"
+                              >
+                                <Plus className="h-4 w-4" />
+                              </motion.button>
+                            </div>
+                          )}
                           
                           {/* Mobile Layout */}
                           <div className="flex items-center justify-between mt-3 sm:hidden">
                             <div className="text-lg font-bold text-[#C41E3A]">
-                              ₹{item.rate * (item.quantity || 1)}
+                              ₹{(item.rate * (item.quantity ?? 0)).toFixed(2)}
                             </div>
                             <motion.button
                               whileHover={{ scale: 1.1 }}
@@ -212,10 +273,10 @@ const Cart = () => {
                         <div className="hidden sm:flex items-center gap-4">
                           <div className="text-right min-w-[100px]">
                             <div className="text-xl font-bold text-[#C41E3A]">
-                              ₹{item.rate * (item.quantity || 1)}
+                              ₹{(item.rate * (item.quantity ?? 0)).toFixed(2)}
                             </div>
                             <div className="text-xs text-gray-500">
-                              ₹{item.rate} × {item.quantity || 1}
+                              ₹{item.rate} × {(item.quantity ?? 0) < 1 ? (item.quantity ?? 0).toFixed(3) : (item.quantity ?? 0).toFixed(2)}
                             </div>
                           </div>
                           <motion.button
@@ -246,8 +307,8 @@ const Cart = () => {
                   
                   <div className="space-y-4 mb-6">
                     <div className="flex justify-between text-gray-600">
-                      <span>Items ({getTotalItems()})</span>
-                      <span className="font-semibold text-gray-900">₹{getTotalAmount()}</span>
+                      <span>Items ({getTotalItems().toFixed(2)})</span>
+                      <span className="font-semibold text-gray-900">₹{getTotalAmount().toFixed(2)}</span>
                     </div>
                     <div className="flex justify-between text-gray-600">
                       <span>Delivery</span>
@@ -256,7 +317,7 @@ const Cart = () => {
                     <div className="h-px bg-gray-200"></div>
                     <div className="flex justify-between text-xl font-bold">
                       <span className="text-gray-900">Total</span>
-                      <span className="text-[#C41E3A]">₹{getTotalAmount()}</span>
+                      <span className="text-[#C41E3A]">₹{getTotalAmount().toFixed(2)}</span>
                     </div>
                   </div>
                   
