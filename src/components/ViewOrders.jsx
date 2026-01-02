@@ -17,6 +17,7 @@ const ViewOrders = () => {
   // Edit modal state
   const [editOrder, setEditOrder] = useState(null);
   const [editForm, setEditForm] = useState({ customerName: '', mobile: '', total: '', advancePaid: '', status: 'pending' });
+  const [additionalAdvance, setAdditionalAdvance] = useState(0);
   const [toast, setToast] = useState(null); // { message, type: 'success' | 'danger' }
 
   useEffect(() => {
@@ -121,6 +122,7 @@ const ViewOrders = () => {
 
   const openEditModal = (order) => {
     setEditOrder(order);
+    setAdditionalAdvance(0);
     setEditForm({
       customerName: order.customerName || '',
       mobile: order.mobile || '',
@@ -135,6 +137,7 @@ const ViewOrders = () => {
     if (!editOrder) return;
     try {
       setIsUpdating(true);
+      const newAdvancePaid = Number(editForm.advancePaid || 0) + Number(additionalAdvance || 0);
       const res = await fetch(`${API_BASE_URL}${API_ENDPOINTS.EDIT_ORDER}/${editOrder._id || editOrder.id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
@@ -142,7 +145,7 @@ const ViewOrders = () => {
           customerName: editForm.customerName,
           mobile: editForm.mobile,
           total: Number(editForm.total),
-          advancePaid: Number(editForm.advancePaid || 0),
+          advancePaid: newAdvancePaid,
           status: editForm.status
         })
       });
@@ -152,7 +155,7 @@ const ViewOrders = () => {
         customerName: editForm.customerName,
         mobile: editForm.mobile,
         total: Number(editForm.total),
-        advancePaid: Number(editForm.advancePaid || 0),
+        advancePaid: newAdvancePaid,
         status: editForm.status
       } : o));
       setEditOrder(null);
@@ -280,24 +283,24 @@ const ViewOrders = () => {
           {/* Mobile Scroll Hint */}
           <div className="block sm:hidden text-center mb-3">
             <p className="text-xs text-gray-500 flex items-center justify-center">
-              <span className="mr-1">👉</span>
-              Swipe left to see all details
-              <span className="ml-1">👈</span>
+              <span className="mr-1">�</span>
+              View all order details below
             </p>
           </div>
           
-          <div className="overflow-x-auto -mx-4 sm:mx-0 rounded-xl shadow-sm">
-            <div className="inline-block min-w-full align-middle">
+          <div className="-mx-4 sm:mx-0 rounded-xl shadow-sm">
+            <div className="min-w-full align-middle">
               <table className="w-full bg-white border border-gray-200">
                 <thead className="bg-gradient-to-r from-purple-500 to-pink-500 text-white">
                   <tr>
-                    <th className="px-3 sm:px-4 md:px-6 py-3 sm:py-4 text-left text-xs sm:text-sm font-semibold whitespace-nowrap">Customer</th>
-                    <th className="px-3 sm:px-4 md:px-6 py-3 sm:py-4 text-left text-xs sm:text-sm font-semibold whitespace-nowrap">Contact</th>
-                    <th className="px-3 sm:px-4 md:px-6 py-3 sm:py-4 text-left text-xs sm:text-sm font-semibold whitespace-nowrap">Order Date</th>
-                    <th className="px-3 sm:px-4 md:px-6 py-3 sm:py-4 text-left text-xs sm:text-sm font-semibold whitespace-nowrap">Delivery Date</th>
-                    <th className="px-3 sm:px-4 md:px-6 py-3 sm:py-4 text-left text-xs sm:text-sm font-semibold whitespace-nowrap">Amount</th>
-                    <th className="px-3 sm:px-4 md:px-6 py-3 sm:py-4 text-left text-xs sm:text-sm font-semibold whitespace-nowrap">Status</th>
-                    <th className="px-3 sm:px-4 md:px-6 py-3 sm:py-4 text-left text-xs sm:text-sm font-semibold whitespace-nowrap">Actions</th>
+                    <th className="px-2 sm:px-3 md:px-4 py-3 sm:py-4 text-left text-xs sm:text-sm font-semibold whitespace-nowrap">Customer</th>
+                    <th className="px-2 sm:px-3 md:px-4 py-3 sm:py-4 text-left text-xs sm:text-sm font-semibold whitespace-nowrap">Contact</th>
+                    <th className="px-2 sm:px-3 md:px-4 py-3 sm:py-4 text-left text-xs sm:text-sm font-semibold whitespace-nowrap">Order Date</th>
+                    <th className="px-2 sm:px-3 md:px-4 py-3 sm:py-4 text-left text-xs sm:text-sm font-semibold whitespace-nowrap">Delivery Date</th>
+                    <th className="px-2 sm:px-3 md:px-4 py-3 sm:py-4 text-left text-xs sm:text-sm font-semibold whitespace-nowrap">Amount</th>
+                    <th className="px-2 sm:px-3 md:px-4 py-3 sm:py-4 text-left text-xs sm:text-sm font-semibold whitespace-nowrap">Due Payment</th>
+                    <th className="px-2 sm:px-3 md:px-4 py-3 sm:py-4 text-left text-xs sm:text-sm font-semibold whitespace-nowrap">Status</th>
+                    <th className="px-2 sm:px-3 md:px-4 py-3 sm:py-4 text-center text-xs sm:text-sm font-semibold whitespace-nowrap">Actions</th>
                   </tr>
                 </thead>
             <tbody className="divide-y divide-gray-200">
@@ -309,39 +312,42 @@ const ViewOrders = () => {
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: index * 0.05 }}
                 >
-                  <td className="px-3 sm:px-4 md:px-6 py-3 sm:py-4">
+                  <td className="px-2 sm:px-3 md:px-4 py-3 sm:py-4">
                     <div>
                       <div className="font-semibold text-yellow-600 text-xs sm:text-sm md:text-base whitespace-nowrap">{order.customerName}</div>
                     </div>
                   </td>
-                  <td className="px-3 sm:px-4 md:px-6 py-3 sm:py-4">
+                  <td className="px-2 sm:px-3 md:px-4 py-3 sm:py-4">
                     <div className="flex items-center text-xs sm:text-sm text-gray-600 whitespace-nowrap">
                       <Phone className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
                       {order.mobile}
                     </div>
                   </td>
-                  <td className="px-3 sm:px-4 md:px-6 py-3 sm:py-4">
+                  <td className="px-2 sm:px-3 md:px-4 py-3 sm:py-4">
                     <div className="flex items-center text-xs sm:text-sm text-gray-600 whitespace-nowrap">
                       <Calendar className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
                       <span>{order.orderDate ? new Date(order.orderDate).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }) : 'N/A'}</span>
                     </div>
                   </td>
-                  <td className="px-3 sm:px-4 md:px-6 py-3 sm:py-4">
+                  <td className="px-2 sm:px-3 md:px-4 py-3 sm:py-4">
                     <div className="flex items-center text-xs sm:text-sm text-purple-600 font-semibold whitespace-nowrap">
                       <Calendar className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
                       <span>{order.deliveryDate ? new Date(order.deliveryDate).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }) : 'N/A'}</span>
                     </div>
                   </td>
-                  <td className="px-3 sm:px-4 md:px-6 py-3 sm:py-4">
+                  <td className="px-2 sm:px-3 md:px-4 py-3 sm:py-4">
                     <div className="font-semibold text-purple-600 text-xs sm:text-sm md:text-base whitespace-nowrap">₹{order.total}</div>
                   </td>
-                  <td className="px-3 sm:px-4 md:px-6 py-3 sm:py-4">
+                  <td className="px-2 sm:px-3 md:px-4 py-3 sm:py-4">
+                    <div className="font-semibold text-red-600 text-xs sm:text-sm md:text-base whitespace-nowrap">₹{order.total - (order.advancePaid || 0)}</div>
+                  </td>
+                  <td className="px-2 sm:px-3 md:px-4 py-3 sm:py-4">
                     <span className={`px-2 sm:px-3 py-1 rounded-full text-xs font-semibold border whitespace-nowrap ${getStatusColor(order.status)}`}>
                       {order.status ? order.status.charAt(0).toUpperCase() + order.status.slice(1) : 'N/A'}
                     </span>
                   </td>
-                  <td className="px-3 sm:px-4 md:px-6 py-3 sm:py-4">
-                    <div className="flex flex-nowrap items-center gap-2">
+                  <td className="px-2 sm:px-3 md:px-4 py-3 sm:py-4">
+                    <div className="flex flex-nowrap items-center justify-center gap-2">
                       <button
                         onClick={() => setSelectedOrder(order)}
                         className="inline-flex items-center px-2.5 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-purple-600 border border-purple-200 hover:bg-purple-50 whitespace-nowrap"
@@ -541,16 +547,19 @@ const ViewOrders = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-xs sm:text-sm font-semibold text-yellow-600 mb-1.5 sm:mb-2">Advance Paid</label>
+                  <label className="block text-xs sm:text-sm font-semibold text-yellow-600 mb-1.5 sm:mb-2">Current Advance Paid: ₹{editForm.advancePaid || 0}</label>
+                  <label className="block text-xs sm:text-sm font-semibold text-green-600 mb-1.5 sm:mb-2">Add Additional Advance Payment</label>
                   <input
                     type="number"
                     min="0"
                     step="0.01"
-                    value={editForm.advancePaid}
-                    onChange={(e) => setEditForm(f => ({ ...f, advancePaid: e.target.value }))}
+                    value={additionalAdvance}
+                    onChange={(e) => setAdditionalAdvance(e.target.value)}
                     className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base bg-white border border-gray-300 rounded-lg sm:rounded-xl text-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+                    placeholder="Enter additional amount"
                   />
-                  <p className="text-xs text-gray-500 mt-1">Due: ₹{((parseFloat(editForm.total) || 0) - (parseFloat(editForm.advancePaid) || 0)).toFixed(2)}</p>
+                  <p className="text-xs text-gray-600 mt-1">Total Advance: ₹{((parseFloat(editForm.advancePaid) || 0) + (parseFloat(additionalAdvance) || 0)).toFixed(2)}</p>
+                  <p className="text-xs text-red-600 mt-1 font-semibold">Remaining Due: ₹{((parseFloat(editForm.total) || 0) - ((parseFloat(editForm.advancePaid) || 0) + (parseFloat(additionalAdvance) || 0))).toFixed(2)}</p>
                 </div>
                 <div>
                   <label className="block text-xs sm:text-sm font-semibold text-yellow-600 mb-1.5 sm:mb-2">Status</label>
