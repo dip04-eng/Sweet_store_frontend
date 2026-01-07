@@ -305,7 +305,7 @@ const AddSweet = ({ sweetType = 'normal' }) => {
             {/* Description */}
             <div>
               <label className="block text-xs sm:text-sm font-semibold text-yellow-600 mb-1.5 sm:mb-2">
-                Description <span className="text-gray-400 text-xs">(Optional)</span>
+                Description
               </label>
               <textarea
                 name="description"
