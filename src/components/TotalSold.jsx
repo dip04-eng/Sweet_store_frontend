@@ -4,7 +4,14 @@ import { motion } from 'framer-motion';
 import { API_BASE_URL, API_ENDPOINTS } from '../config/api';
 
 const TotalSold = () => {
-  const [selectedDate, setSelectedDate] = useState('');
+  // Get tomorrow's date as default
+  const getTomorrowDate = () => {
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    return tomorrow.toISOString().split('T')[0];
+  };
+
+  const [selectedDate, setSelectedDate] = useState(getTomorrowDate());
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(false);
   const [salesData, setSalesData] = useState(null);
