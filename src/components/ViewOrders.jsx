@@ -57,8 +57,13 @@ const ViewOrders = () => {
       if (statusFilter === 'all') {
         statusMatch = true; // Show all statuses
       } else if (statusFilter === 'default') {
-        // By default, show only pending and processing
-        statusMatch = order.status === 'pending' || order.status === 'processing';
+        // If pending payment filter is active, ignore default status filter
+        if (showPendingPaymentOnly) {
+          statusMatch = true;
+        } else {
+          // By default, show only pending and processing
+          statusMatch = order.status === 'pending' || order.status === 'processing';
+        }
       } else {
         statusMatch = order.status === statusFilter;
       }
