@@ -693,8 +693,10 @@ const ViewOrders = () => {
                                 type="button"
                                 onClick={() => {
                                   const newItems = [...editOrderItems];
-                                  if (newItems[index].quantity > 0.01) {
-                                    newItems[index].quantity = Math.max(0.01, (parseFloat(newItems[index].quantity) - (item.unit === 'kg' ? 0.5 : 1)));
+                                  const minQty = item.unit === 'kg' ? 0.01 : 1;
+                                  const decrementBy = item.unit === 'kg' ? 0.5 : 1;
+                                  if (newItems[index].quantity > minQty) {
+                                    newItems[index].quantity = Math.max(minQty, (parseFloat(newItems[index].quantity) - decrementBy));
                                     setEditOrderItems(newItems);
                                     const newTotal = newItems.reduce((sum, it) => sum + (it.price * it.quantity), 0);
                                     setEditForm(f => ({ ...f, total: newTotal }));
@@ -706,16 +708,18 @@ const ViewOrders = () => {
                               </button>
                               <input
                                 type="number"
-                                min="0.01"
-                                step={item.unit === 'kg' ? '0.5' : '1'}
+                                min={item.unit === 'kg' ? '0.01' : '1'}
+                                step={item.unit === 'kg' ? '0.01' : '1'}
                                 value={item.quantity}
                                 onChange={(e) => {
-                                  const value = parseFloat(e.target.value) || 0.01;
-                                  const newItems = [...editOrderItems];
-                                  newItems[index].quantity = value;
-                                  setEditOrderItems(newItems);
-                                  const newTotal = newItems.reduce((sum, it) => sum + (it.price * it.quantity), 0);
-                                  setEditForm(f => ({ ...f, total: newTotal }));
+                                  const value = parseFloat(e.target.value);
+                                  if (!isNaN(value) && value > 0) {
+                                    const newItems = [...editOrderItems];
+                                    newItems[index].quantity = item.unit === 'kg' ? value : Math.round(value);
+                                    setEditOrderItems(newItems);
+                                    const newTotal = newItems.reduce((sum, it) => sum + (it.price * it.quantity), 0);
+                                    setEditForm(f => ({ ...f, total: newTotal }));
+                                  }
                                 }}
                                 className="w-14 sm:w-16 px-1 py-1 text-center text-xs sm:text-sm border-x border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-500"
                               />
