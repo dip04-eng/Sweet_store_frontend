@@ -326,12 +326,6 @@ const ViewOrders = () => {
               <option value="orderDate-desc">Order: Newest First</option>
             </select>
           </div>
-          {/* Total Orders Count */}
-          <div className="bg-white border border-gray-300 rounded-lg px-4 py-2 shadow-sm">
-            <p className="text-sm font-semibold text-gray-700">
-              Total Orders: <span className="text-purple-600">{filteredOrders.length}</span>
-            </p>
-          </div>
           <div className="flex items-center w-full sm:w-auto bg-white border border-gray-300 rounded-lg px-3 py-1.5 sm:py-2">
             <input
               type="checkbox"
@@ -343,6 +337,12 @@ const ViewOrders = () => {
             <label htmlFor="pendingPaymentFilter" className="text-xs sm:text-sm text-red-600 font-semibold cursor-pointer whitespace-nowrap">
               Delivered + Pending Payment
             </label>
+          </div>
+          {/* Total Orders Count */}
+          <div className="bg-white border border-gray-300 rounded-lg px-4 py-2 shadow-sm">
+            <p className="text-sm font-semibold text-gray-700">
+              Total Orders: <span className="text-purple-600">{filteredOrders.length}</span>
+            </p>
           </div>
         </div>
       </motion.div>
