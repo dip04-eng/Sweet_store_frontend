@@ -19,11 +19,11 @@ const AdminPanel = () => {
     const validPopups = ['manage-sweets', 'add-options', 'remove-options'];
     
     if (validPopups.includes(hash)) {
-      return { tab: 'orders', popup: hash };
+      return { tab: 'totalsold', popup: hash };
     } else if (validTabs.includes(hash)) {
       return { tab: hash, popup: null };
     }
-    return { tab: 'orders', popup: null };
+    return { tab: 'totalsold', popup: null };
   };
 
   const initialState = getStateFromHash();
@@ -105,10 +105,10 @@ const AdminPanel = () => {
   };
 
   const mainTabs = [
+    { id: 'totalsold', label: 'Sales Report', icon: TrendingUp, component: TotalSold },
     { id: 'orders', label: 'View Orders', icon: Eye, component: ViewOrders },
     { id: 'addorder', label: 'Add Order', icon: ShoppingCart, component: AddOrder },
-    { id: 'summary', label: 'Daily Summary', icon: BarChart3, component: DailySummary },
-    { id: 'totalsold', label: 'Sales Report', icon: TrendingUp, component: TotalSold }
+    { id: 'summary', label: 'Daily Summary', icon: BarChart3, component: DailySummary }
   ];
 
   const manageTabs = [

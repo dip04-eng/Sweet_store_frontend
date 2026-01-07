@@ -14,6 +14,9 @@ const Cart = () => {
   const [weightInputs, setWeightInputs] = useState({});
 
   useEffect(() => {
+    // Scroll to top when cart page loads
+    window.scrollTo(0, 0);
+    
     const savedCart = sessionStorage.getItem('sweetCart');
     if (savedCart) {
       setCart(JSON.parse(savedCart));
