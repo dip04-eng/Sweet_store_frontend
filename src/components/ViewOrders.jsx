@@ -681,14 +681,58 @@ const ViewOrders = () => {
                       <p className="text-gray-500 text-xs">No items in order</p>
                     ) : (
                       editOrderItems.map((item, index) => (
-                        <div key={index} className="flex flex-col sm:flex-row justify-between items-start sm:items-center py-2 border-b border-gray-200 last:border-0 gap-1 sm:gap-2">
+                        <div key={index} className="flex flex-col sm:flex-row justify-between items-start sm:items-center py-2 border-b border-gray-200 last:border-0 gap-2">
                           <div className="flex-1 w-full sm:w-auto">
-                            <div className="flex flex-wrap items-center gap-1">
-                              <span className="text-xs sm:text-sm font-medium text-gray-700">{item.sweetName}</span>
-                              <span className="text-xs text-gray-500">₹{item.price} × {item.quantity}</span>
-                            </div>
+                            <span className="text-xs sm:text-sm font-medium text-gray-700 block mb-1">{item.sweetName}</span>
+                            <span className="text-xs text-gray-500">₹{item.price} per unit</span>
                           </div>
-                          <div className="flex items-center gap-2 w-full sm:w-auto justify-between sm:justify-end">
+                          <div className="flex items-center gap-2 w-full sm:w-auto justify-between sm:justify-end flex-wrap">
+                            {/* Quantity Controls */}
+                            <div className="flex items-center gap-1 bg-white border border-gray-300 rounded-lg">
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  const newItems = [...editOrderItems];
+                                  if (newItems[index].quantity > 0.01) {
+                                    newItems[index].quantity = Math.max(0.01, (parseFloat(newItems[index].quantity) - (item.unit === 'kg' ? 0.5 : 1)));
+                                    setEditOrderItems(newItems);
+                                    const newTotal = newItems.reduce((sum, it) => sum + (it.price * it.quantity), 0);
+                                    setEditForm(f => ({ ...f, total: newTotal }));
+                                  }
+                                }}
+                                className="px-2 py-1 text-gray-600 hover:text-gray-800 hover:bg-gray-100 rounded-l-lg"
+                              >
+                                −
+                              </button>
+                              <input
+                                type="number"
+                                min="0.01"
+                                step={item.unit === 'kg' ? '0.5' : '1'}
+                                value={item.quantity}
+                                onChange={(e) => {
+                                  const value = parseFloat(e.target.value) || 0.01;
+                                  const newItems = [...editOrderItems];
+                                  newItems[index].quantity = value;
+                                  setEditOrderItems(newItems);
+                                  const newTotal = newItems.reduce((sum, it) => sum + (it.price * it.quantity), 0);
+                                  setEditForm(f => ({ ...f, total: newTotal }));
+                                }}
+                                className="w-14 sm:w-16 px-1 py-1 text-center text-xs sm:text-sm border-x border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                              />
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  const newItems = [...editOrderItems];
+                                  newItems[index].quantity = parseFloat(newItems[index].quantity) + (item.unit === 'kg' ? 0.5 : 1);
+                                  setEditOrderItems(newItems);
+                                  const newTotal = newItems.reduce((sum, it) => sum + (it.price * it.quantity), 0);
+                                  setEditForm(f => ({ ...f, total: newTotal }));
+                                }}
+                                className="px-2 py-1 text-gray-600 hover:text-gray-800 hover:bg-gray-100 rounded-r-lg"
+                              >
+                                +
+                              </button>
+                            </div>
                             <span className="text-xs sm:text-sm font-semibold text-purple-600">₹{(item.price * item.quantity).toFixed(2)}</span>
                             <button
                               type="button"
@@ -698,7 +742,7 @@ const ViewOrders = () => {
                                 const newTotal = newItems.reduce((sum, it) => sum + (it.price * it.quantity), 0);
                                 setEditForm(f => ({ ...f, total: newTotal }));
                               }}
-                              className="text-red-500 hover:text-red-700 text-xs px-2 py-1"
+                              className="text-red-500 hover:text-red-700 text-sm px-2 py-1"
                             >
                               ✕
                             </button>
