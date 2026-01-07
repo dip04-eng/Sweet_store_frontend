@@ -135,16 +135,28 @@ const ViewOrders = () => {
   const submitEdit = async (e) => {
     e.preventDefault();
     if (!editOrder) return;
+    
+    // Validate that additional advance doesn't exceed remaining amount
+    const currentTotal = Number(editForm.total || 0);
+    const currentAdvance = Number(editForm.advancePaid || 0);
+    const additionalAmount = Number(additionalAdvance || 0);
+    const newAdvancePaid = currentAdvance + additionalAmount;
+    
+    if (newAdvancePaid > currentTotal) {
+      setToast({ message: 'Advance payment cannot exceed total amount!', type: 'danger' });
+      setTimeout(() => setToast(null), 3000);
+      return;
+    }
+    
     try {
       setIsUpdating(true);
-      const newAdvancePaid = Number(editForm.advancePaid || 0) + Number(additionalAdvance || 0);
       const res = await fetch(`${API_BASE_URL}${API_ENDPOINTS.EDIT_ORDER}/${editOrder._id || editOrder.id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           customerName: editForm.customerName,
           mobile: editForm.mobile,
-          total: Number(editForm.total),
+          total: currentTotal,
           advancePaid: newAdvancePaid,
           status: editForm.status
         })
@@ -339,7 +351,9 @@ const ViewOrders = () => {
                     <div className="font-semibold text-purple-600 text-xs sm:text-sm md:text-base whitespace-nowrap">₹{order.total}</div>
                   </td>
                   <td className="px-2 sm:px-3 md:px-4 py-3 sm:py-4">
-                    <div className="font-semibold text-red-600 text-xs sm:text-sm md:text-base whitespace-nowrap">₹{order.total - (order.advancePaid || 0)}</div>
+                    <div className="font-semibold text-red-600 text-xs sm:text-sm md:text-base whitespace-nowrap">
+                      ₹{(order.status || '').toLowerCase() === 'cancelled' ? 0 : (order.total - (order.advancePaid || 0))}
+                    </div>
                   </td>
                   <td className="px-2 sm:px-3 md:px-4 py-3 sm:py-4">
                     <span className={`px-2 sm:px-3 py-1 rounded-full text-xs font-semibold border whitespace-nowrap ${getStatusColor(order.status)}`}>
@@ -432,7 +446,7 @@ const ViewOrders = () => {
                     <div className="pt-2 border-t border-gray-300">
                       <div className="mb-1"><strong>Total Amount:</strong> <span className="text-purple-600 font-bold">₹{selectedOrder.total}</span></div>
                       <div className="mb-1"><strong>Advance Paid:</strong> <span className="text-green-600 font-bold">₹{selectedOrder.advancePaid || 0}</span></div>
-                      <div><strong>Due Amount:</strong> <span className="text-red-600 font-bold">₹{(selectedOrder.total || 0) - (selectedOrder.advancePaid || 0)}</span></div>
+                      <div><strong>Due Amount:</strong> <span className="text-red-600 font-bold">₹{(selectedOrder.status || '').toLowerCase() === 'cancelled' ? 0 : ((selectedOrder.total || 0) - (selectedOrder.advancePaid || 0))}</span></div>
                     </div>
                   </div>
                 </div>
@@ -553,13 +567,21 @@ const ViewOrders = () => {
                     type="number"
                     min="0"
                     step="0.01"
+                    max={Math.max(0, (parseFloat(editForm.total) || 0) - (parseFloat(editForm.advancePaid) || 0))}
                     value={additionalAdvance}
-                    onChange={(e) => setAdditionalAdvance(e.target.value)}
+                    onChange={(e) => {
+                      const value = parseFloat(e.target.value) || 0;
+                      const remaining = (parseFloat(editForm.total) || 0) - (parseFloat(editForm.advancePaid) || 0);
+                      if (value <= remaining) {
+                        setAdditionalAdvance(e.target.value);
+                      }
+                    }}
                     className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base bg-white border border-gray-300 rounded-lg sm:rounded-xl text-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
                     placeholder="Enter additional amount"
                   />
                   <p className="text-xs text-gray-600 mt-1">Total Advance: ₹{((parseFloat(editForm.advancePaid) || 0) + (parseFloat(additionalAdvance) || 0)).toFixed(2)}</p>
-                  <p className="text-xs text-red-600 mt-1 font-semibold">Remaining Due: ₹{((parseFloat(editForm.total) || 0) - ((parseFloat(editForm.advancePaid) || 0) + (parseFloat(additionalAdvance) || 0))).toFixed(2)}</p>
+                  <p className="text-xs text-red-600 mt-1 font-semibold">Remaining Due: ₹{Math.max(0, ((parseFloat(editForm.total) || 0) - ((parseFloat(editForm.advancePaid) || 0) + (parseFloat(additionalAdvance) || 0)))).toFixed(2)}</p>
+                  <p className="text-xs text-blue-600 mt-1">Maximum allowed: ₹{Math.max(0, (parseFloat(editForm.total) || 0) - (parseFloat(editForm.advancePaid) || 0)).toFixed(2)}</p>
                 </div>
                 <div>
                   <label className="block text-xs sm:text-sm font-semibold text-yellow-600 mb-1.5 sm:mb-2">Status</label>
