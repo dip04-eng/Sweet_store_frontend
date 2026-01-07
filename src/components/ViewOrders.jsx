@@ -10,6 +10,7 @@ const ViewOrders = () => {
   const [dateFilter, setDateFilter] = useState(''); // Date filter for orders
   const [searchQuery, setSearchQuery] = useState(''); // Search query
   const [sortOrder, setSortOrder] = useState('orderDate-desc'); // Sort by order date descending by default
+  const [showPendingPaymentOnly, setShowPendingPaymentOnly] = useState(false); // Filter for delivered with pending payment
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isUpdating, setIsUpdating] = useState(false);
@@ -63,7 +64,15 @@ const ViewOrders = () => {
         searchMatch = name.includes(query) || phone.includes(query) || address.includes(query);
       }
       
-      return statusMatch && dateMatch && searchMatch;
+      // Pending payment filter - only show delivered orders with remaining payment
+      let pendingPaymentMatch = true;
+      if (showPendingPaymentOnly) {
+        const isDelivered = (order.status || '').toLowerCase() === 'delivered';
+        const hasPendingPayment = (order.total - (order.advancePaid || 0)) > 0;
+        pendingPaymentMatch = isDelivered && hasPendingPayment;
+      }
+      
+      return statusMatch && dateMatch && searchMatch && pendingPaymentMatch;
     })
     .sort((a, b) => {
       const [field, direction] = sortOrder.split('-');
@@ -90,6 +99,26 @@ const ViewOrders = () => {
       case 'delivered': return 'bg-green-500/20 text-green-400 border-green-500/30';
       default: return 'bg-gray-500/20 text-gray-400 border-gray-500/30';
     }
+  };
+
+  const getApproverInfo = (order) => {
+    // Check if order was placed by admin (preference field starts with [Admin Name])
+    const preference = order.preference || '';
+    const adminMatch = preference.match(/^\[([^\]]+)\]/);
+    
+    if (adminMatch && adminMatch[1]) {
+      return {
+        type: 'admin',
+        name: adminMatch[1],
+        display: `Approved by ${adminMatch[1]}`
+      };
+    }
+    
+    return {
+      type: 'customer',
+      name: 'Customer',
+      display: 'Approved by Customer'
+    };
   };
 
   const updateOrderStatus = async (order, status) => {
@@ -185,24 +214,24 @@ const ViewOrders = () => {
   return (
     <div>
       <motion.div 
-        className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4 sm:mb-6 gap-3 sm:gap-4"
+        className="flex flex-col items-start mb-4 sm:mb-6 gap-3 sm:gap-4"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
       >
-        <div className="flex items-center">
+        <div className="flex items-center w-full">
           <Eye className="h-5 w-5 sm:h-6 sm:w-6 text-gray-900 mr-2" />
           <h2 className="text-xl sm:text-2xl font-bold text-gray-900">View Orders</h2>
         </div>
-        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4 w-full sm:w-auto">
+        <div className="flex flex-col sm:flex-row sm:flex-wrap items-start sm:items-center gap-2 sm:gap-3 w-full">
           {/* Search Box */}
-          <div className="flex items-center w-full sm:w-auto relative">
+          <div className="flex items-center w-full sm:w-auto sm:min-w-[200px] lg:min-w-[250px] relative">
             <Search className="h-4 w-4 sm:h-5 sm:w-5 text-gray-400 absolute left-3" />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search by name, phone, address..."
-              className="bg-white border border-gray-300 rounded-lg pl-9 pr-3 py-1.5 sm:py-2 text-sm sm:text-base text-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-500 w-full sm:w-64"
+              className="bg-white border border-gray-300 rounded-lg pl-9 pr-3 py-1.5 sm:py-2 text-sm sm:text-base text-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-500 w-full"
             />
             {searchQuery && (
               <button
@@ -216,7 +245,7 @@ const ViewOrders = () => {
           </div>
           
           <div className="flex items-center w-full sm:w-auto">
-            <Filter className="h-4 w-4 sm:h-5 sm:w-5 text-gray-900 mr-2" />
+            <Filter className="h-4 w-4 sm:h-5 sm:w-5 text-gray-900 mr-2 flex-shrink-0" />
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
@@ -229,7 +258,7 @@ const ViewOrders = () => {
             </select>
           </div>
           <div className="flex items-center w-full sm:w-auto">
-            <Calendar className="h-4 w-4 sm:h-5 sm:w-5 text-gray-900 mr-2" />
+            <Calendar className="h-4 w-4 sm:h-5 sm:w-5 text-gray-900 mr-2 flex-shrink-0" />
             <input
               type="date"
               value={dateFilter}
@@ -240,7 +269,7 @@ const ViewOrders = () => {
             {dateFilter && (
               <button
                 onClick={() => setDateFilter('')}
-                className="ml-1 text-gray-500 hover:text-red-500 transition-colors"
+                className="ml-1 text-gray-500 hover:text-red-500 transition-colors flex-shrink-0"
                 title="Clear date filter"
               >
                 <XCircle className="h-4 w-4" />
@@ -248,7 +277,7 @@ const ViewOrders = () => {
             )}
           </div>
           <div className="flex items-center w-full sm:w-auto">
-            <Calendar className="h-4 w-4 sm:h-5 sm:w-5 text-gray-900 mr-2" />
+            <Calendar className="h-4 w-4 sm:h-5 sm:w-5 text-gray-900 mr-2 flex-shrink-0" />
             <select
               value={sortOrder}
               onChange={(e) => setSortOrder(e.target.value)}
@@ -260,8 +289,23 @@ const ViewOrders = () => {
               <option value="orderDate-desc">Order: Newest First</option>
             </select>
           </div>
-          <div className="text-xs sm:text-sm text-gray-600">
-            Total Orders: {filteredOrders.length}
+          {/* Total Orders Count */}
+          <div className="bg-white border border-gray-300 rounded-lg px-4 py-2 shadow-sm">
+            <p className="text-sm font-semibold text-gray-700">
+              Total Orders: <span className="text-purple-600">{filteredOrders.length}</span>
+            </p>
+          </div>
+          <div className="flex items-center w-full sm:w-auto bg-white border border-gray-300 rounded-lg px-3 py-1.5 sm:py-2">
+            <input
+              type="checkbox"
+              id="pendingPaymentFilter"
+              checked={showPendingPaymentOnly}
+              onChange={(e) => setShowPendingPaymentOnly(e.target.checked)}
+              className="mr-2 h-4 w-4 text-red-600 border-gray-300 rounded focus:ring-2 focus:ring-red-500 cursor-pointer flex-shrink-0"
+            />
+            <label htmlFor="pendingPaymentFilter" className="text-xs sm:text-sm text-red-600 font-semibold cursor-pointer whitespace-nowrap">
+              Delivered + Pending Payment
+            </label>
           </div>
         </div>
       </motion.div>
@@ -300,9 +344,9 @@ const ViewOrders = () => {
             </p>
           </div>
           
-          <div className="-mx-4 sm:mx-0 rounded-xl shadow-sm">
-            <div className="min-w-full align-middle">
-              <table className="w-full bg-white border border-gray-200">
+          <div className="-mx-4 sm:mx-0 rounded-xl shadow-sm overflow-hidden">
+            <div className="min-w-full align-middle overflow-x-auto">
+              <table className="w-full bg-white border border-gray-200 table-auto">
                 <thead className="bg-gradient-to-r from-purple-500 to-pink-500 text-white">
                   <tr>
                     <th className="px-2 sm:px-3 md:px-4 py-3 sm:py-4 text-left text-xs sm:text-sm font-semibold whitespace-nowrap">Customer</th>
@@ -311,6 +355,7 @@ const ViewOrders = () => {
                     <th className="px-2 sm:px-3 md:px-4 py-3 sm:py-4 text-left text-xs sm:text-sm font-semibold whitespace-nowrap">Delivery Date</th>
                     <th className="px-2 sm:px-3 md:px-4 py-3 sm:py-4 text-left text-xs sm:text-sm font-semibold whitespace-nowrap">Amount</th>
                     <th className="px-2 sm:px-3 md:px-4 py-3 sm:py-4 text-left text-xs sm:text-sm font-semibold whitespace-nowrap">Due Payment</th>
+                    <th className="px-2 sm:px-3 md:px-4 py-3 sm:py-4 text-left text-xs sm:text-sm font-semibold whitespace-nowrap">Approved By</th>
                     <th className="px-2 sm:px-3 md:px-4 py-3 sm:py-4 text-left text-xs sm:text-sm font-semibold whitespace-nowrap">Status</th>
                     <th className="px-2 sm:px-3 md:px-4 py-3 sm:py-4 text-center text-xs sm:text-sm font-semibold whitespace-nowrap">Actions</th>
                   </tr>
@@ -354,6 +399,18 @@ const ViewOrders = () => {
                     <div className="font-semibold text-red-600 text-xs sm:text-sm md:text-base whitespace-nowrap">
                       ₹{(order.status || '').toLowerCase() === 'cancelled' ? 0 : (order.total - (order.advancePaid || 0))}
                     </div>
+                  </td>
+                  <td className="px-2 sm:px-3 md:px-4 py-3 sm:py-4">
+                    {(() => {
+                      const approver = getApproverInfo(order);
+                      return (
+                        <div className={`text-xs sm:text-sm font-semibold whitespace-nowrap ${
+                          approver.type === 'admin' ? 'text-blue-600' : 'text-green-600'
+                        }`}>
+                          {approver.display}
+                        </div>
+                      );
+                    })()}
                   </td>
                   <td className="px-2 sm:px-3 md:px-4 py-3 sm:py-4">
                     <span className={`px-2 sm:px-3 py-1 rounded-full text-xs font-semibold border whitespace-nowrap ${getStatusColor(order.status)}`}>
