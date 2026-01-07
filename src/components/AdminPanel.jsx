@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { ArrowLeft, Plus, Trash, Eye, BarChart3, LogOut, Settings, TrendingUp, Calendar, PartyPopper } from 'lucide-react';
+import { ArrowLeft, Plus, Trash, Eye, BarChart3, LogOut, Settings, TrendingUp, Calendar, PartyPopper, ShoppingCart } from 'lucide-react';
 import AddSweet from './AddSweet';
 import RemoveSweet from './RemoveSweet';
 import ViewOrders from './ViewOrders';
 import DailySummary from './DailySummary';
 import TotalSold from './TotalSold';
+import AddOrder from './AddOrder';
 
 const AdminPanel = () => {
   const location = useLocation();
@@ -14,7 +15,7 @@ const AdminPanel = () => {
   // Get state from URL hash
   const getStateFromHash = () => {
     const hash = window.location.hash.replace('#', '');
-    const validTabs = ['orders', 'summary', 'totalsold', 'add', 'remove'];
+    const validTabs = ['orders', 'summary', 'totalsold', 'add', 'remove', 'addorder'];
     const validPopups = ['manage-sweets', 'add-options', 'remove-options'];
     
     if (validPopups.includes(hash)) {
@@ -105,6 +106,7 @@ const AdminPanel = () => {
 
   const mainTabs = [
     { id: 'orders', label: 'View Orders', icon: Eye, component: ViewOrders },
+    { id: 'addorder', label: 'Add Order', icon: ShoppingCart, component: AddOrder },
     { id: 'summary', label: 'Daily Summary', icon: BarChart3, component: DailySummary },
     { id: 'totalsold', label: 'Sales Report', icon: TrendingUp, component: TotalSold }
   ];
