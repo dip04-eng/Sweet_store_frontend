@@ -62,10 +62,10 @@ const About = () => {
             transition={{ duration: 0.8 }}
             className="text-center"
           >
-            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-gold-gradient mb-6 font-['Playfair_Display']">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-gold-gradient mb-4 sm:mb-6 font-['Playfair_Display'] px-4">
               Our Story
             </h1>
-            <p className="text-lg sm:text-xl text-[#F5F5DC]/80 max-w-3xl mx-auto leading-relaxed">
+            <p className="text-base sm:text-lg md:text-xl text-[#F5F5DC]/80 max-w-3xl mx-auto leading-relaxed px-4">
               A legacy of sweetness that has been delighting families for over five decades
             </p>
           </motion.div>

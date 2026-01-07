@@ -102,17 +102,17 @@ const Cart = () => {
           <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="flex items-center mb-8 sm:mb-12"
+            className="flex flex-col sm:flex-row items-start sm:items-center mb-6 sm:mb-12 gap-2 sm:gap-4"
           >
             <Link
               to="/"
-              className="flex items-center text-[#C41E3A] hover:text-[#A01828] transition-colors mr-4 font-semibold"
+              className="flex items-center text-[#C41E3A] hover:text-[#A01828] transition-colors font-semibold"
             >
-              <ArrowLeft className="h-6 w-6 mr-2" />
-              <span>Back to Shop</span>
+              <ArrowLeft className="h-5 w-5 sm:h-6 sm:w-6 mr-2" />
+              <span className="text-sm sm:text-base">Back to Shop</span>
             </Link>
-            <div className="h-6 w-px bg-gray-300 mr-4"></div>
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-[#C41E3A] font-['Playfair_Display']">
+            <div className="hidden sm:block h-6 w-px bg-gray-300"></div>
+            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-[#C41E3A] font-['Playfair_Display']">
               Your Sweet Cart
             </h1>
           </motion.div>

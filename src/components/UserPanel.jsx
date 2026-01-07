@@ -93,7 +93,7 @@ const UserPanel = () => {
       <Hero />
 
       {/* Sweets Catalog Section */}
-      <section id="sweets-collection" className="py-16 sm:py-20 md:py-24 px-4 relative bg-[#E08B8B]">
+      <section id="sweets-collection" className="py-12 sm:py-16 md:py-20 lg:py-24 px-4 relative bg-[#E08B8B]">
         {/* Decorative Background Elements */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div className="absolute top-20 left-10 w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
@@ -106,16 +106,16 @@ const UserPanel = () => {
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-center mb-12 sm:mb-16"
+            className="text-center mb-8 sm:mb-12 md:mb-16"
           >
             <div className="flex items-center justify-center mb-4">
-              <Sparkles className="h-6 w-6 text-white mr-2" />
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white font-['Playfair_Display']">
+              <Sparkles className="h-5 w-5 sm:h-6 sm:w-6 text-white mr-2" />
+              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white font-['Playfair_Display']">
                 Our Sweet Collection
               </h2>
-              <Sparkles className="h-6 w-6 text-white ml-2" />
+              <Sparkles className="h-5 w-5 sm:h-6 sm:w-6 text-white ml-2" />
             </div>
-            <p className="text-white/80 text-lg max-w-2xl mx-auto">
+            <p className="text-white/80 text-sm sm:text-base md:text-lg max-w-2xl mx-auto px-4">
               Handcrafted with love, tradition, and the finest ingredients
             </p>
             <div className="w-24 h-1 bg-white/50 mx-auto mt-4 rounded-full"></div>
@@ -126,20 +126,20 @@ const UserPanel = () => {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="mb-8 sm:mb-12"
+            className="mb-6 sm:mb-8 md:mb-12"
           >
-            <div className="flex items-center justify-center gap-2 mb-6">
-              <Filter className="h-5 w-5 text-white" />
-              <h3 className="text-lg font-semibold text-white">Filter by Category</h3>
+            <div className="flex items-center justify-center gap-2 mb-4 sm:mb-6">
+              <Filter className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
+              <h3 className="text-base sm:text-lg font-semibold text-white">Filter by Category</h3>
             </div>
-            <div className="flex flex-wrap justify-center gap-3">
+            <div className="flex flex-wrap justify-center gap-2 sm:gap-3">
               {categories.map((category) => (
                 <motion.button
                   key={category}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={() => setSelectedCategory(category)}
-                  className={`px-6 py-2.5 rounded-full font-semibold transition-all shadow-md ${
+                  className={`px-4 sm:px-6 py-2 sm:py-2.5 rounded-full font-semibold transition-all shadow-md text-sm sm:text-base ${
                     selectedCategory === category
                       ? 'bg-white text-[#C41E3A] shadow-lg'
                       : 'bg-white/20 text-white hover:bg-white/30 backdrop-blur-sm'

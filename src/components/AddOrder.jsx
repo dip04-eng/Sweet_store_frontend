@@ -186,15 +186,15 @@ const AddOrder = () => {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       {/* Header */}
-      <div className="bg-gradient-to-r from-purple-600 to-pink-600 rounded-2xl shadow-lg p-6 text-white">
+      <div className="bg-gradient-to-r from-purple-600 to-pink-600 rounded-xl sm:rounded-2xl shadow-lg p-4 sm:p-6 text-white">
         <div className="flex items-center justify-between">
           <div>
-            <h2 className="text-2xl font-bold mb-2">Add Order Manually</h2>
-            <p className="text-purple-100">Place orders on behalf of customers</p>
+            <h2 className="text-xl sm:text-2xl font-bold mb-1 sm:mb-2">Add Order Manually</h2>
+            <p className="text-sm sm:text-base text-purple-100">Place orders on behalf of customers</p>
           </div>
-          <ShoppingCart className="h-12 w-12 opacity-50" />
+          <ShoppingCart className="h-10 w-10 sm:h-12 sm:w-12 opacity-50" />
         </div>
       </div>
 
@@ -204,13 +204,13 @@ const AddOrder = () => {
         </div>
       )}
 
-      <form onSubmit={handleSubmit} className="space-y-6">
-        <div className="grid md:grid-cols-2 gap-6">
+      <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
+        <div className="grid md:grid-cols-2 gap-4 sm:gap-6">
           {/* Left Column - Customer Details */}
           <div className="space-y-4">
-            <div className="bg-white rounded-xl shadow-md p-6">
-              <h3 className="text-lg font-bold text-gray-800 mb-4 flex items-center">
-                <User className="h-5 w-5 mr-2 text-purple-600" />
+            <div className="bg-white rounded-lg sm:rounded-xl shadow-md p-4 sm:p-6">
+              <h3 className="text-base sm:text-lg font-bold text-gray-800 mb-4 flex items-center">
+                <User className="h-4 w-4 sm:h-5 sm:w-5 mr-2 text-purple-600" />
                 Customer Details
               </h3>
 
