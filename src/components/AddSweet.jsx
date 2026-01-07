@@ -10,6 +10,7 @@ const AddSweet = ({ sweetType = 'normal' }) => {
     rate: '',
     unit: '',
     image: '',
+    description: '',
     isFestival: sweetType === 'festival'
   });
   const [imagePreview, setImagePreview] = useState(null);
@@ -129,7 +130,8 @@ const AddSweet = ({ sweetType = 'normal' }) => {
         category: '',
         rate: '',
         unit: '',
-        image: ''
+        image: '',
+        description: ''
       });
       setSelectedSweetId(null);
       setSelectedCategory('');
@@ -298,6 +300,21 @@ const AddSweet = ({ sweetType = 'normal' }) => {
                 <option value="piece">Per Piece</option>
                 <option value="kg">Per Kg</option>
               </select>
+            </div>
+
+            {/* Description */}
+            <div>
+              <label className="block text-xs sm:text-sm font-semibold text-yellow-600 mb-1.5 sm:mb-2">
+                Description <span className="text-gray-400 text-xs">(Optional)</span>
+              </label>
+              <textarea
+                name="description"
+                value={formData.description}
+                onChange={handleChange}
+                rows="3"
+                className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base bg-white border border-gray-300 rounded-lg sm:rounded-xl text-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all resize-none"
+                placeholder="Enter sweet description (optional)"
+              />
             </div>
 
             
