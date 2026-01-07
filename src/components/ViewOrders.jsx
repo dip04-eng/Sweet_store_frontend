@@ -6,7 +6,7 @@ import { API_BASE_URL, API_ENDPOINTS } from '../config/api';
 const ViewOrders = () => {
   const [orders, setOrders] = useState([]);
   const [selectedOrder, setSelectedOrder] = useState(null);
-  const [statusFilter, setStatusFilter] = useState('all');
+  const [statusFilter, setStatusFilter] = useState('default');
   const [dateFilter, setDateFilter] = useState(''); // Date filter for orders
   const [searchQuery, setSearchQuery] = useState(''); // Search query
   const [sortOrder, setSortOrder] = useState('orderDate-desc'); // Sort by order date descending by default
@@ -20,6 +20,13 @@ const ViewOrders = () => {
   const [editForm, setEditForm] = useState({ customerName: '', mobile: '', total: '', advancePaid: '', status: 'pending' });
   const [additionalAdvance, setAdditionalAdvance] = useState(0);
   const [toast, setToast] = useState(null); // { message, type: 'success' | 'danger' }
+  
+  // Add items functionality
+  const [availableSweets, setAvailableSweets] = useState([]);
+  const [editOrderItems, setEditOrderItems] = useState([]);
+  const [selectedSweet, setSelectedSweet] = useState('');
+  const [selectedQuantity, setSelectedQuantity] = useState(1);
+  const [showAddItems, setShowAddItems] = useState(false);
 
   useEffect(() => {
     fetchOrders();
@@ -45,7 +52,16 @@ const ViewOrders = () => {
 
   const filteredOrders = orders
     .filter(order => {
-      const statusMatch = statusFilter === 'all' || order.status === statusFilter;
+      // Status filter logic
+      let statusMatch = false;
+      if (statusFilter === 'all') {
+        statusMatch = true; // Show all statuses
+      } else if (statusFilter === 'default') {
+        // By default, show only pending and processing
+        statusMatch = order.status === 'pending' || order.status === 'processing';
+      } else {
+        statusMatch = order.status === statusFilter;
+      }
       
       // Date filter
       let dateMatch = true;
@@ -149,9 +165,11 @@ const ViewOrders = () => {
 
   
 
-  const openEditModal = (order) => {
+  const openEditModal = async (order) => {
     setEditOrder(order);
     setAdditionalAdvance(0);
+    setEditOrderItems([...order.items]); // Copy existing items
+    setShowAddItems(false);
     setEditForm({
       customerName: order.customerName || '',
       mobile: order.mobile || '',
@@ -159,6 +177,17 @@ const ViewOrders = () => {
       advancePaid: order.advancePaid ?? 0,
       status: (order.status || 'pending')
     });
+    
+    // Fetch available sweets
+    try {
+      const response = await fetch(`${API_BASE_URL}${API_ENDPOINTS.GET_SWEETS}`);
+      if (response.ok) {
+        const sweets = await response.json();
+        setAvailableSweets(sweets);
+      }
+    } catch (error) {
+      console.error('Error fetching sweets:', error);
+    }
   };
 
   const submitEdit = async (e) => {
@@ -187,7 +216,8 @@ const ViewOrders = () => {
           mobile: editForm.mobile,
           total: currentTotal,
           advancePaid: newAdvancePaid,
-          status: editForm.status
+          status: editForm.status,
+          items: editOrderItems // Include updated items
         })
       });
       if (!res.ok) throw new Error('Failed to update order');
@@ -197,7 +227,8 @@ const ViewOrders = () => {
         mobile: editForm.mobile,
         total: Number(editForm.total),
         advancePaid: newAdvancePaid,
-        status: editForm.status
+        status: editForm.status,
+        items: editOrderItems
       } : o));
       setEditOrder(null);
       setToast({ message: 'Order updated successfully!', type: 'success' });
@@ -251,6 +282,7 @@ const ViewOrders = () => {
               onChange={(e) => setStatusFilter(e.target.value)}
               className="bg-white border border-gray-300 rounded-lg px-2 sm:px-3 py-1.5 sm:py-2 text-sm sm:text-base text-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-500 flex-1 sm:flex-none"
             >
+              <option value="default">Active Orders (Pending & Processing)</option>
               <option value="all">All Status</option>
               <option value="pending">Pending</option>
               <option value="processing">Processing</option>
@@ -426,16 +458,6 @@ const ViewOrders = () => {
                         <Package className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
                         <span>View</span>
                       </button>
-
-                      {/* Delivered button removed from table; available inside View modal */}
-
-                      <button
-                        onClick={() => openEditModal(order)}
-                        className="inline-flex items-center px-2.5 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-blue-600 border border-blue-200 hover:bg-blue-50 whitespace-nowrap"
-                      >
-                        <Pencil className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
-                        Edit
-                      </button>
                     </div>
                   </td>
                 </motion.tr>
@@ -536,6 +558,16 @@ const ViewOrders = () => {
                   const finalized = ['delivered', 'cancelled'].includes((selectedOrder.status || '').toLowerCase());
                   return (
                     <>
+                      <button
+                        onClick={() => {
+                          openEditModal(selectedOrder);
+                          setSelectedOrder(null);
+                        }}
+                        className="px-3 sm:px-4 py-2 text-sm sm:text-base rounded-lg font-semibold text-white shadow bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700"
+                      >
+                        <Pencil className="h-4 w-4 inline mr-1" />
+                        Edit
+                      </button>
                       <button
                         onClick={() => updateOrderStatus(selectedOrder, 'Delivered')}
                         disabled={isUpdating || finalized}
@@ -640,6 +672,113 @@ const ViewOrders = () => {
                   <p className="text-xs text-red-600 mt-1 font-semibold">Remaining Due: ₹{Math.max(0, ((parseFloat(editForm.total) || 0) - ((parseFloat(editForm.advancePaid) || 0) + (parseFloat(additionalAdvance) || 0)))).toFixed(2)}</p>
                   <p className="text-xs text-blue-600 mt-1">Maximum allowed: ₹{Math.max(0, (parseFloat(editForm.total) || 0) - (parseFloat(editForm.advancePaid) || 0)).toFixed(2)}</p>
                 </div>
+                
+                {/* Current Order Items */}
+                <div>
+                  <label className="block text-xs sm:text-sm font-semibold text-yellow-600 mb-2">Current Order Items</label>
+                  <div className="bg-gray-50 border border-gray-200 rounded-lg p-2 sm:p-3 max-h-40 overflow-y-auto">
+                    {editOrderItems.length === 0 ? (
+                      <p className="text-gray-500 text-xs">No items in order</p>
+                    ) : (
+                      editOrderItems.map((item, index) => (
+                        <div key={index} className="flex flex-col sm:flex-row justify-between items-start sm:items-center py-2 border-b border-gray-200 last:border-0 gap-1 sm:gap-2">
+                          <div className="flex-1 w-full sm:w-auto">
+                            <div className="flex flex-wrap items-center gap-1">
+                              <span className="text-xs sm:text-sm font-medium text-gray-700">{item.sweetName}</span>
+                              <span className="text-xs text-gray-500">₹{item.price} × {item.quantity}</span>
+                            </div>
+                          </div>
+                          <div className="flex items-center gap-2 w-full sm:w-auto justify-between sm:justify-end">
+                            <span className="text-xs sm:text-sm font-semibold text-purple-600">₹{(item.price * item.quantity).toFixed(2)}</span>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const newItems = editOrderItems.filter((_, i) => i !== index);
+                                setEditOrderItems(newItems);
+                                const newTotal = newItems.reduce((sum, it) => sum + (it.price * it.quantity), 0);
+                                setEditForm(f => ({ ...f, total: newTotal }));
+                              }}
+                              className="text-red-500 hover:text-red-700 text-xs px-2 py-1"
+                            >
+                              ✕
+                            </button>
+                          </div>
+                        </div>
+                      ))
+                    )}
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setShowAddItems(!showAddItems)}
+                    className="mt-2 text-xs sm:text-sm text-blue-600 hover:text-blue-700 font-semibold"
+                  >
+                    {showAddItems ? '− Hide Add Items' : '+ Add More Items'}
+                  </button>
+                </div>
+                
+                {/* Add Items Section */}
+                {showAddItems && (
+                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-2 sm:p-3">
+                    <label className="block text-xs sm:text-sm font-semibold text-blue-600 mb-2">Add New Item</label>
+                    <div className="space-y-2">
+                      <select
+                        value={selectedSweet}
+                        onChange={(e) => setSelectedSweet(e.target.value)}
+                        className="w-full px-2 sm:px-3 py-2 text-xs sm:text-sm bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      >
+                        <option value="">Select a sweet...</option>
+                        {availableSweets.map((sweet) => (
+                          <option key={sweet._id} value={sweet._id}>
+                            {sweet.name} - ₹{sweet.rate}/{sweet.unit}
+                          </option>
+                        ))}
+                      </select>
+                      <div className="flex gap-2">
+                        <input
+                          type="number"
+                          min="0.01"
+                          step="0.01"
+                          value={selectedQuantity}
+                          onChange={(e) => setSelectedQuantity(parseFloat(e.target.value) || 1)}
+                          className="w-20 sm:w-24 px-2 sm:px-3 py-2 text-xs sm:text-sm bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                          placeholder="Qty"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => {
+                            if (!selectedSweet) {
+                              setToast({ message: 'Please select a sweet', type: 'danger' });
+                              setTimeout(() => setToast(null), 2000);
+                              return;
+                            }
+                            const sweet = availableSweets.find(s => s._id === selectedSweet);
+                            if (sweet) {
+                              const newItem = {
+                                sweetId: sweet._id,
+                                sweetName: sweet.name,
+                                quantity: selectedQuantity,
+                                price: sweet.rate,
+                                unit: sweet.unit
+                              };
+                              const newItems = [...editOrderItems, newItem];
+                              setEditOrderItems(newItems);
+                              const newTotal = newItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+                              setEditForm(f => ({ ...f, total: newTotal }));
+                              setSelectedSweet('');
+                              setSelectedQuantity(1);
+                              setToast({ message: 'Item added!', type: 'success' });
+                              setTimeout(() => setToast(null), 2000);
+                            }
+                          }}
+                          className="flex-1 px-3 sm:px-4 py-2 text-xs sm:text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+                        >
+                          Add Item
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                )}
+                
                 <div>
                   <label className="block text-xs sm:text-sm font-semibold text-yellow-600 mb-1.5 sm:mb-2">Status</label>
                   <select
