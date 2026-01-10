@@ -941,15 +941,60 @@ const ViewOrders = () => {
                             }
                             const sweet = availableSweets.find(s => s._id === selectedSweet);
                             if (sweet) {
-                              const newItem = {
-                                sweetId: sweet._id,
-                                sweetName: sweet.name,
-                                quantity: selectedQuantity,
-                                price: sweet.rate,
-                                unit: sweet.unit,
-                                weightUnit: sweet.unit === 'kg' ? selectedWeightUnit : undefined
-                              };
-                              const newItems = [...editOrderItems, newItem];
+                              // Check if the sweet already exists in the order
+                              const existingItemIndex = editOrderItems.findIndex(
+                                item => item.sweetId === sweet._id || item.sweetName === sweet.name
+                              );
+                              
+                              let newItems;
+                              if (existingItemIndex !== -1) {
+                                // Sweet exists, update quantity
+                                const existingItem = editOrderItems[existingItemIndex];
+                                const existingQty = parseFloat(existingItem.quantity || 0);
+                                const existingUnit = existingItem.weightUnit;
+                                const newQty = parseFloat(selectedQuantity);
+                                const newUnit = selectedWeightUnit;
+                                
+                                // Convert to same unit and add
+                                let combinedQty;
+                                if (sweet.unit === 'kg') {
+                                  // Convert both to kg for comparison
+                                  const existingInKg = existingUnit === 'grams' ? existingQty / 1000 : existingQty;
+                                  const newInKg = newUnit === 'grams' ? newQty / 1000 : newQty;
+                                  const totalKg = existingInKg + newInKg;
+                                  
+                                  // Keep in the same unit as existing item
+                                  if (existingUnit === 'grams') {
+                                    combinedQty = totalKg * 1000;
+                                  } else {
+                                    combinedQty = totalKg;
+                                  }
+                                } else {
+                                  // For pieces, just add
+                                  combinedQty = existingQty + newQty;
+                                }
+                                
+                                newItems = [...editOrderItems];
+                                newItems[existingItemIndex] = {
+                                  ...existingItem,
+                                  quantity: combinedQty
+                                };
+                                setToast({ message: `Updated ${sweet.name} quantity!`, type: 'success' });
+                              } else {
+                                // Sweet doesn't exist, add as new item
+                                const newItem = {
+                                  sweetId: sweet._id,
+                                  sweetName: sweet.name,
+                                  quantity: selectedQuantity,
+                                  price: sweet.rate,
+                                  unit: sweet.unit,
+                                  weightUnit: sweet.unit === 'kg' ? selectedWeightUnit : undefined
+                                };
+                                newItems = [...editOrderItems, newItem];
+                                setToast({ message: 'Item added!', type: 'success' });
+                              }
+                              
+                              setEditOrderItems(newItems);
                               setEditOrderItems(newItems);
                               const newTotal = newItems.reduce((sum, item) => {
                                 const qty = item.quantity === '' ? 0 : item.quantity;
@@ -960,7 +1005,6 @@ const ViewOrders = () => {
                               setSelectedSweet('');
                               setSelectedQuantity(1);
                               setSelectedWeightUnit('kg');
-                              setToast({ message: 'Item added!', type: 'success' });
                               setTimeout(() => setToast(null), 2000);
                             }
                           }}
