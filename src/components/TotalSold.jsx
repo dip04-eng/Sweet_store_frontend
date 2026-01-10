@@ -3,14 +3,16 @@ import { Calendar, TrendingUp, Package, DollarSign } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { API_BASE_URL, API_ENDPOINTS } from '../config/api';
 
-const TotalSold = () => {
-  // Get today's date as default
-  const getTodayDate = () => {
-    const today = new Date();
-    return today.toISOString().split('T')[0];
-  };
+// Get tomorrow's date as default (for delivery date)
+const getTomorrowDate = () => {
+  const today = new Date();
+  const tomorrow = new Date(today);
+  tomorrow.setDate(today.getDate() + 1);
+  return tomorrow.toISOString().split('T')[0];
+};
 
-  const [selectedDate, setSelectedDate] = useState(getTodayDate());
+const TotalSold = () => {
+  const [selectedDate, setSelectedDate] = useState(() => getTomorrowDate());
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(false);
   const [salesData, setSalesData] = useState(null);

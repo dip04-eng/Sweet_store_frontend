@@ -313,10 +313,6 @@ const Cart = () => {
                       <span>Items ({getTotalItems().toFixed(2)})</span>
                       <span className="font-semibold text-gray-900">₹{getTotalAmount().toFixed(2)}</span>
                     </div>
-                    <div className="flex justify-between text-gray-600">
-                      <span>Delivery</span>
-                      <span className="font-semibold text-green-600">Free</span>
-                    </div>
                     <div className="h-px bg-gray-200"></div>
                     <div className="flex justify-between text-xl font-bold">
                       <span className="text-gray-900">Total</span>

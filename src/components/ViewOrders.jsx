@@ -194,8 +194,9 @@ const ViewOrders = () => {
   const openEditModal = async (order) => {
     setEditOrder(order);
     setAdditionalAdvance(0);
-    setEditOrderItems([...order.items]); // Copy existing items
-    setOriginalOrderItems([...order.items]); // Store original items for restoration
+    // Deep copy items to prevent mutation issues
+    setEditOrderItems(order.items.map(item => ({ ...item })));
+    setOriginalOrderItems(order.items.map(item => ({ ...item }))); // Deep copy for restoration
     setShowAddItems(false);
     setSweetSearch('');
     setEditForm({
@@ -712,7 +713,11 @@ const ViewOrders = () => {
                       if (value <= remaining) {
                         setAdditionalAdvance(e.target.value);
                       } else {
-                        alert(`Advance payment cannot exceed the remaining amount of ₹${remaining.toFixed(2)}`);
+                        setToast({ 
+                          message: `Advance payment cannot exceed the remaining amount of ₹${remaining.toFixed(2)}`, 
+                          type: 'danger' 
+                        });
+                        setTimeout(() => setToast(null), 3000);
                       }
                     }}
                     className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base bg-white border border-gray-300 rounded-lg sm:rounded-xl text-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
@@ -795,35 +800,43 @@ const ViewOrders = () => {
                                   }
                                 }}
                                 onBlur={(e) => {
-                                  // If empty on blur, restore original quantity
-                                  if (e.target.value === '' || parseFloat(e.target.value) <= 0) {
-                                    const newItems = [...editOrderItems];
-                                    // Check if this item exists in original order by index or by matching
-                                    const originalItem = originalOrderItems[index] || originalOrderItems.find(
-                                      orig => (orig.sweetId && orig.sweetId === item.sweetId) || orig.sweetName === item.sweetName
+                                  // If empty on blur, restore original quantity or set to minimum
+                                  if (e.target.value === '' || isNaN(parseFloat(e.target.value)) || parseFloat(e.target.value) <= 0) {
+                                    // Find the original item by matching sweetId or sweetName
+                                    const originalItem = originalOrderItems.find(
+                                      orig => {
+                                        // Try to match by sweetId first (most reliable)
+                                        if (orig.sweetId && item.sweetId && orig.sweetId === item.sweetId) {
+                                          return true;
+                                        }
+                                        // Fallback to sweetName matching
+                                        return orig.sweetName === item.sweetName;
+                                      }
                                     );
+                                    
+                                    let restoredQty;
                                     if (originalItem) {
-                                      newItems[index].quantity = originalItem.quantity;
-                                      setEditOrderItems(newItems);
-                                      const newTotal = newItems.reduce((sum, it) => {
-                                        const qty = it.quantity === '' ? 0 : it.quantity;
-                                        const qtyInKg = (it.weightUnit === 'grams') ? qty / 1000 : qty;
-                                        return sum + (it.price * qtyInKg);
-                                      }, 0);
-                                      setEditForm(f => ({ ...f, total: newTotal }));
+                                      // Restore to original quantity
+                                      restoredQty = originalItem.quantity;
                                     } else {
                                       // If not found in original (newly added item), use minimum value
                                       const isInGrams = item.weightUnit === 'grams';
-                                      const minValue = item.unit === 'kg' ? (isInGrams ? 1 : 0.01) : 1;
-                                      newItems[index].quantity = minValue;
-                                      setEditOrderItems(newItems);
-                                      const newTotal = newItems.reduce((sum, it) => {
-                                        const qty = it.quantity === '' ? 0 : it.quantity;
-                                        const qtyInKg = (it.weightUnit === 'grams') ? qty / 1000 : qty;
-                                        return sum + (it.price * qtyInKg);
-                                      }, 0);
-                                      setEditForm(f => ({ ...f, total: newTotal }));
+                                      restoredQty = item.unit === 'kg' ? (isInGrams ? 100 : 0.5) : 1;
                                     }
+                                    
+                                    // Create new array with new item objects to trigger re-render
+                                    const newItems = editOrderItems.map((it, i) => 
+                                      i === index ? { ...it, quantity: restoredQty } : { ...it }
+                                    );
+                                    
+                                    setEditOrderItems(newItems);
+                                    // Recalculate total
+                                    const newTotal = newItems.reduce((sum, it) => {
+                                      const qty = it.quantity === '' ? 0 : parseFloat(it.quantity) || 0;
+                                      const qtyInKg = (it.weightUnit === 'grams') ? qty / 1000 : qty;
+                                      return sum + (it.price * qtyInKg);
+                                    }, 0);
+                                    setEditForm(f => ({ ...f, total: newTotal }));
                                   }
                                 }}
                                 className="w-14 sm:w-16 px-1 py-1 text-center text-xs sm:text-sm border-x border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-500"
