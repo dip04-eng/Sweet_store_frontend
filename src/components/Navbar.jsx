@@ -19,9 +19,9 @@ const Navbar = ({ cart = [] }) => {
 
   const navLinks = [
     { name: 'Home', path: '/' },
-    { name: 'Shop', path: '/#shop' },
+    // { name: 'Shop', path: '/#shop' }, // Hidden for now - may be needed in future
     { name: 'About', path: '/about' },
-    { name: 'Contact', path: '/contact' },
+    // { name: 'Contact', path: '/contact' }, // Hidden for now - may be needed in future
   ];
 
   const scrollToSection = (e, path) => {

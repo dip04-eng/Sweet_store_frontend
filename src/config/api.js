@@ -17,5 +17,8 @@ export const API_ENDPOINTS = {
   GET_DAILY_SUMMARY: '/admin/daily_summary',
   UPDATE_ORDER_STATUS: '/admin/update_order_status',
   EDIT_ORDER: '/admin/edit_order',
-  DOWNLOAD_STATEMENT: '/admin/download_statement'
+  DOWNLOAD_STATEMENT: '/admin/download_statement',
+  
+  // Contact endpoint
+  SUBMIT_CONTACT: '/contact'
 };
