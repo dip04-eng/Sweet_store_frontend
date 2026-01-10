@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Eye, Calendar, Phone, MapPin, Package, Filter, CheckCircle2, Pencil, XCircle, Search } from 'lucide-react';
+import { Eye, Calendar, Phone, MapPin, Package, Filter, CheckCircle2, Pencil, XCircle, Search, ArrowUp, ArrowDown } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { API_BASE_URL, API_ENDPOINTS } from '../config/api';
 
@@ -9,7 +9,7 @@ const ViewOrders = () => {
   const [statusFilter, setStatusFilter] = useState('default');
   const [dateFilter, setDateFilter] = useState(''); // Date filter for orders
   const [searchQuery, setSearchQuery] = useState(''); // Search query
-  const [sortOrder, setSortOrder] = useState('orderDate-desc'); // Sort by order date descending by default
+  const [deliverySort, setDeliverySort] = useState('asc'); // 'asc' or 'desc'
   const [showPendingPaymentOnly, setShowPendingPaymentOnly] = useState(false); // Filter for delivered with pending payment
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -97,21 +97,16 @@ const ViewOrders = () => {
       return statusMatch && dateMatch && searchMatch && pendingPaymentMatch;
     })
     .sort((a, b) => {
-      const [field, direction] = sortOrder.split('-');
-      let comparison = 0;
+      const dateA = new Date(a.deliveryDate || '9999-12-31');
+      const dateB = new Date(b.deliveryDate || '9999-12-31');
+      const comparison = dateA - dateB;
       
-      if (field === 'deliveryDate') {
-        const dateA = new Date(a.deliveryDate || '9999-12-31');
-        const dateB = new Date(b.deliveryDate || '9999-12-31');
-        comparison = dateA - dateB;
-      } else if (field === 'orderDate') {
-        const dateA = new Date(a.orderDate || '9999-12-31');
-        const dateB = new Date(b.orderDate || '9999-12-31');
-        comparison = dateA - dateB;
-      }
-      
-      return direction === 'asc' ? comparison : -comparison;
+      return deliverySort === 'asc' ? comparison : -comparison;
     });
+
+  const toggleDeliverySort = () => {
+    setDeliverySort(deliverySort === 'asc' ? 'desc' : 'asc');
+  };
 
   const getStatusColor = (status) => {
     const s = (status || '').toLowerCase();
@@ -315,19 +310,6 @@ const ViewOrders = () => {
               </button>
             )}
           </div>
-          <div className="flex items-center w-full sm:w-auto">
-            <Calendar className="h-4 w-4 sm:h-5 sm:w-5 text-gray-900 mr-2 flex-shrink-0" />
-            <select
-              value={sortOrder}
-              onChange={(e) => setSortOrder(e.target.value)}
-              className="bg-white border border-gray-300 rounded-lg px-2 sm:px-3 py-1.5 sm:py-2 text-sm sm:text-base text-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-500 flex-1 sm:flex-none"
-            >
-              <option value="deliveryDate-asc">Delivery: Earliest First</option>
-              <option value="deliveryDate-desc">Delivery: Latest First</option>
-              <option value="orderDate-asc">Order: Oldest First</option>
-              <option value="orderDate-desc">Order: Newest First</option>
-            </select>
-          </div>
           <div className="flex items-center w-full sm:w-auto bg-white border border-gray-300 rounded-lg px-3 py-1.5 sm:py-2">
             <input
               type="checkbox"
@@ -391,7 +373,16 @@ const ViewOrders = () => {
                     <th className="px-2 sm:px-3 md:px-4 py-3 sm:py-4 text-left text-xs sm:text-sm font-semibold whitespace-nowrap">Customer</th>
                     <th className="px-2 sm:px-3 md:px-4 py-3 sm:py-4 text-left text-xs sm:text-sm font-semibold whitespace-nowrap">Contact</th>
                     <th className="px-2 sm:px-3 md:px-4 py-3 sm:py-4 text-left text-xs sm:text-sm font-semibold whitespace-nowrap">Order Date</th>
-                    <th className="px-2 sm:px-3 md:px-4 py-3 sm:py-4 text-left text-xs sm:text-sm font-semibold whitespace-nowrap">Delivery Date</th>
+                    <th className="px-2 sm:px-3 md:px-4 py-3 sm:py-4 text-left text-xs sm:text-sm font-semibold whitespace-nowrap">
+                      <button 
+                        onClick={toggleDeliverySort}
+                        className="flex items-center gap-2 hover:text-yellow-300 transition-colors"
+                        title="Click to sort by delivery date"
+                      >
+                        <span>Delivery Date</span>
+                        {deliverySort === 'asc' ? <ArrowUp className="h-4 w-4" /> : <ArrowDown className="h-4 w-4" />}
+                      </button>
+                    </th>
                     <th className="px-2 sm:px-3 md:px-4 py-3 sm:py-4 text-left text-xs sm:text-sm font-semibold whitespace-nowrap">Amount</th>
                     <th className="px-2 sm:px-3 md:px-4 py-3 sm:py-4 text-left text-xs sm:text-sm font-semibold whitespace-nowrap">Due Payment</th>
                     <th className="px-2 sm:px-3 md:px-4 py-3 sm:py-4 text-left text-xs sm:text-sm font-semibold whitespace-nowrap">Approved By</th>
