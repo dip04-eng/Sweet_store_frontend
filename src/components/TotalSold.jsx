@@ -6,13 +6,21 @@ import { API_BASE_URL, API_ENDPOINTS } from '../config/api';
 // Get tomorrow's date as default (for delivery date)
 const getTomorrowDate = () => {
   const today = new Date();
-  const tomorrow = new Date(today);
-  tomorrow.setDate(today.getDate() + 1);
-  return tomorrow.toISOString().split('T')[0];
+  today.setDate(today.getDate() + 1); // Add 1 day to get tomorrow
+  const year = today.getFullYear();
+  const month = String(today.getMonth() + 1).padStart(2, '0');
+  const day = String(today.getDate()).padStart(2, '0');
+  const tomorrowDate = `${year}-${month}-${day}`;
+  console.log('Tomorrow date calculated:', tomorrowDate);
+  return tomorrowDate;
 };
 
 const TotalSold = () => {
-  const [selectedDate, setSelectedDate] = useState(getTomorrowDate());
+  const [selectedDate, setSelectedDate] = useState(() => {
+    const date = getTomorrowDate();
+    console.log('Initial selectedDate:', date);
+    return date;
+  });
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(false);
   const [salesData, setSalesData] = useState(null);

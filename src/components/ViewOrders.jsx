@@ -7,7 +7,13 @@ const ViewOrders = () => {
   const [orders, setOrders] = useState([]);
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [statusFilter, setStatusFilter] = useState('default');
-  const [dateFilter, setDateFilter] = useState(''); // Date filter for orders
+  const [dateFilter, setDateFilter] = useState(() => {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const day = String(today.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }); // Date filter defaults to today
   const [searchQuery, setSearchQuery] = useState(''); // Search query
   const [deliverySort, setDeliverySort] = useState('asc'); // 'asc' or 'desc'
   const [orderSort, setOrderSort] = useState('asc'); // 'asc' or 'desc'
@@ -579,12 +585,14 @@ const ViewOrders = () => {
                       <div className="flex-1">
                         <div className="font-semibold text-yellow-600 text-xs sm:text-sm md:text-base">{item.sweetName}</div>
                         <div className="text-xs sm:text-sm text-gray-500">
-                          ₹{item.price} × {item.quantity || 1}
+                          ₹{item.price} × {item.quantity || 1} {item.unit === 'kg' ? 'kg' : item.unit || 'piece'}
                         </div>
                       </div>
                       <div className="text-right">
                         <div className="font-bold text-purple-600 text-sm sm:text-base">₹{item.price * (item.quantity || 1)}</div>
-                        <div className="text-xs text-gray-500">Qty: {item.quantity || 1}</div>
+                        <div className="text-xs text-gray-500">
+                          Qty: {item.quantity || 1} {item.unit === 'kg' ? 'kg' : item.unit || 'piece'}
+                        </div>
                       </div>
                     </div>
                   ))}
@@ -1082,6 +1090,8 @@ const ViewOrders = () => {
                               setSelectedSweet('');
                               setSelectedQuantity(1);
                               setSelectedWeightUnit('kg');
+                              setSweetSearch('');
+                              setShowAddItems(false); // Hide the Add Items section after adding
                               setTimeout(() => setToast(null), 2000);
                             }
                           }}
