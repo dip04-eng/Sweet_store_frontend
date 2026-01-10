@@ -68,8 +68,12 @@ const UserPanel = () => {
       updatedCart = [...cart];
       updatedCart[existingItemIndex].quantity += quantity;
     } else {
-      // Item doesn't exist, add new item
-      updatedCart = [...cart, { ...sweet, quantity }];
+      // Item doesn't exist, add new item with weightUnit for kg items
+      const newItem = { ...sweet, quantity };
+      if (sweet.unit === 'kg') {
+        newItem.weightUnit = 'kg';
+      }
+      updatedCart = [...cart, newItem];
     }
     
     setCart(updatedCart);

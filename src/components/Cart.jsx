@@ -176,7 +176,7 @@ const Cart = () => {
                                 <span className="text-white text-sm font-semibold">Weight:</span>
                                 <input
                                   type="text"
-                                  value={weightInputs[index] !== undefined ? weightInputs[index] : (item.quantity > 0 ? (item.weightUnit === 'kg' ? item.quantity : Math.round(item.quantity * 1000)) : '0')}
+                                  value={weightInputs[index] !== undefined ? weightInputs[index] : (item.quantity > 0 ? ((item.weightUnit || 'kg') === 'kg' ? item.quantity : Math.round(item.quantity * 1000)) : '0')}
                                   onFocus={(e) => e.target.select()}
                                   onChange={(e) => {
                                     const inputValue = e.target.value;
@@ -207,7 +207,7 @@ const Cart = () => {
                                   className="w-16 px-2 py-1 text-center bg-white text-gray-900 font-bold rounded border-0 focus:outline-none focus:ring-2 focus:ring-white"
                                 />
                                 <select
-                                  value={item.weightUnit || 'grams'}
+                                  value={item.weightUnit || 'kg'}
                                   onChange={(e) => {
                                     const newUnit = e.target.value;
                                     const updatedCart = [...cart];
@@ -218,8 +218,8 @@ const Cart = () => {
                                   }}
                                   className="bg-red-700 text-white px-2 py-1 rounded font-semibold text-sm border-0 focus:outline-none focus:ring-2 focus:ring-white cursor-pointer"
                                 >
-                                  <option value="grams">grams</option>
                                   <option value="kg">kg</option>
+                                  <option value="grams">grams</option>
                                 </select>
                                 <span className="text-white text-sm font-semibold">
                                   ≈₹{(item.rate * (item.quantity ?? 0.5)).toFixed(2)}
