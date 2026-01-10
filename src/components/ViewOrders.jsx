@@ -69,11 +69,18 @@ const ViewOrders = () => {
         statusMatch = (order.status || '').toLowerCase() === statusFilter.toLowerCase();
       }
       
-      // Date filter
+      // Date filter - check only order date
       let dateMatch = true;
       if (dateFilter) {
-        const deliveryDate = order.deliveryDate ? order.deliveryDate.split('T')[0] : '';
-        dateMatch = deliveryDate === dateFilter;
+        let orderDateStr = '';
+        
+        // Get order date
+        if (order.orderDate) {
+          orderDateStr = order.orderDate.split('T')[0];
+        }
+        
+        // Match only if order date matches the filter
+        dateMatch = orderDateStr === dateFilter;
       }
       
       // Search filter - search by name, phone, address
@@ -301,7 +308,8 @@ const ViewOrders = () => {
               value={dateFilter}
               onChange={(e) => setDateFilter(e.target.value)}
               className="bg-white border border-gray-300 rounded-lg px-2 sm:px-3 py-1.5 sm:py-2 text-sm sm:text-base text-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-500 flex-1 sm:flex-none"
-              placeholder="Filter by date"
+              placeholder="Filter by order date"
+              title="Filter by order date"
             />
             {dateFilter && (
               <button
