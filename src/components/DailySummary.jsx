@@ -17,7 +17,6 @@ const DailySummary = () => {
     try {
       setLoading(true);
       const url = `${API_BASE_URL}${API_ENDPOINTS.GET_DAILY_SUMMARY}`;
-      console.log('Fetching daily summary from:', url);
       
       const response = await fetch(url);
       
@@ -27,7 +26,6 @@ const DailySummary = () => {
       }
       
       const data = await response.json();
-      console.log('Daily summary data received:', data);
       setSummaryData(data);
       setError(null);
     } catch (err) {
@@ -51,9 +49,6 @@ const DailySummary = () => {
   const totalPiecesSold = summaryData?.total_pieces_sold || 0;
   const popularSweets = summaryData?.popular_sweets || [];
   const ordersList = summaryData?.orders || [];
-
-  // Debug log to check values
-  console.log('Daily Summary Data:', { totalKgSold, totalPiecesSold, totalItemsSold, summaryData });
 
   const getStatusColor = (status) => {
     switch (status) {
@@ -234,7 +229,7 @@ const DailySummary = () => {
             <div className="space-y-2 sm:space-y-3 max-h-60 sm:max-h-80 overflow-y-auto">
               {ordersList.length > 0 ? ordersList.slice(0, 10).map((order, index) => (
                 <motion.div 
-                  key={order.id} 
+                  key={order._id || order.id || index} 
                   className="flex items-center justify-between p-2.5 sm:p-3 bg-gray-50 border border-gray-200 rounded-lg sm:rounded-xl"
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
