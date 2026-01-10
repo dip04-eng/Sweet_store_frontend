@@ -176,6 +176,7 @@ const ViewOrders = () => {
       mobile: order.mobile || '',
       total: order.total ?? '',
       advancePaid: order.advancePaid ?? 0,
+      deliveryDate: order.deliveryDate ? order.deliveryDate.split('T')[0] : '',
       status: (order.status || 'pending')
     });
     
@@ -217,6 +218,7 @@ const ViewOrders = () => {
           mobile: editForm.mobile,
           total: currentTotal,
           advancePaid: newAdvancePaid,
+          deliveryDate: editForm.deliveryDate,
           status: editForm.status,
           items: editOrderItems // Include updated items
         })
@@ -228,6 +230,7 @@ const ViewOrders = () => {
         mobile: editForm.mobile,
         total: Number(editForm.total),
         advancePaid: newAdvancePaid,
+        deliveryDate: editForm.deliveryDate,
         status: editForm.status,
         items: editOrderItems
       } : o));
@@ -643,6 +646,16 @@ const ViewOrders = () => {
                     step="0.01"
                     value={editForm.total}
                     onChange={(e) => setEditForm(f => ({ ...f, total: e.target.value }))}
+                    className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base bg-white border border-gray-300 rounded-lg sm:rounded-xl text-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs sm:text-sm font-semibold text-yellow-600 mb-1.5 sm:mb-2">Delivery Date</label>
+                  <input
+                    type="date"
+                    value={editForm.deliveryDate}
+                    onChange={(e) => setEditForm(f => ({ ...f, deliveryDate: e.target.value }))}
                     className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base bg-white border border-gray-300 rounded-lg sm:rounded-xl text-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
                     required
                   />
