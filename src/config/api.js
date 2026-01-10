@@ -12,7 +12,8 @@ export const API_ENDPOINTS = {
   // Admin endpoints
   ADD_SWEET: '/admin/add_sweet',
   UPDATE_SWEET_STOCK: '/admin/update_stock',
-  REMOVE_SWEET: '/admin/remove_sweet',//
+  REMOVE_SWEET: '/admin/remove_sweet',
+  GET_ORDERS: '/admin/orders',
   GET_DAILY_SUMMARY: '/admin/daily_summary',
   UPDATE_ORDER_STATUS: '/admin/update_order_status',
   EDIT_ORDER: '/admin/edit_order'
