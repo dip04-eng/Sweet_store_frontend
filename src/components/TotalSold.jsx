@@ -191,7 +191,7 @@ const TotalSold = () => {
                     <tr>
                       <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">Sweet Name</th>
                       <th className="px-6 py-4 text-center text-sm font-semibold text-gray-700">Quantity Sold</th>
-                      <th className="px-6 py-4 text-center text-sm font-semibold text-gray-700">Price per Unit</th>
+                      <th className="px-6 py-4 text-center text-sm font-semibold text-gray-700">Price</th>
                       <th className="px-6 py-4 text-right text-sm font-semibold text-gray-700">Total Revenue</th>
                     </tr>
                   </thead>

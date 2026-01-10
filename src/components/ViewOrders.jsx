@@ -26,6 +26,7 @@ const ViewOrders = () => {
   const [editOrderItems, setEditOrderItems] = useState([]);
   const [selectedSweet, setSelectedSweet] = useState('');
   const [selectedQuantity, setSelectedQuantity] = useState(1);
+  const [selectedWeightUnit, setSelectedWeightUnit] = useState('kg');
   const [showAddItems, setShowAddItems] = useState(false);
 
   useEffect(() => {
@@ -65,7 +66,7 @@ const ViewOrders = () => {
           statusMatch = order.status === 'pending' || order.status === 'processing';
         }
       } else {
-        statusMatch = order.status === statusFilter;
+        statusMatch = (order.status || '').toLowerCase() === statusFilter.toLowerCase();
       }
       
       // Date filter
@@ -292,6 +293,7 @@ const ViewOrders = () => {
               <option value="pending">Pending</option>
               <option value="processing">Processing</option>
               <option value="delivered">Delivered</option>
+              <option value="cancelled">Cancelled</option>
             </select>
           </div>
           <div className="flex items-center w-full sm:w-auto">
@@ -668,6 +670,8 @@ const ViewOrders = () => {
                       const remaining = (parseFloat(editForm.total) || 0) - (parseFloat(editForm.advancePaid) || 0);
                       if (value <= remaining) {
                         setAdditionalAdvance(e.target.value);
+                      } else {
+                        alert(`Advance payment cannot exceed the remaining amount of ₹${remaining.toFixed(2)}`);
                       }
                     }}
                     className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base bg-white border border-gray-300 rounded-lg sm:rounded-xl text-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
@@ -689,7 +693,7 @@ const ViewOrders = () => {
                         <div key={index} className="flex flex-col sm:flex-row justify-between items-start sm:items-center py-2 border-b border-gray-200 last:border-0 gap-2">
                           <div className="flex-1 w-full sm:w-auto">
                             <span className="text-xs sm:text-sm font-medium text-gray-700 block mb-1">{item.sweetName}</span>
-                            <span className="text-xs text-gray-500">₹{item.price} per unit</span>
+                            <span className="text-xs text-gray-500">₹{item.price} per {item.unit || 'piece'}</span>
                           </div>
                           <div className="flex items-center gap-2 w-full sm:w-auto justify-between sm:justify-end flex-wrap">
                             {/* Quantity Controls */}
@@ -698,12 +702,16 @@ const ViewOrders = () => {
                                 type="button"
                                 onClick={() => {
                                   const newItems = [...editOrderItems];
-                                  const minQty = item.unit === 'kg' ? 0.01 : 1;
-                                  const decrementBy = item.unit === 'kg' ? 0.5 : 1;
+                                  const isInGrams = item.weightUnit === 'grams';
+                                  const minQty = item.unit === 'kg' ? (isInGrams ? 1 : 0.01) : 1;
+                                  const decrementBy = item.unit === 'kg' ? (isInGrams ? 100 : 0.5) : 1;
                                   if (newItems[index].quantity > minQty) {
                                     newItems[index].quantity = Math.max(minQty, (parseFloat(newItems[index].quantity) - decrementBy));
                                     setEditOrderItems(newItems);
-                                    const newTotal = newItems.reduce((sum, it) => sum + (it.price * it.quantity), 0);
+                                    const newTotal = newItems.reduce((sum, it) => {
+                                      const qtyInKg = (it.weightUnit === 'grams') ? it.quantity / 1000 : it.quantity;
+                                      return sum + (it.price * qtyInKg);
+                                    }, 0);
                                     setEditForm(f => ({ ...f, total: newTotal }));
                                   }
                                 }}
@@ -713,16 +721,48 @@ const ViewOrders = () => {
                               </button>
                               <input
                                 type="number"
-                                min={item.unit === 'kg' ? '0.01' : '1'}
-                                step={item.unit === 'kg' ? '0.01' : '1'}
+                                min={item.unit === 'kg' ? (item.weightUnit === 'grams' ? '1' : '0.01') : '1'}
+                                step={item.unit === 'kg' ? (item.weightUnit === 'grams' ? '1' : '0.01') : '1'}
                                 value={item.quantity}
                                 onChange={(e) => {
-                                  const value = parseFloat(e.target.value);
+                                  const inputValue = e.target.value;
+                                  
+                                  // Allow temporary empty value during editing
+                                  if (inputValue === '') {
+                                    const newItems = [...editOrderItems];
+                                    newItems[index].quantity = '';
+                                    setEditOrderItems(newItems);
+                                    return;
+                                  }
+                                  
+                                  const value = parseFloat(inputValue);
+                                  
                                   if (!isNaN(value) && value > 0) {
                                     const newItems = [...editOrderItems];
-                                    newItems[index].quantity = item.unit === 'kg' ? value : Math.round(value);
+                                    const isInGrams = item.weightUnit === 'grams';
+                                    newItems[index].quantity = item.unit === 'kg' && !isInGrams ? value : Math.round(value);
                                     setEditOrderItems(newItems);
-                                    const newTotal = newItems.reduce((sum, it) => sum + (it.price * it.quantity), 0);
+                                    const newTotal = newItems.reduce((sum, it) => {
+                                      const qty = it.quantity === '' ? 0 : it.quantity;
+                                      const qtyInKg = (it.weightUnit === 'grams') ? qty / 1000 : qty;
+                                      return sum + (it.price * qtyInKg);
+                                    }, 0);
+                                    setEditForm(f => ({ ...f, total: newTotal }));
+                                  }
+                                }}
+                                onBlur={(e) => {
+                                  // If empty on blur, reset to minimum value
+                                  if (e.target.value === '' || parseFloat(e.target.value) <= 0) {
+                                    const newItems = [...editOrderItems];
+                                    const isInGrams = item.weightUnit === 'grams';
+                                    const minValue = item.unit === 'kg' ? (isInGrams ? 1 : 0.01) : 1;
+                                    newItems[index].quantity = minValue;
+                                    setEditOrderItems(newItems);
+                                    const newTotal = newItems.reduce((sum, it) => {
+                                      const qty = it.quantity === '' ? 0 : it.quantity;
+                                      const qtyInKg = (it.weightUnit === 'grams') ? qty / 1000 : qty;
+                                      return sum + (it.price * qtyInKg);
+                                    }, 0);
                                     setEditForm(f => ({ ...f, total: newTotal }));
                                   }
                                 }}
@@ -732,23 +772,63 @@ const ViewOrders = () => {
                                 type="button"
                                 onClick={() => {
                                   const newItems = [...editOrderItems];
-                                  newItems[index].quantity = parseFloat(newItems[index].quantity) + (item.unit === 'kg' ? 0.5 : 1);
+                                  const isInGrams = item.weightUnit === 'grams';
+                                  const incrementBy = item.unit === 'kg' ? (isInGrams ? 100 : 0.5) : 1;
+                                  newItems[index].quantity = parseFloat(newItems[index].quantity) + incrementBy;
                                   setEditOrderItems(newItems);
-                                  const newTotal = newItems.reduce((sum, it) => sum + (it.price * it.quantity), 0);
+                                  const newTotal = newItems.reduce((sum, it) => {
+                                    const qtyInKg = (it.weightUnit === 'grams') ? it.quantity / 1000 : it.quantity;
+                                    return sum + (it.price * qtyInKg);
+                                  }, 0);
                                   setEditForm(f => ({ ...f, total: newTotal }));
                                 }}
                                 className="px-2 py-1 text-gray-600 hover:text-gray-800 hover:bg-gray-100 rounded-r-lg"
                               >
                                 +
                               </button>
+                              {item.unit === 'kg' && (
+                                <select
+                                  value={item.weightUnit || 'kg'}
+                                  onChange={(e) => {
+                                    const newItems = [...editOrderItems];
+                                    const oldUnit = newItems[index].weightUnit || 'kg';
+                                    const newUnit = e.target.value;
+                                    newItems[index].weightUnit = newUnit;
+                                    
+                                    // Convert quantity when switching units
+                                    if (oldUnit === 'kg' && newUnit === 'grams') {
+                                      newItems[index].quantity = parseFloat(newItems[index].quantity) * 1000;
+                                    } else if (oldUnit === 'grams' && newUnit === 'kg') {
+                                      newItems[index].quantity = parseFloat(newItems[index].quantity) / 1000;
+                                    }
+                                    
+                                    setEditOrderItems(newItems);
+                                    const newTotal = newItems.reduce((sum, it) => {
+                                      const qtyInKg = (it.weightUnit === 'grams') ? it.quantity / 1000 : it.quantity;
+                                      return sum + (it.price * qtyInKg);
+                                    }, 0);
+                                    setEditForm(f => ({ ...f, total: newTotal }));
+                                  }}
+                                  className="text-xs text-gray-600 ml-1 px-1 py-0.5 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-500"
+                                >
+                                  <option value="kg">kg</option>
+                                  <option value="grams">grams</option>
+                                </select>
+                              )}
+                              {item.unit !== 'kg' && (
+                                <span className="text-xs text-gray-600 ml-1">{item.unit || 'pcs'}</span>
+                              )}
                             </div>
-                            <span className="text-xs sm:text-sm font-semibold text-purple-600">₹{(item.price * item.quantity).toFixed(2)}</span>
+                            <span className="text-xs sm:text-sm font-semibold text-purple-600">₹{((item.weightUnit === 'grams' ? item.quantity / 1000 : item.quantity) * item.price).toFixed(2)}</span>
                             <button
                               type="button"
                               onClick={() => {
                                 const newItems = editOrderItems.filter((_, i) => i !== index);
                                 setEditOrderItems(newItems);
-                                const newTotal = newItems.reduce((sum, it) => sum + (it.price * it.quantity), 0);
+                                const newTotal = newItems.reduce((sum, it) => {
+                                  const qtyInKg = (it.weightUnit === 'grams') ? it.quantity / 1000 : it.quantity;
+                                  return sum + (it.price * qtyInKg);
+                                }, 0);
                                 setEditForm(f => ({ ...f, total: newTotal }));
                               }}
                               className="text-red-500 hover:text-red-700 text-sm px-2 py-1"
@@ -776,7 +856,12 @@ const ViewOrders = () => {
                     <div className="space-y-2">
                       <select
                         value={selectedSweet}
-                        onChange={(e) => setSelectedSweet(e.target.value)}
+                        onChange={(e) => {
+                          setSelectedSweet(e.target.value);
+                          // Reset weight unit to kg when changing sweet
+                          setSelectedWeightUnit('kg');
+                          setSelectedQuantity(1);
+                        }}
                         className="w-full px-2 sm:px-3 py-2 text-xs sm:text-sm bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                       >
                         <option value="">Select a sweet...</option>
@@ -796,6 +881,19 @@ const ViewOrders = () => {
                           className="w-20 sm:w-24 px-2 sm:px-3 py-2 text-xs sm:text-sm bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                           placeholder="Qty"
                         />
+                        {(() => {
+                          const sweet = availableSweets.find(s => s._id === selectedSweet);
+                          return sweet && sweet.unit === 'kg' ? (
+                            <select
+                              value={selectedWeightUnit}
+                              onChange={(e) => setSelectedWeightUnit(e.target.value)}
+                              className="px-2 py-2 text-xs sm:text-sm bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            >
+                              <option value="kg">kg</option>
+                              <option value="grams">grams</option>
+                            </select>
+                          ) : null;
+                        })()}
                         <button
                           type="button"
                           onClick={() => {
@@ -811,14 +909,20 @@ const ViewOrders = () => {
                                 sweetName: sweet.name,
                                 quantity: selectedQuantity,
                                 price: sweet.rate,
-                                unit: sweet.unit
+                                unit: sweet.unit,
+                                weightUnit: sweet.unit === 'kg' ? selectedWeightUnit : undefined
                               };
                               const newItems = [...editOrderItems, newItem];
                               setEditOrderItems(newItems);
-                              const newTotal = newItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+                              const newTotal = newItems.reduce((sum, item) => {
+                                const qty = item.quantity === '' ? 0 : item.quantity;
+                                const qtyInKg = (item.weightUnit === 'grams') ? qty / 1000 : qty;
+                                return sum + (item.price * qtyInKg);
+                              }, 0);
                               setEditForm(f => ({ ...f, total: newTotal }));
                               setSelectedSweet('');
                               setSelectedQuantity(1);
+                              setSelectedWeightUnit('kg');
                               setToast({ message: 'Item added!', type: 'success' });
                               setTimeout(() => setToast(null), 2000);
                             }
