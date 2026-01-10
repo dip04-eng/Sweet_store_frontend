@@ -1,0 +1,11 @@
+# robots.txt for Mansoor Hotel & Sweets
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /admin/*
+
+# Sitemap location
+Sitemap: https://sweet-store-frontend-ten.vercel.app/sitemap.xml
+
+# Crawl-delay
+Crawl-delay: 1

@@ -26,8 +26,8 @@ const Hero = () => {
       </div>
 
       {/* Hero Content */}
-      <div className="relative z-10 h-full flex items-center justify-center px-4 sm:px-6 py-20">
-        <div className="max-w-5xl mx-auto text-center">
+      <div className="relative z-10 h-full flex items-center justify-center px-4 sm:px-6 py-20 sm:py-16">
+        <div className="max-w-5xl mx-auto text-center w-full">
           {/* Animated Title */}
           <motion.div
             initial={{ opacity: 0, y: -50 }}
@@ -91,13 +91,13 @@ const Hero = () => {
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5, delay: 1.5 }}
-            className="flex flex-col sm:flex-row gap-4 justify-center items-center"
+            className="flex flex-col sm:flex-row gap-4 justify-center items-center px-4"
           >
             <motion.button
               onClick={scrollToShop}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="btn-premium bg-gradient-to-r from-[#C41E3A] via-[#DC143C] to-[#8B0000] text-white px-8 sm:px-12 py-4 sm:py-5 rounded-full text-lg sm:text-xl font-bold shadow-2xl hover:shadow-[#FFD700]/50 border-2 border-[#FFD700] animate-glow"
+              className="btn-premium bg-gradient-to-r from-[#C41E3A] via-[#DC143C] to-[#8B0000] text-white px-8 sm:px-12 py-4 sm:py-5 rounded-full text-base sm:text-lg md:text-xl font-bold shadow-2xl hover:shadow-[#FFD700]/50 border-2 border-[#FFD700] animate-glow touch-manipulation w-full sm:w-auto max-w-xs sm:max-w-none"
             >
               Shop Now
             </motion.button>

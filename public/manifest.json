@@ -1,0 +1,21 @@
+{
+  "name": "Mansoor Hotel & Sweets",
+  "short_name": "Mansoor Sweets",
+  "description": "Traditional sweet shop in Baisi, Bihar offering handcrafted sweets, breakfast, lunch, dinner, and beverages made with pure ingredients.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#C41E3A",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/vite.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["food", "shopping", "business"],
+  "lang": "en-IN",
+  "dir": "ltr"
+}

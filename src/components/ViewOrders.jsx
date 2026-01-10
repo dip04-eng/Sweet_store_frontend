@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Eye, Calendar, Phone, MapPin, Package, Filter, CheckCircle2, Pencil, XCircle, Search, ArrowUp, ArrowDown } from 'lucide-react';
+import { Eye, Calendar, Phone, MapPin, Package, Filter, CheckCircle2, Pencil, XCircle, Search, ArrowUp, ArrowDown, Download } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { API_BASE_URL, API_ENDPOINTS } from '../config/api';
 
@@ -21,6 +21,24 @@ const ViewOrders = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isUpdating, setIsUpdating] = useState(false);
+  const [isDownloading, setIsDownloading] = useState(false);
+  
+  // Download date range modal state
+  const [showDownloadModal, setShowDownloadModal] = useState(false);
+  const [downloadStartDate, setDownloadStartDate] = useState(() => {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const day = String(today.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  });
+  const [downloadEndDate, setDownloadEndDate] = useState(() => {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const day = String(today.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  });
 
   // Edit modal state
   const [editOrder, setEditOrder] = useState(null);
@@ -137,6 +155,79 @@ const ViewOrders = () => {
   const toggleOrderSort = () => {
     setOrderSort(orderSort === 'asc' ? 'desc' : 'asc');
     setDeliverySort(null); // Disable delivery sort when order sort is active
+  };
+
+  const openDownloadModal = () => {
+    // Set default dates to today
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const day = String(today.getDate()).padStart(2, '0');
+    const todayStr = `${year}-${month}-${day}`;
+    setDownloadStartDate(todayStr);
+    setDownloadEndDate(todayStr);
+    setShowDownloadModal(true);
+  };
+
+  const downloadStatement = async () => {
+    // Filter orders by date range
+    const ordersInRange = orders.filter(order => {
+      const orderDate = order.orderDate ? order.orderDate.split('T')[0] : '';
+      return orderDate >= downloadStartDate && orderDate <= downloadEndDate;
+    });
+
+    if (ordersInRange.length === 0) {
+      setToast({ message: 'No orders found in selected date range', type: 'danger' });
+      setTimeout(() => setToast(null), 2500);
+      return;
+    }
+
+    try {
+      setIsDownloading(true);
+      setShowDownloadModal(false);
+      
+      // Prepare filter info for the PDF header
+      const filters = {
+        statusFilter: 'All',
+        dateRange: `${downloadStartDate} to ${downloadEndDate}`,
+        pendingPayment: false
+      };
+
+      const response = await fetch(`${API_BASE_URL}${API_ENDPOINTS.DOWNLOAD_STATEMENT}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          orders: ordersInRange,
+          filters: filters
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to generate PDF');
+      }
+
+      // Get the PDF blob
+      const blob = await response.blob();
+      
+      // Create download link
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `orders_statement_${downloadStartDate}_to_${downloadEndDate}.pdf`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+
+      setToast({ message: 'Statement downloaded successfully!', type: 'success' });
+      setTimeout(() => setToast(null), 2500);
+    } catch (err) {
+      console.error('Download error:', err);
+      setToast({ message: 'Failed to download statement', type: 'danger' });
+      setTimeout(() => setToast(null), 2500);
+    } finally {
+      setIsDownloading(false);
+    }
   };
 
   const getStatusColor = (status) => {
@@ -366,6 +457,29 @@ const ViewOrders = () => {
               Total Orders: <span className="text-purple-600">{filteredOrders.length}</span>
             </p>
           </div>
+          {/* Download PDF Button */}
+          <button
+            onClick={openDownloadModal}
+            disabled={isDownloading}
+            className={`flex items-center gap-2 px-4 py-2 rounded-lg font-semibold text-sm transition-all shadow-sm ${
+              isDownloading
+                ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                : 'bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:shadow-md hover:scale-105'
+            }`}
+            title="Download statement as PDF"
+          >
+            {isDownloading ? (
+              <>
+                <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent"></div>
+                <span>Generating...</span>
+              </>
+            ) : (
+              <>
+                <Download className="h-4 w-4" />
+                <span>Download PDF</span>
+              </>
+            )}
+          </button>
         </div>
       </motion.div>
 
@@ -1138,6 +1252,167 @@ const ViewOrders = () => {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Download Date Range Modal */}
+      <AnimatePresence>
+        {showDownloadModal && (
+          <motion.div
+            className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setShowDownloadModal(false)}
+          >
+            <motion.div
+              className="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden max-h-[90vh] overflow-y-auto"
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Header */}
+              <div className="bg-gradient-to-r from-purple-500 to-pink-500 px-4 sm:px-6 py-3 sm:py-4">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-lg sm:text-xl font-bold text-white flex items-center gap-2">
+                    <Download className="h-4 w-4 sm:h-5 sm:w-5" />
+                    Download Statement
+                  </h3>
+                  <button
+                    onClick={() => setShowDownloadModal(false)}
+                    className="text-white/80 hover:text-white transition-colors touch-manipulation"
+                  >
+                    <XCircle className="h-5 w-5 sm:h-6 sm:w-6" />
+                  </button>
+                </div>
+              </div>
+
+              {/* Content */}
+              <div className="p-4 sm:p-6">
+                <p className="text-gray-600 mb-4 text-sm">
+                  Select the date range for the orders statement:
+                </p>
+                
+                <div className="space-y-4">
+                  {/* Start Date */}
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-1">
+                      From Date
+                    </label>
+                    <div className="flex items-center gap-2">
+                      <Calendar className="h-4 w-4 sm:h-5 sm:w-5 text-purple-500 flex-shrink-0" />
+                      <input
+                        type="date"
+                        value={downloadStartDate}
+                        onChange={(e) => setDownloadStartDate(e.target.value)}
+                        className="flex-1 bg-gray-50 border border-gray-300 rounded-lg px-3 py-2.5 text-sm sm:text-base text-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-500 min-h-[44px]"
+                      />
+                    </div>
+                  </div>
+
+                  {/* End Date */}
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-1">
+                      To Date
+                    </label>
+                    <div className="flex items-center gap-2">
+                      <Calendar className="h-4 w-4 sm:h-5 sm:w-5 text-pink-500 flex-shrink-0" />
+                      <input
+                        type="date"
+                        value={downloadEndDate}
+                        onChange={(e) => setDownloadEndDate(e.target.value)}
+                        className="flex-1 bg-gray-50 border border-gray-300 rounded-lg px-3 py-2.5 text-sm sm:text-base text-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-500 min-h-[44px]"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Quick Date Options */}
+                  <div className="flex flex-wrap gap-2 pt-2">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const today = new Date();
+                        const todayStr = today.toISOString().split('T')[0];
+                        setDownloadStartDate(todayStr);
+                        setDownloadEndDate(todayStr);
+                      }}
+                      className="px-3 py-1 text-xs bg-purple-100 text-purple-700 rounded-full hover:bg-purple-200 transition-colors"
+                    >
+                      Today
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const today = new Date();
+                        const weekAgo = new Date(today);
+                        weekAgo.setDate(today.getDate() - 7);
+                        setDownloadStartDate(weekAgo.toISOString().split('T')[0]);
+                        setDownloadEndDate(today.toISOString().split('T')[0]);
+                      }}
+                      className="px-3 py-1 text-xs bg-purple-100 text-purple-700 rounded-full hover:bg-purple-200 transition-colors"
+                    >
+                      Last 7 Days
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const today = new Date();
+                        const monthAgo = new Date(today);
+                        monthAgo.setMonth(today.getMonth() - 1);
+                        setDownloadStartDate(monthAgo.toISOString().split('T')[0]);
+                        setDownloadEndDate(today.toISOString().split('T')[0]);
+                      }}
+                      className="px-3 py-1 text-xs bg-purple-100 text-purple-700 rounded-full hover:bg-purple-200 transition-colors"
+                    >
+                      Last 30 Days
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const today = new Date();
+                        const firstDay = new Date(today.getFullYear(), today.getMonth(), 1);
+                        setDownloadStartDate(firstDay.toISOString().split('T')[0]);
+                        setDownloadEndDate(today.toISOString().split('T')[0]);
+                      }}
+                      className="px-3 py-1 text-xs bg-pink-100 text-pink-700 rounded-full hover:bg-pink-200 transition-colors"
+                    >
+                      This Month
+                    </button>
+                  </div>
+                </div>
+
+                {/* Actions */}
+                <div className="flex flex-col sm:flex-row gap-3 mt-6">
+                  <button
+                    onClick={() => setShowDownloadModal(false)}
+                    className="flex-1 px-4 py-2.5 border border-gray-300 text-gray-700 rounded-lg font-semibold hover:bg-gray-50 transition-colors touch-manipulation min-h-[44px]"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    onClick={downloadStatement}
+                    disabled={!downloadStartDate || !downloadEndDate || downloadStartDate > downloadEndDate}
+                    className={`flex-1 px-4 py-2.5 rounded-lg font-semibold flex items-center justify-center gap-2 transition-all touch-manipulation min-h-[44px] ${
+                      !downloadStartDate || !downloadEndDate || downloadStartDate > downloadEndDate
+                        ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                        : 'bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:shadow-lg'
+                    }`}
+                  >
+                    <Download className="h-4 w-4" />
+                    Download PDF
+                  </button>
+                </div>
+
+                {downloadStartDate > downloadEndDate && (
+                  <p className="text-red-500 text-xs mt-2 text-center">
+                    End date must be after start date
+                  </p>
+                )}
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Toast */}
       <AnimatePresence>
         {toast && (
