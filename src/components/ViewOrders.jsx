@@ -29,6 +29,7 @@ const ViewOrders = () => {
   const [selectedQuantity, setSelectedQuantity] = useState(1);
   const [selectedWeightUnit, setSelectedWeightUnit] = useState('kg');
   const [showAddItems, setShowAddItems] = useState(false);
+  const [sweetSearch, setSweetSearch] = useState('');
 
   useEffect(() => {
     fetchOrders();
@@ -194,6 +195,7 @@ const ViewOrders = () => {
     setAdditionalAdvance(0);
     setEditOrderItems([...order.items]); // Copy existing items
     setShowAddItems(false);
+    setSweetSearch('');
     setEditForm({
       customerName: order.customerName || '',
       mobile: order.mobile || '',
@@ -891,10 +893,39 @@ const ViewOrders = () => {
                   <div className="bg-blue-50 border border-blue-200 rounded-lg p-2 sm:p-3">
                     <label className="block text-xs sm:text-sm font-semibold text-blue-600 mb-2">Add New Item</label>
                     <div className="space-y-2">
+                      {/* Search box with autocomplete */}
+                      <input
+                        type="text"
+                        value={sweetSearch}
+                        onChange={(e) => {
+                          setSweetSearch(e.target.value);
+                          // Auto-select if exact match found
+                          const match = availableSweets.find(
+                            sweet => sweet.name.toLowerCase() === e.target.value.toLowerCase()
+                          );
+                          if (match) {
+                            setSelectedSweet(match._id);
+                          }
+                        }}
+                        list="sweets-datalist"
+                        placeholder="Search sweets..."
+                        className="w-full px-2 sm:px-3 py-2 text-xs sm:text-sm bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      />
+                      <datalist id="sweets-datalist">
+                        {availableSweets.map((sweet) => (
+                          <option key={sweet._id} value={sweet.name}>
+                            {sweet.name} - ₹{sweet.rate}/{sweet.unit}
+                          </option>
+                        ))}
+                      </datalist>
                       <select
                         value={selectedSweet}
                         onChange={(e) => {
                           setSelectedSweet(e.target.value);
+                          const sweet = availableSweets.find(s => s._id === e.target.value);
+                          if (sweet) {
+                            setSweetSearch(sweet.name);
+                          }
                           // Reset weight unit to kg when changing sweet
                           setSelectedWeightUnit('kg');
                           setSelectedQuantity(1);
@@ -902,11 +933,13 @@ const ViewOrders = () => {
                         className="w-full px-2 sm:px-3 py-2 text-xs sm:text-sm bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                       >
                         <option value="">Select a sweet...</option>
-                        {availableSweets.map((sweet) => (
-                          <option key={sweet._id} value={sweet._id}>
-                            {sweet.name} - ₹{sweet.rate}/{sweet.unit}
-                          </option>
-                        ))}
+                        {availableSweets
+                          .filter(sweet => sweet.name.toLowerCase().includes(sweetSearch.toLowerCase()))
+                          .map((sweet) => (
+                            <option key={sweet._id} value={sweet._id}>
+                              {sweet.name} - ₹{sweet.rate}/{sweet.unit}
+                            </option>
+                          ))}
                       </select>
                       <div className="flex gap-2">
                         <input
