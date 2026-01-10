@@ -10,6 +10,7 @@ const ViewOrders = () => {
   const [dateFilter, setDateFilter] = useState(''); // Date filter for orders
   const [searchQuery, setSearchQuery] = useState(''); // Search query
   const [deliverySort, setDeliverySort] = useState('asc'); // 'asc' or 'desc'
+  const [orderSort, setOrderSort] = useState('asc'); // 'asc' or 'desc'
   const [showPendingPaymentOnly, setShowPendingPaymentOnly] = useState(false); // Filter for delivered with pending payment
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -104,6 +105,15 @@ const ViewOrders = () => {
       return statusMatch && dateMatch && searchMatch && pendingPaymentMatch;
     })
     .sort((a, b) => {
+      // If orderSort is active, sort by order date
+      if (orderSort) {
+        const dateA = new Date(a.orderDate || '9999-12-31');
+        const dateB = new Date(b.orderDate || '9999-12-31');
+        const comparison = dateA - dateB;
+        return orderSort === 'asc' ? comparison : -comparison;
+      }
+      
+      // Otherwise sort by delivery date
       const dateA = new Date(a.deliveryDate || '9999-12-31');
       const dateB = new Date(b.deliveryDate || '9999-12-31');
       const comparison = dateA - dateB;
@@ -113,6 +123,12 @@ const ViewOrders = () => {
 
   const toggleDeliverySort = () => {
     setDeliverySort(deliverySort === 'asc' ? 'desc' : 'asc');
+    setOrderSort(null); // Disable order sort when delivery sort is active
+  };
+
+  const toggleOrderSort = () => {
+    setOrderSort(orderSort === 'asc' ? 'desc' : 'asc');
+    setDeliverySort(null); // Disable delivery sort when order sort is active
   };
 
   const getStatusColor = (status) => {
@@ -383,7 +399,16 @@ const ViewOrders = () => {
                   <tr>
                     <th className="px-2 sm:px-3 md:px-4 py-3 sm:py-4 text-left text-xs sm:text-sm font-semibold whitespace-nowrap">Customer</th>
                     <th className="px-2 sm:px-3 md:px-4 py-3 sm:py-4 text-left text-xs sm:text-sm font-semibold whitespace-nowrap">Contact</th>
-                    <th className="px-2 sm:px-3 md:px-4 py-3 sm:py-4 text-left text-xs sm:text-sm font-semibold whitespace-nowrap">Order Date</th>
+                    <th className="px-2 sm:px-3 md:px-4 py-3 sm:py-4 text-left text-xs sm:text-sm font-semibold whitespace-nowrap">
+                      <button 
+                        onClick={toggleOrderSort}
+                        className="flex items-center gap-2 hover:text-yellow-300 transition-colors"
+                        title="Click to sort by order date"
+                      >
+                        <span>Order Date</span>
+                        {orderSort === 'asc' ? <ArrowUp className="h-4 w-4" /> : <ArrowDown className="h-4 w-4" />}
+                      </button>
+                    </th>
                     <th className="px-2 sm:px-3 md:px-4 py-3 sm:py-4 text-left text-xs sm:text-sm font-semibold whitespace-nowrap">
                       <button 
                         onClick={toggleDeliverySort}
@@ -631,8 +656,8 @@ const ViewOrders = () => {
                   <input
                     type="text"
                     value={editForm.customerName}
-                    onChange={(e) => setEditForm(f => ({ ...f, customerName: e.target.value }))}
-                    className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base bg-white border border-gray-300 rounded-lg sm:rounded-xl text-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+                    readOnly
+                    className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base bg-gray-100 border border-gray-300 rounded-lg sm:rounded-xl text-gray-600 cursor-not-allowed"
                     required
                   />
                 </div>
@@ -641,8 +666,8 @@ const ViewOrders = () => {
                   <input
                     type="tel"
                     value={editForm.mobile}
-                    onChange={(e) => setEditForm(f => ({ ...f, mobile: e.target.value }))}
-                    className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base bg-white border border-gray-300 rounded-lg sm:rounded-xl text-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+                    readOnly
+                    className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base bg-gray-100 border border-gray-300 rounded-lg sm:rounded-xl text-gray-600 cursor-not-allowed"
                     required
                   />
                 </div>
@@ -653,8 +678,8 @@ const ViewOrders = () => {
                     min="0"
                     step="0.01"
                     value={editForm.total}
-                    onChange={(e) => setEditForm(f => ({ ...f, total: e.target.value }))}
-                    className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base bg-white border border-gray-300 rounded-lg sm:rounded-xl text-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+                    readOnly
+                    className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base bg-gray-100 border border-gray-300 rounded-lg sm:rounded-xl text-gray-600 cursor-not-allowed"
                     required
                   />
                 </div>
