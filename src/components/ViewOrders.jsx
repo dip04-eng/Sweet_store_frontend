@@ -25,6 +25,7 @@ const ViewOrders = () => {
   // Add items functionality
   const [availableSweets, setAvailableSweets] = useState([]);
   const [editOrderItems, setEditOrderItems] = useState([]);
+  const [originalOrderItems, setOriginalOrderItems] = useState([]); // Store original quantities
   const [selectedSweet, setSelectedSweet] = useState('');
   const [selectedQuantity, setSelectedQuantity] = useState(1);
   const [selectedWeightUnit, setSelectedWeightUnit] = useState('kg');
@@ -194,6 +195,7 @@ const ViewOrders = () => {
     setEditOrder(order);
     setAdditionalAdvance(0);
     setEditOrderItems([...order.items]); // Copy existing items
+    setOriginalOrderItems([...order.items]); // Store original items for restoration
     setShowAddItems(false);
     setSweetSearch('');
     setEditForm({
@@ -759,9 +761,7 @@ const ViewOrders = () => {
                                 −
                               </button>
                               <input
-                                type="number"
-                                min={item.unit === 'kg' ? (item.weightUnit === 'grams' ? '1' : '0.01') : '1'}
-                                step={item.unit === 'kg' ? (item.weightUnit === 'grams' ? '1' : '0.01') : '1'}
+                                type="text"
                                 value={item.quantity}
                                 onChange={(e) => {
                                   const inputValue = e.target.value;
@@ -774,12 +774,17 @@ const ViewOrders = () => {
                                     return;
                                   }
                                   
+                                  // Allow only numbers and decimals
+                                  if (!/^\d*\.?\d*$/.test(inputValue)) {
+                                    return;
+                                  }
+                                  
                                   const value = parseFloat(inputValue);
                                   
                                   if (!isNaN(value) && value > 0) {
                                     const newItems = [...editOrderItems];
                                     const isInGrams = item.weightUnit === 'grams';
-                                    newItems[index].quantity = item.unit === 'kg' && !isInGrams ? value : Math.round(value);
+                                    newItems[index].quantity = item.unit === 'kg' && !isInGrams ? value : (isInGrams ? Math.round(value) : value);
                                     setEditOrderItems(newItems);
                                     const newTotal = newItems.reduce((sum, it) => {
                                       const qty = it.quantity === '' ? 0 : it.quantity;
@@ -790,19 +795,35 @@ const ViewOrders = () => {
                                   }
                                 }}
                                 onBlur={(e) => {
-                                  // If empty on blur, reset to minimum value
+                                  // If empty on blur, restore original quantity
                                   if (e.target.value === '' || parseFloat(e.target.value) <= 0) {
                                     const newItems = [...editOrderItems];
-                                    const isInGrams = item.weightUnit === 'grams';
-                                    const minValue = item.unit === 'kg' ? (isInGrams ? 1 : 0.01) : 1;
-                                    newItems[index].quantity = minValue;
-                                    setEditOrderItems(newItems);
-                                    const newTotal = newItems.reduce((sum, it) => {
-                                      const qty = it.quantity === '' ? 0 : it.quantity;
-                                      const qtyInKg = (it.weightUnit === 'grams') ? qty / 1000 : qty;
-                                      return sum + (it.price * qtyInKg);
-                                    }, 0);
-                                    setEditForm(f => ({ ...f, total: newTotal }));
+                                    // Check if this item exists in original order by index or by matching
+                                    const originalItem = originalOrderItems[index] || originalOrderItems.find(
+                                      orig => (orig.sweetId && orig.sweetId === item.sweetId) || orig.sweetName === item.sweetName
+                                    );
+                                    if (originalItem) {
+                                      newItems[index].quantity = originalItem.quantity;
+                                      setEditOrderItems(newItems);
+                                      const newTotal = newItems.reduce((sum, it) => {
+                                        const qty = it.quantity === '' ? 0 : it.quantity;
+                                        const qtyInKg = (it.weightUnit === 'grams') ? qty / 1000 : qty;
+                                        return sum + (it.price * qtyInKg);
+                                      }, 0);
+                                      setEditForm(f => ({ ...f, total: newTotal }));
+                                    } else {
+                                      // If not found in original (newly added item), use minimum value
+                                      const isInGrams = item.weightUnit === 'grams';
+                                      const minValue = item.unit === 'kg' ? (isInGrams ? 1 : 0.01) : 1;
+                                      newItems[index].quantity = minValue;
+                                      setEditOrderItems(newItems);
+                                      const newTotal = newItems.reduce((sum, it) => {
+                                        const qty = it.quantity === '' ? 0 : it.quantity;
+                                        const qtyInKg = (it.weightUnit === 'grams') ? qty / 1000 : qty;
+                                        return sum + (it.price * qtyInKg);
+                                      }, 0);
+                                      setEditForm(f => ({ ...f, total: newTotal }));
+                                    }
                                   }
                                 }}
                                 className="w-14 sm:w-16 px-1 py-1 text-center text-xs sm:text-sm border-x border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-500"
