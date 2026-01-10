@@ -943,11 +943,21 @@ const ViewOrders = () => {
                       </select>
                       <div className="flex gap-2">
                         <input
-                          type="number"
-                          min="0.01"
-                          step="0.01"
+                          type="text"
                           value={selectedQuantity}
-                          onChange={(e) => setSelectedQuantity(parseFloat(e.target.value) || 1)}
+                          onChange={(e) => {
+                            const value = e.target.value;
+                            // Allow empty string, numbers, and decimals
+                            if (value === '' || /^\d*\.?\d*$/.test(value)) {
+                              setSelectedQuantity(value === '' ? '' : value);
+                            }
+                          }}
+                          onBlur={(e) => {
+                            // Set to 1 if empty when losing focus
+                            if (e.target.value === '' || parseFloat(e.target.value) <= 0) {
+                              setSelectedQuantity(1);
+                            }
+                          }}
                           className="w-20 sm:w-24 px-2 sm:px-3 py-2 text-xs sm:text-sm bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                           placeholder="Qty"
                         />
