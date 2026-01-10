@@ -12,13 +12,7 @@ const getTomorrowDate = () => {
 };
 
 const TotalSold = () => {
-  // Get today's date as default
-  const getTodayDate = () => {
-    const today = new Date();
-    return today.toISOString().split('T')[0];
-  };
-
-  const [selectedDate, setSelectedDate] = useState(getTodayDate());
+  const [selectedDate, setSelectedDate] = useState(getTomorrowDate());
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(false);
   const [salesData, setSalesData] = useState(null);
