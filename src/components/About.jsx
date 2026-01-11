@@ -3,7 +3,6 @@ import { Award, Heart, Users, Clock } from 'lucide-react';
 import { GiCupcake } from 'react-icons/gi';
 import Navbar from './Navbar';
 import Footer from './Footer';
-import SEO from './SEO';
 
 const About = () => {
   const stats = [
@@ -47,18 +46,7 @@ const About = () => {
 
   return (
     <div className="min-h-screen bg-[#0D0D0D]">
-      <SEO 
-        title="About Us - Our Story & Legacy Since 1976"
-        description="Discover the story of Mansoor Hotel & Sweets, a family-owned sweet shop in Baisi, Bihar since 1976. Learn about our 50+ years of excellence, traditional recipes, and commitment to quality."
-        keywords="Mansoor Hotel history, Baisi sweet shop story, traditional sweet makers, Bihar mithai, family-owned sweets, 50 years legacy, pure ingredients sweets"
-        url="/about"
-        type="article"
-        structuredData={{
-          "@context": "https://schema.org",
-          "@type": "AboutPage",
-          "name": "About Mansoor Hotel & Sweets",
-          "description": "Learn about our 50+ year legacy of making traditional Indian sweets",
-          "url": "https://sweet-store-frontend-ten.vercel.app/about",
+
           "mainEntity": {
             "@type": "Organization",
             "name": "Mansoor & Sons",

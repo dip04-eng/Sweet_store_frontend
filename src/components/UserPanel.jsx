@@ -7,7 +7,6 @@ import Hero from './Hero';
 import Navbar from './Navbar';
 import Footer from './Footer';
 import BackToTop from './BackToTop';
-import SEO from './SEO';
 import { API_BASE_URL, API_ENDPOINTS } from '../config/api';
 
 const UserPanel = () => {
@@ -91,24 +90,6 @@ const UserPanel = () => {
 
   return (
     <div className="min-h-screen bg-[#0D0D0D]">
-      <SEO 
-        title="Order Traditional Indian Sweets Online"
-        description="Browse and order 100+ varieties of authentic Indian sweets from Mansoor Hotel & Sweets, Baisi, Bihar. Handcrafted with pure ghee since 1976. Rasgulla, Gulab Jamun, Jalebi, Barfi & more. Free delivery available!"
-        keywords="order sweets online, Indian sweets delivery, Rasgulla, Gulab Jamun, Jalebi, Barfi, Laddu, Baisi sweets, Bihar sweets online, traditional mithai"
-        url="/"
-        structuredData={{
-          "@context": "https://schema.org",
-          "@type": "CollectionPage",
-          "name": "Sweet Collection - Mansoor Hotel & Sweets",
-          "description": "Browse our collection of 100+ traditional Indian sweets",
-          "url": "https://sweet-store-frontend-ten.vercel.app/",
-          "isPartOf": {
-            "@type": "WebSite",
-            "name": "Mansoor Hotel & Sweets",
-            "url": "https://sweet-store-frontend-ten.vercel.app"
-          }
-        }}
-      />
       
       {/* Navbar */}
       <Navbar cart={cart} />
