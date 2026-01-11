@@ -89,21 +89,6 @@ const Contact = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#FDF6E3] via-white to-[#FFF8E7]">
-
-            "name": "Mansoor Hotel & Sweets",
-            "telephone": "+919155197891",
-            "email": "mansoors.info@gmail.com",
-            "address": {
-              "@type": "PostalAddress",
-              "streetAddress": "Madrasa Road",
-              "addressLocality": "Baisi",
-              "addressRegion": "Bihar",
-              "postalCode": "854315",
-              "addressCountry": "IN"
-            }
-          }
-        }}
-      />
       <Navbar />
 
       {/* Hero Section */}

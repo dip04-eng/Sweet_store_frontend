@@ -46,18 +46,6 @@ const About = () => {
 
   return (
     <div className="min-h-screen bg-[#0D0D0D]">
-
-          "mainEntity": {
-            "@type": "Organization",
-            "name": "Mansoor & Sons",
-            "foundingDate": "1976",
-            "foundingLocation": {
-              "@type": "Place",
-              "name": "Baisi, Bihar, India"
-            }
-          }
-        }}
-      />
       <Navbar />
 
       {/* Hero Section */}
