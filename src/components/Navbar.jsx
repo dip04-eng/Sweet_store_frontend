@@ -20,8 +20,8 @@ const Navbar = ({ cart = [] }) => {
   const navLinks = [
     { name: 'Home', path: '/' },
     // { name: 'Shop', path: '/#shop' }, // Hidden for now - may be needed in future
-    { name: 'About', path: '/about' },
-    // { name: 'Contact', path: '/contact' }, // Hidden for now - may be needed in future
+    // { name: 'About', path: '/about' },
+    { name: 'Contact', path: '/contact' },
   ];
 
   const scrollToSection = (e, path) => {
@@ -42,40 +42,45 @@ const Navbar = ({ cart = [] }) => {
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       className="fixed top-0 left-0 right-0 z-50 transition-all duration-300 glass-effect shadow-lg border-b border-[#8B0000]/10"
+      role="navigation"
+      aria-label="Main navigation"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-2 sm:space-x-3 group touch-manipulation">
+          <Link to="/" className="flex items-center space-x-2 sm:space-x-3 group touch-manipulation" aria-label="Mansoor Hotel & Sweets - Home">
             <motion.div
-              whileHover={{ rotate: 360 }}
-              transition={{ duration: 0.6 }}
+              whileHover={{ scale: 1.1 }}
+              transition={{ duration: 0.3 }}
               className="relative flex-shrink-0"
             >
-              <GiCupcake className="h-8 w-8 sm:h-10 sm:w-10 text-[#C41E3A] drop-shadow-lg" />
-              <div className="absolute inset-0 bg-[#C41E3A] blur-xl opacity-50 group-hover:opacity-70 transition-opacity"></div>
+              <div className="bg-white rounded-lg p-1 shadow-md">
+                <img src="/Hotel_Logo.png" alt="Mansoor Hotel & Sweets Logo" className="h-12 w-12 sm:h-14 sm:w-14 md:h-16 md:w-16 object-contain" aria-hidden="true" />
+              </div>
             </motion.div>
             <div className="min-w-0">
-              <h1 className="text-base sm:text-xl md:text-2xl font-bold text-[#C41E3A] font-['Playfair_Display'] leading-tight">
+              <span className="text-base sm:text-xl md:text-2xl font-bold text-[#C41E3A] font-['Playfair_Display'] leading-tight block">
                 MANSOOR HOTEL
-              </h1>
-              <p className="text-xs text-[#8B0000] font-light tracking-wider">& SWEETS</p>
+              </span>
+              <span className="text-xs text-[#8B0000] font-light tracking-wider block">& SWEETS</span>
             </div>
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
+          <div className="hidden md:flex items-center space-x-8" role="menubar">
             {navLinks.map((link) => (
               <Link
                 key={link.name}
                 to={link.path}
                 onClick={(e) => scrollToSection(e, link.path)}
+                role="menuitem"
+                aria-current={location.pathname === link.path ? 'page' : undefined}
                 className={`relative text-[#2B1B17] hover:text-[#C41E3A] transition-all duration-300 font-medium group ${
                   location.pathname === link.path ? 'text-[#C41E3A]' : ''
                 }`}
               >
                 {link.name}
-                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-[#C41E3A] to-[#FFD700] group-hover:w-full transition-all duration-300"></span>
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-[#C41E3A] to-[#FFD700] group-hover:w-full transition-all duration-300" aria-hidden="true"></span>
               </Link>
             ))}
           </div>
@@ -83,31 +88,32 @@ const Navbar = ({ cart = [] }) => {
           {/* Cart, Admin & Mobile Menu Button */}
           <div className="flex items-center space-x-2 sm:space-x-4">
             {/* Admin Button */}
-            <Link to="/admin-login" className="relative group">
+            <Link to="/admin-login" className="relative group" aria-label="Admin Login">
               <motion.div
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
                 className="bg-gradient-to-r from-[#8B0000] to-[#C41E3A] text-white px-3 sm:px-5 py-2.5 sm:py-3 rounded-full font-semibold shadow-lg hover:shadow-[#FFD700]/50 flex items-center space-x-1 sm:space-x-2 transition-all border border-[#FFD700]/30"
               >
-                <ShieldCheck className="h-4 w-4 sm:h-5 sm:w-5" />
+                <ShieldCheck className="h-4 w-4 sm:h-5 sm:w-5" aria-hidden="true" />
                 <span className="hidden sm:inline">Admin</span>
               </motion.div>
             </Link>
 
             {/* Cart Button */}
-            <Link to="/cart" className="relative group">
+            <Link to="/cart" className="relative group" aria-label={`Shopping cart with ${cartItemCount} items`}>
               <motion.div
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
                 className="btn-premium bg-gradient-to-r from-[#C41E3A] to-[#8B0000] text-white px-3 sm:px-6 py-2.5 sm:py-3 rounded-full font-semibold shadow-lg hover:shadow-[#FFD700]/50 flex items-center space-x-1 sm:space-x-2 border border-[#FFD700]/30"
               >
-                <ShoppingCart className="h-4 w-4 sm:h-5 sm:w-5" />
+                <ShoppingCart className="h-4 w-4 sm:h-5 sm:w-5" aria-hidden="true" />
                 <span className="hidden sm:inline">Cart</span>
                 {cartItemCount > 0 && (
                   <motion.span
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
                     className="animate-pulse-gold bg-[#FFD700] text-[#C41E3A] px-2 py-0.5 rounded-full text-xs font-bold"
+                    aria-label={`${cartItemCount} items in cart`}
                   >
                     {cartItemCount}
                   </motion.span>
@@ -119,9 +125,11 @@ const Navbar = ({ cart = [] }) => {
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               className="md:hidden text-[#C41E3A] p-2 touch-manipulation active:scale-95 transition-transform"
-              aria-label="Toggle menu"
+              aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
+              aria-expanded={isMobileMenuOpen}
+              aria-controls="mobile-menu"
             >
-              {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+              {isMobileMenuOpen ? <X className="h-6 w-6" aria-hidden="true" /> : <Menu className="h-6 w-6" aria-hidden="true" />}
             </button>
           </div>
         </div>
@@ -131,10 +139,13 @@ const Navbar = ({ cart = [] }) => {
       <AnimatePresence>
         {isMobileMenuOpen && (
           <motion.div
+            id="mobile-menu"
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
             className="md:hidden glass-effect border-t border-[#FFD700]/20"
+            role="menu"
+            aria-label="Mobile navigation"
           >
             <div className="px-4 py-6 space-y-4">
               {navLinks.map((link, index) => (
@@ -150,6 +161,8 @@ const Navbar = ({ cart = [] }) => {
                       scrollToSection(e, link.path);
                       setIsMobileMenuOpen(false);
                     }}
+                    role="menuitem"
+                    aria-current={location.pathname === link.path ? 'page' : undefined}
                     className={`block text-[#2B1B17] hover:text-[#C41E3A] transition-colors font-medium py-2 ${
                       location.pathname === link.path ? 'text-[#C41E3A]' : ''
                     }`}

@@ -10,13 +10,15 @@ const Hero = () => {
   };
 
   return (
-    <div className="relative h-screen w-full overflow-hidden">
+    <div className="relative h-screen w-full overflow-hidden" role="banner" aria-label="Welcome to Mansoor Hotel & Sweets">
       {/* Background Image */}
       <div className="absolute inset-0">
         <img 
           src="/Background.png" 
-          alt="Sweet Store Background" 
+          alt="Mansoor Hotel & Sweets - Traditional Indian Sweet Shop in Baisi, Bihar featuring our signature sweets and warm hospitality since 1976" 
           className="w-full h-full object-cover object-center md:object-cover"
+          loading="eager"
+          fetchpriority="high"
           style={{
             objectPosition: 'center center',
           }}

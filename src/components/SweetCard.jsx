@@ -67,7 +67,9 @@ const SweetCard = ({ sweet, onAddToCart }) => {
           whileHover={{ scale: 1.05 }}
           transition={{ duration: 0.4 }}
           src={sweet.image || 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="300"%3E%3Crect fill="%23FFD700" width="400" height="300"/%3E%3Ctext fill="%230D0D0D" font-size="24" font-weight="bold" x="50%25" y="50%25" text-anchor="middle" dominant-baseline="middle"%3E🍬 Sweet%3C/text%3E%3C/svg%3E'}
-          alt={sweet.name}
+          alt={`${sweet.name} - Traditional Indian sweet from Mansoor Hotel & Sweets, Baisi Bihar. ${sweet.description ? sweet.description.substring(0, 100) : 'Handcrafted with pure ingredients.'}`}
+          title={`Order ${sweet.name} online - ₹${sweet.rate}/${sweet.unit === 'piece' ? 'piece' : 'kg'}`}
+          loading="lazy"
           className="w-full h-40 sm:h-44 md:h-48 object-cover"
           onError={(e) => {
             console.error('❌ Image load error for:', sweet.name);

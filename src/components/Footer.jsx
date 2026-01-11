@@ -26,9 +26,9 @@ const Footer = () => {
   const sweetIcons = [GiCupcake, GiCandyCanes, GiDonut, GiCookie];
 
   return (
-    <footer className="relative bg-gradient-to-b from-[#0D0D0D] to-[#1A0F0A] border-t border-[#FFD700]/20 pt-16 pb-8">
+    <footer className="relative bg-gradient-to-b from-[#0D0D0D] to-[#1A0F0A] border-t border-[#FFD700]/20 pt-16 pb-8" role="contentinfo" aria-label="Site footer">
       {/* Decorative Sweet Icons */}
-      <div className="absolute top-0 left-0 right-0 flex justify-around opacity-10 -mt-8">
+      <div className="absolute top-0 left-0 right-0 flex justify-around opacity-10 -mt-8" aria-hidden="true">
         {sweetIcons.map((Icon, index) => (
           <motion.div
             key={index}
@@ -50,7 +50,9 @@ const Footer = () => {
             className="space-y-4"
           >
             <div className="flex items-center space-x-3">
-              <GiCupcake className="h-10 w-10 text-[#FFD700]" />
+              <div className="bg-white rounded-lg p-2 shadow-md">
+                <img src="/Hotel_Logo.png" alt="Mansoor Hotel & Sweets Logo" className="h-14 w-14 object-contain" aria-hidden="true" />
+              </div>
               <div>
                 <h3 className="text-xl font-bold text-gold-gradient font-['Playfair_Display']">
                   MANSOOR HOTEL
@@ -62,24 +64,27 @@ const Footer = () => {
               MANSOOR & SONS - Crafting happiness in every bite since generations. 
               Experience the finest traditional sweets made with pure ingredients and love.
             </p>
-            <div className="flex space-x-4">
-              {socialLinks.map((social, index) => (
-                <motion.a
-                  key={index}
-                  href={social.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  whileHover={{ scale: 1.2, rotate: 5 }}
-                  whileTap={{ scale: 0.9 }}
-                  className="bg-[#1a1a1a] p-3 rounded-full hover:shadow-lg transition-all duration-300"
-                  style={{ '--hover-color': social.color }}
-                  onMouseEnter={(e) => e.currentTarget.style.background = social.color}
-                  onMouseLeave={(e) => e.currentTarget.style.background = '#1a1a1a'}
-                >
-                  <social.icon className="h-5 w-5 text-[#F5F5DC]" />
-                </motion.a>
-              ))}
-            </div>
+            <nav aria-label="Social media links">
+              <div className="flex space-x-4">
+                {socialLinks.map((social, index) => (
+                  <motion.a
+                    key={index}
+                    href={social.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`Follow us on ${social.icon.name?.replace('Fa', '') || 'social media'}`}
+                    whileHover={{ scale: 1.2, rotate: 5 }}
+                    whileTap={{ scale: 0.9 }}
+                    className="bg-[#1a1a1a] p-3 rounded-full hover:shadow-lg transition-all duration-300"
+                    style={{ '--hover-color': social.color }}
+                    onMouseEnter={(e) => e.currentTarget.style.background = social.color}
+                    onMouseLeave={(e) => e.currentTarget.style.background = '#1a1a1a'}
+                  >
+                    <social.icon className="h-5 w-5 text-[#F5F5DC]" aria-hidden="true" />
+                  </motion.a>
+                ))}
+              </div>
+            </nav>
           </motion.div>
 
           {/* Quick Links */}
@@ -92,20 +97,22 @@ const Footer = () => {
             <h4 className="text-lg font-bold text-[#FFD700] mb-4 font-['Playfair_Display']">
               Quick Links
             </h4>
-            <ul className="space-y-2">
-              {quickLinks.map((link, index) => (
-                <li key={index}>
-                  <Link
-                    to={link.path}
-                    onClick={scrollToTop}
+            <nav aria-label="Quick navigation links">
+              <ul className="space-y-2">
+                {quickLinks.map((link, index) => (
+                  <li key={index}>
+                    <Link
+                      to={link.path}
+                      onClick={scrollToTop}
                     className="text-[#F5F5DC]/70 hover:text-[#FFD700] transition-colors duration-300 flex items-center space-x-2 group"
                   >
-                    <span className="w-0 h-0.5 bg-[#FFD700] group-hover:w-4 transition-all duration-300"></span>
+                    <span className="w-0 h-0.5 bg-[#FFD700] group-hover:w-4 transition-all duration-300" aria-hidden="true"></span>
                     <span>{link.name}</span>
                   </Link>
                 </li>
               ))}
             </ul>
+            </nav>
           </motion.div>
 
           {/* Contact Info */}
@@ -118,38 +125,43 @@ const Footer = () => {
             <h4 className="text-lg font-bold text-[#FFD700] mb-4 font-['Playfair_Display']">
               Contact Us
             </h4>
-            <ul className="space-y-3">
-              <li className="flex items-start space-x-3 text-[#F5F5DC]/70">
-                <FaMapMarkerAlt className="h-5 w-5 text-[#FFD700] mt-1 flex-shrink-0" />
-                <span className="text-sm">Madrasa Road, Baisi-854315, Bihar, India</span>
-              </li>
-              <li className="flex items-center space-x-3 text-[#F5F5DC]/70">
-                <FaPhone className="h-5 w-5 text-[#FFD700] flex-shrink-0" />
-                <div className="flex flex-col space-y-1">
+            <address className="not-italic">
+              <ul className="space-y-3">
+                <li className="flex items-start space-x-3 text-[#F5F5DC]/70">
+                  <FaMapMarkerAlt className="h-5 w-5 text-[#FFD700] mt-1 flex-shrink-0" aria-hidden="true" />
+                  <span className="text-sm">Madrasa Road, Baisi-854315, Bihar, India</span>
+                </li>
+                <li className="flex items-center space-x-3 text-[#F5F5DC]/70">
+                  <FaPhone className="h-5 w-5 text-[#FFD700] flex-shrink-0" aria-hidden="true" />
+                  <div className="flex flex-col space-y-1">
+                    <a 
+                      href="tel:+919155197891" 
+                      className="text-sm hover:text-[#FFD700] transition-colors duration-300"
+                      aria-label="Call us at +91 9155197891"
+                    >
+                      +919155197891
+                    </a>
+                    <a 
+                      href="tel:+917463067892" 
+                      className="text-sm hover:text-[#FFD700] transition-colors duration-300"
+                      aria-label="Call us at +91 7463067892"
+                    >
+                      +917463067892
+                    </a>
+                  </div>
+                </li>
+                <li className="flex items-center space-x-3 text-[#F5F5DC]/70">
+                  <FaEnvelope className="h-5 w-5 text-[#FFD700] flex-shrink-0" aria-hidden="true" />
                   <a 
-                    href="tel:+919155197891" 
+                    href="mailto:mansoors.info@gmail.com" 
                     className="text-sm hover:text-[#FFD700] transition-colors duration-300"
+                    aria-label="Email us at mansoors.info@gmail.com"
                   >
-                    +919155197891
+                    mansoors.info@gmail.com
                   </a>
-                  <a 
-                    href="tel:+917463067892" 
-                    className="text-sm hover:text-[#FFD700] transition-colors duration-300"
-                  >
-                    +917463067892
-                  </a>
-                </div>
-              </li>
-              <li className="flex items-center space-x-3 text-[#F5F5DC]/70">
-                <FaEnvelope className="h-5 w-5 text-[#FFD700] flex-shrink-0" />
-                <a 
-                  href="mailto:mansoors.info@gmail.com" 
-                  className="text-sm hover:text-[#FFD700] transition-colors duration-300"
-                >
-                  mansoors.info@gmail.com
-                </a>
-              </li>
-            </ul>
+                </li>
+              </ul>
+            </address>
           </motion.div>
 
           {/* Business Hours */}
@@ -172,12 +184,6 @@ const Footer = () => {
                 <span className="text-[#FFD700]">10:00 AM - 8:00 PM</span>
               </li>
             </ul>
-            <div className="mt-4 p-4 bg-gradient-to-r from-[#FFD700]/10 to-[#D2691E]/10 rounded-lg border border-[#FFD700]/20">
-              <p className="text-xs text-[#FFD700] font-semibold">✨ Special Offers</p>
-              <p className="text-xs text-[#F5F5DC]/70 mt-1">
-                Subscribe to our newsletter for exclusive deals!
-              </p>
-            </div>
           </motion.div>
         </div>
 

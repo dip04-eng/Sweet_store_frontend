@@ -6,6 +6,7 @@ import Navbar from './Navbar';
 import Footer from './Footer';
 import BackToTop from './BackToTop';
 import OrderForm from './OrderForm';
+import SEO from './SEO';
 
 const Cart = () => {
   const [cart, setCart] = useState([]);
@@ -94,6 +95,13 @@ const Cart = () => {
 
   return (
     <div className="min-h-screen bg-[#FFFBF5]">
+      <SEO 
+        title="Your Cart - Review Your Order"
+        description="Review your cart and complete your order for delicious traditional Indian sweets from Mansoor Hotel & Sweets, Baisi. Secure checkout with multiple payment options."
+        keywords="sweet cart, order sweets, checkout, buy Indian sweets online"
+        url="/cart"
+        noindex={true}
+      />
       <Navbar cart={cart} />
       
       <div className="pt-24 pb-16 px-4">

@@ -1,43 +1,54 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
-  <!-- Homepage -->
+  <!-- Homepage - Most Important -->
   <url>
     <loc>https://sweet-store-frontend-ten.vercel.app/</loc>
-    <lastmod>2024-01-01</lastmod>
+    <lastmod>2026-01-11</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="en-IN" href="https://sweet-store-frontend-ten.vercel.app/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://sweet-store-frontend-ten.vercel.app/" />
+    <image:image>
+      <image:loc>https://sweet-store-frontend-ten.vercel.app/Background.png</image:loc>
+      <image:title>Mansoor Hotel &amp; Sweets - Traditional Indian Sweets Shop in Baisi Bihar</image:title>
+      <image:caption>Experience authentic traditional sweets at Mansoor Hotel &amp; Sweets, family-owned since 1976</image:caption>
+      <image:geo_location>Baisi, Bihar, India</image:geo_location>
+    </image:image>
   </url>
   
-  <!-- User Panel (Sweet Menu) -->
+  <!-- Sweet Collection / Menu Page -->
   <url>
-    <loc>https://sweet-store-frontend-ten.vercel.app/user</loc>
-    <lastmod>2024-01-01</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
+    <loc>https://sweet-store-frontend-ten.vercel.app/#sweets-collection</loc>
+    <lastmod>2026-01-11</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.95</priority>
   </url>
   
   <!-- About Page -->
   <url>
     <loc>https://sweet-store-frontend-ten.vercel.app/about</loc>
-    <lastmod>2024-01-01</lastmod>
+    <lastmod>2026-01-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en-IN" href="https://sweet-store-frontend-ten.vercel.app/about" />
   </url>
   
   <!-- Contact Page -->
   <url>
     <loc>https://sweet-store-frontend-ten.vercel.app/contact</loc>
-    <lastmod>2024-01-01</lastmod>
+    <lastmod>2026-01-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en-IN" href="https://sweet-store-frontend-ten.vercel.app/contact" />
   </url>
   
-  <!-- Cart -->
+  <!-- Cart Page -->
   <url>
     <loc>https://sweet-store-frontend-ten.vercel.app/cart</loc>
-    <lastmod>2024-01-01</lastmod>
+    <lastmod>2026-01-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>

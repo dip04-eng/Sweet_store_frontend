@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { MapPin, Phone, Mail, Clock, Send } from 'lucide-react';
 import Navbar from './Navbar';
 import Footer from './Footer';
+import SEO from './SEO';
 import { API_BASE_URL, API_ENDPOINTS } from '../config/api';
 
 const Contact = () => {
@@ -89,6 +90,34 @@ const Contact = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#FDF6E3] via-white to-[#FFF8E7]">
+      <SEO 
+        title="Contact Us - Get in Touch"
+        description="Contact Mansoor Hotel & Sweets in Baisi, Bihar. Call +919155197891 or email mansoors.info@gmail.com. Visit us at Madrasa Road, Baisi-854315. Open Mon-Sat 9AM-9PM, Sun 10AM-8PM."
+        keywords="contact Mansoor Sweets, Baisi sweet shop phone number, sweet shop address Bihar, order sweets phone, Madrasa Road Baisi"
+        url="/contact"
+        type="ContactPage"
+        structuredData={{
+          "@context": "https://schema.org",
+          "@type": "ContactPage",
+          "name": "Contact Mansoor Hotel & Sweets",
+          "description": "Get in touch with us for orders, inquiries, and bulk booking",
+          "url": "https://sweet-store-frontend-ten.vercel.app/contact",
+          "mainEntity": {
+            "@type": "LocalBusiness",
+            "name": "Mansoor Hotel & Sweets",
+            "telephone": "+919155197891",
+            "email": "mansoors.info@gmail.com",
+            "address": {
+              "@type": "PostalAddress",
+              "streetAddress": "Madrasa Road",
+              "addressLocality": "Baisi",
+              "addressRegion": "Bihar",
+              "postalCode": "854315",
+              "addressCountry": "IN"
+            }
+          }
+        }}
+      />
       <Navbar />
 
       {/* Hero Section */}
