@@ -104,9 +104,7 @@ const AdminLogin = () => {
               className="inline-block mb-4"
             >
               <div className="relative">
-                <div className="bg-white rounded-xl p-3 shadow-lg inline-block">
-                  <img src="/Hotel_Logo.png" alt="Mansoor Hotel & Sweets Logo" className="h-20 w-20 object-contain" />
-                </div>
+                <img src="/hotel_logo2-removebg-preview.png" alt="Mansoor Hotel & Sweets Logo" className="h-40 w-40 sm:h-44 sm:w-44 object-contain" />
                 <ShieldCheck className="h-8 w-8 text-[#0D0D0D] absolute -bottom-1 -right-1 bg-[#FFD700] rounded-full p-1" />
               </div>
             </motion.div>

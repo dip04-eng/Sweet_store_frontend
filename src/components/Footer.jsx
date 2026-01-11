@@ -50,9 +50,7 @@ const Footer = () => {
             className="space-y-4"
           >
             <div className="flex items-center space-x-3">
-              <div className="bg-white rounded-lg p-2 shadow-md">
-                <img src="/Hotel_Logo.png" alt="Mansoor Hotel & Sweets Logo" className="h-14 w-14 object-contain" aria-hidden="true" />
-              </div>
+              <img src="/hotel_logo2-removebg-preview.png" alt="Mansoor Hotel & Sweets Logo" className="h-28 w-28 sm:h-32 sm:w-32 md:h-36 md:w-36 object-contain" aria-hidden="true" />
               <div>
                 <h3 className="text-xl font-bold text-gold-gradient font-['Playfair_Display']">
                   MANSOOR HOTEL

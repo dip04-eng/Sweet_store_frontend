@@ -54,9 +54,7 @@ const Navbar = ({ cart = [] }) => {
               transition={{ duration: 0.3 }}
               className="relative flex-shrink-0"
             >
-              <div className="bg-white rounded-lg p-1 shadow-md">
-                <img src="/Hotel_Logo.png" alt="Mansoor Hotel & Sweets Logo" className="h-12 w-12 sm:h-14 sm:w-14 md:h-16 md:w-16 object-contain" aria-hidden="true" />
-              </div>
+              <img src="/hotel_logo2-removebg-preview.png" alt="Mansoor Hotel & Sweets Logo" className="h-24 w-24 sm:h-28 sm:w-28 md:h-36 md:w-36 lg:h-40 lg:w-40 object-contain" aria-hidden="true" />
             </motion.div>
             <div className="min-w-0">
               <span className="text-base sm:text-xl md:text-2xl font-bold text-[#C41E3A] font-['Playfair_Display'] leading-tight block">
