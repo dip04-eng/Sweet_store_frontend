@@ -1,16 +1,10 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Home, ArrowLeft } from 'lucide-react';
-import SEO from './SEO';
 
 const NotFound = () => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#FFFBF5] to-[#FFF8E7] flex items-center justify-center px-4">
-      <SEO 
-        title="Page Not Found (404)"
-        description="The page you're looking for doesn't exist. Return to Mansoor Hotel & Sweets homepage to browse our delicious traditional Indian sweets."
-        noindex={true}
-      />
       
       <motion.div
         initial={{ opacity: 0, y: 20 }}

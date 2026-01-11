@@ -3,7 +3,6 @@ import { useNavigate, Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Lock, Mail, Eye, EyeOff, ShieldCheck, ArrowLeft } from 'lucide-react';
 import { GiCupcake } from 'react-icons/gi';
-import SEO from './SEO';
 
 const AdminLogin = () => {
   const [email, setEmail] = useState('');
@@ -45,11 +44,6 @@ const AdminLogin = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#0D0D0D] via-[#1a1a1a] to-[#0D0D0D] flex items-center justify-center px-4 py-12 relative overflow-hidden">
-      <SEO 
-        title="Admin Login"
-        description="Admin login portal for Mansoor Hotel & Sweets management."
-        noindex={true}
-      />
       {/* Animated Background Elements */}
       <div className="absolute inset-0 overflow-hidden">
         <motion.div
