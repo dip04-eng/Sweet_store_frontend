@@ -149,9 +149,9 @@ const Cart = () => {
                       animate={{ opacity: 1, x: 0 }}
                       exit={{ opacity: 0, x: 20 }}
                       transition={{ delay: index * 0.1 }}
-                      className="bg-white border-2 border-gray-200 rounded-xl shadow-md p-4 sm:p-6 hover:shadow-lg transition-shadow"
+                      className="bg-white border-2 border-gray-200 rounded-xl shadow-md p-3 sm:p-4 md:p-6 hover:shadow-lg transition-shadow"
                     >
-                      <div className="flex items-start sm:items-center gap-4">
+                      <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4">
                         <div className="relative flex-shrink-0">
                           <img
                             src={item.image || 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="100" height="100"%3E%3Crect fill="%23f0f0f0" width="100" height="100"/%3E%3Ctext fill="%23999" font-size="40" x="50%25" y="50%25" text-anchor="middle" dominant-baseline="middle"%3E🍬%3C/text%3E%3C/svg%3E'}

@@ -73,9 +73,9 @@ const About = () => {
       </section>
 
       {/* Stats Section */}
-      <section className="py-16 px-4">
+      <section className="py-12 sm:py-16 px-4">
         <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
             {stats.map((stat, index) => (
               <motion.div
                 key={index}
@@ -83,11 +83,11 @@ const About = () => {
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
-                className="card-premium p-6 text-center"
+                className="card-premium p-4 sm:p-6 text-center"
               >
-                <stat.icon className="h-12 w-12 text-[#FFD700] mx-auto mb-4" />
-                <h3 className="text-3xl sm:text-4xl font-bold text-[#FFD700] mb-2">{stat.value}</h3>
-                <p className="text-[#F5F5DC]/70 text-sm">{stat.label}</p>
+                <stat.icon className="h-10 w-10 sm:h-12 sm:w-12 text-[#FFD700] mx-auto mb-3 sm:mb-4" />
+                <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#FFD700] mb-1 sm:mb-2">{stat.value}</h3>
+                <p className="text-[#F5F5DC]/70 text-xs sm:text-sm">{stat.label}</p>
               </motion.div>
             ))}
           </div>

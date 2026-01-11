@@ -189,7 +189,7 @@ const SweetCard = ({ sweet, onAddToCart }) => {
           disabled={isAdding}
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
-          className={`w-full btn-premium flex items-center justify-center py-3 px-6 rounded-full font-bold transition-all duration-300 shadow-lg text-sm sm:text-base border-2 ${
+          className={`w-full btn-premium flex items-center justify-center py-3 px-6 rounded-full font-bold transition-all duration-300 shadow-lg text-sm sm:text-base border-2 touch-manipulation min-h-[48px] ${
             isAdding
               ? 'bg-green-600 text-white border-green-700'
               : 'bg-gradient-to-r from-[#FFD700] to-[#FFC107] text-[#8B0000] hover:shadow-[#FFD700]/50 border-[#C41E3A]/30'

@@ -136,14 +136,14 @@ const UserPanel = () => {
               <Filter className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
               <h3 className="text-base sm:text-lg font-semibold text-white">Filter by Category</h3>
             </div>
-            <div className="flex flex-wrap justify-center gap-2 sm:gap-3">
+            <div className="flex flex-wrap justify-center gap-2 sm:gap-3 px-2">
               {categories.map((category) => (
                 <motion.button
                   key={category}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={() => setSelectedCategory(category)}
-                  className={`px-4 sm:px-6 py-2 sm:py-2.5 rounded-full font-semibold transition-all shadow-md text-sm sm:text-base ${
+                  className={`px-3 sm:px-4 md:px-6 py-2 sm:py-2.5 rounded-full font-semibold transition-all shadow-md text-xs sm:text-sm md:text-base touch-manipulation min-h-[44px] ${
                     selectedCategory === category
                       ? 'bg-white text-[#C41E3A] shadow-lg'
                       : 'bg-white/20 text-white hover:bg-white/30 backdrop-blur-sm'
@@ -216,7 +216,7 @@ const UserPanel = () => {
             </motion.div>
           ) : (
             /* Sweets Grid */
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8">
+            <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 md:gap-8">
               {filteredSweets.map((sweet, index) => (
                 <motion.div
                   key={`${sweet.id || sweet._id || sweet.name}-${index}`}

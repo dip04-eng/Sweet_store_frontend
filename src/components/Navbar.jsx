@@ -19,9 +19,9 @@ const Navbar = ({ cart = [] }) => {
 
   const navLinks = [
     { name: 'Home', path: '/' },
-    { name: 'Shop', path: '/#shop' },
+    // { name: 'Shop', path: '/#shop' }, // Hidden for now - may be needed in future
     { name: 'About', path: '/about' },
-    { name: 'Contact', path: '/contact' },
+    // { name: 'Contact', path: '/contact' }, // Hidden for now - may be needed in future
   ];
 
   const scrollToSection = (e, path) => {
@@ -46,17 +46,17 @@ const Navbar = ({ cart = [] }) => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-3 group">
+          <Link to="/" className="flex items-center space-x-2 sm:space-x-3 group touch-manipulation">
             <motion.div
               whileHover={{ rotate: 360 }}
               transition={{ duration: 0.6 }}
-              className="relative"
+              className="relative flex-shrink-0"
             >
-              <GiCupcake className="h-10 w-10 text-[#C41E3A] drop-shadow-lg" />
+              <GiCupcake className="h-8 w-8 sm:h-10 sm:w-10 text-[#C41E3A] drop-shadow-lg" />
               <div className="absolute inset-0 bg-[#C41E3A] blur-xl opacity-50 group-hover:opacity-70 transition-opacity"></div>
             </motion.div>
-            <div>
-              <h1 className="text-xl sm:text-2xl font-bold text-[#C41E3A] font-['Playfair_Display']">
+            <div className="min-w-0">
+              <h1 className="text-base sm:text-xl md:text-2xl font-bold text-[#C41E3A] font-['Playfair_Display'] leading-tight">
                 MANSOOR HOTEL
               </h1>
               <p className="text-xs text-[#8B0000] font-light tracking-wider">& SWEETS</p>
@@ -118,7 +118,8 @@ const Navbar = ({ cart = [] }) => {
             {/* Mobile Menu Button */}
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="md:hidden text-[#C41E3A] p-2"
+              className="md:hidden text-[#C41E3A] p-2 touch-manipulation active:scale-95 transition-transform"
+              aria-label="Toggle menu"
             >
               {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
             </button>

@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { MapPin, Phone, Mail, Clock, Send } from 'lucide-react';
 import Navbar from './Navbar';
 import Footer from './Footer';
+import { API_BASE_URL, API_ENDPOINTS } from '../config/api';
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -13,6 +14,7 @@ const Contact = () => {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitMessage, setSubmitMessage] = useState('');
+  const [messageType, setMessageType] = useState(''); // 'success' or 'error'
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -21,15 +23,41 @@ const Contact = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setSubmitMessage('');
+    setMessageType('');
     
-    // Simulate form submission (replace with actual API call)
-    setTimeout(() => {
-      setSubmitMessage('Thank you! We will get back to you soon. 🍬');
+    try {
+      const response = await fetch(`${API_BASE_URL}${API_ENDPOINTS.SUBMIT_CONTACT}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.success) {
+        setMessageType('success');
+        setSubmitMessage(data.message || 'Thank you! We will get back to you soon. 🍬');
+        setFormData({ name: '', email: '', phone: '', message: '' });
+        
+        // Clear message after 5 seconds
+        setTimeout(() => {
+          setSubmitMessage('');
+          setMessageType('');
+        }, 5000);
+      } else {
+        setMessageType('error');
+        setSubmitMessage(data.error || 'Failed to send message. Please try again.');
+      }
+    } catch (error) {
+      console.error('Contact form error:', error);
+      setMessageType('error');
+      setSubmitMessage('Network error. Please check your connection and try again.');
+    } finally {
       setIsSubmitting(false);
-      setFormData({ name: '', email: '', phone: '', message: '' });
-      
-      setTimeout(() => setSubmitMessage(''), 3000);
-    }, 1500);
+    }
   };
 
   const contactInfo = [
@@ -60,22 +88,23 @@ const Contact = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-[#0D0D0D]">
+    <div className="min-h-screen bg-gradient-to-b from-[#FDF6E3] via-white to-[#FFF8E7]">
       <Navbar />
 
       {/* Hero Section */}
-      <section className="relative pt-32 pb-20 px-4">
-        <div className="max-w-7xl mx-auto">
+      <section className="relative pt-32 pb-16 px-4">
+        <div className="absolute inset-0 bg-gradient-to-br from-[#C41E3A]/5 to-transparent pointer-events-none"></div>
+        <div className="max-w-7xl mx-auto relative">
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
             className="text-center"
           >
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-gold-gradient mb-4 sm:mb-6 font-['Playfair_Display'] px-4">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold bg-gradient-to-r from-[#C41E3A] via-[#8B0000] to-[#C41E3A] bg-clip-text text-transparent mb-6 font-['Playfair_Display'] px-4">
               Get In Touch
             </h1>
-            <p className="text-base sm:text-lg md:text-xl text-[#F5F5DC]/80 max-w-3xl mx-auto leading-relaxed px-4">
+            <p className="text-base sm:text-lg md:text-xl text-gray-700 max-w-3xl mx-auto leading-relaxed px-4">
               We'd love to hear from you! Whether you have questions, feedback, or special orders, 
               we're here to help make your experience sweet.
             </p>
@@ -84,9 +113,9 @@ const Contact = () => {
       </section>
 
       {/* Contact Info Cards */}
-      <section className="py-16 px-4">
+      <section className="py-12 sm:py-16 px-4">
         <div className="max-w-7xl mx-auto">
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {contactInfo.map((info, index) => (
               <motion.div
                 key={index}
@@ -94,12 +123,13 @@ const Contact = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
-                className="card-premium p-6 text-center hover-glow"
+                whileHover={{ y: -8 }}
+                className="bg-white rounded-2xl p-6 text-center shadow-lg hover:shadow-2xl transition-all duration-300 border border-[#C41E3A]/10"
               >
-                <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-[#FFD700] to-[#D2691E] rounded-full mb-4">
-                  <info.icon className="h-8 w-8 text-[#0D0D0D]" />
+                <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-[#C41E3A] to-[#8B0000] rounded-2xl mb-4 shadow-lg">
+                  <info.icon className="h-7 w-7 text-white" />
                 </div>
-                <h3 className="text-xl font-bold text-[#FFD700] mb-3 font-['Playfair_Display']">
+                <h3 className="text-lg font-bold text-[#C41E3A] mb-3 font-['Playfair_Display']">
                   {info.title}
                 </h3>
                 {info.details.map((detail, idx) => {
@@ -108,12 +138,12 @@ const Contact = () => {
                     <a
                       key={idx}
                       href={link}
-                      className="block text-[#F5F5DC]/70 text-sm mb-1 hover:text-[#FFD700] transition-colors duration-300"
+                      className="block text-gray-700 text-sm mb-1 hover:text-[#C41E3A] transition-colors duration-300 font-medium"
                     >
                       {detail}
                     </a>
                   ) : (
-                    <p key={idx} className="text-[#F5F5DC]/70 text-sm mb-1">
+                    <p key={idx} className="text-gray-600 text-sm mb-1">
                       {detail}
                     </p>
                   );
@@ -125,22 +155,22 @@ const Contact = () => {
       </section>
 
       {/* Contact Form & Map Section */}
-      <section className="py-20 px-4">
+      <section className="py-12 px-4">
         <div className="max-w-7xl mx-auto">
-          <div className="grid lg:grid-cols-2 gap-12">
+          <div className="grid lg:grid-cols-2 gap-8">
             {/* Contact Form */}
             <motion.div
               initial={{ opacity: 0, x: -50 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              className="card-premium p-8"
+              className="bg-white rounded-2xl p-8 shadow-xl border border-gray-100"
             >
-              <h2 className="text-3xl font-bold text-[#FFD700] mb-6 font-['Playfair_Display']">
+              <h2 className="text-3xl font-bold text-[#C41E3A] mb-6 font-['Playfair_Display']">
                 Send Us a Message
               </h2>
-              <form onSubmit={handleSubmit} className="space-y-6">
+              <form onSubmit={handleSubmit} className="space-y-5">
                 <div>
-                  <label htmlFor="name" className="block text-[#F5F5DC] mb-2 font-medium">
+                  <label htmlFor="name" className="block text-gray-800 mb-2 font-semibold text-sm">
                     Your Name *
                   </label>
                   <input
@@ -150,13 +180,13 @@ const Contact = () => {
                     value={formData.name}
                     onChange={handleChange}
                     required
-                    className="w-full bg-[#1a1a1a] border border-[#FFD700]/20 rounded-lg px-4 py-3 text-[#F5F5DC] focus:outline-none focus:border-[#FFD700] transition-colors"
+                    className="w-full bg-gray-50 border-2 border-gray-200 rounded-xl px-4 py-3.5 text-gray-800 focus:outline-none focus:border-[#C41E3A] focus:bg-white transition-all placeholder-gray-400"
                     placeholder="Enter your name"
                   />
                 </div>
 
                 <div>
-                  <label htmlFor="email" className="block text-[#F5F5DC] mb-2 font-medium">
+                  <label htmlFor="email" className="block text-gray-800 mb-2 font-semibold text-sm">
                     Email Address *
                   </label>
                   <input
@@ -166,13 +196,13 @@ const Contact = () => {
                     value={formData.email}
                     onChange={handleChange}
                     required
-                    className="w-full bg-[#1a1a1a] border border-[#FFD700]/20 rounded-lg px-4 py-3 text-[#F5F5DC] focus:outline-none focus:border-[#FFD700] transition-colors"
+                    className="w-full bg-gray-50 border-2 border-gray-200 rounded-xl px-4 py-3.5 text-gray-800 focus:outline-none focus:border-[#C41E3A] focus:bg-white transition-all placeholder-gray-400"
                     placeholder="your@email.com"
                   />
                 </div>
 
                 <div>
-                  <label htmlFor="phone" className="block text-[#F5F5DC] mb-2 font-medium">
+                  <label htmlFor="phone" className="block text-gray-800 mb-2 font-semibold text-sm">
                     Phone Number
                   </label>
                   <input
@@ -181,13 +211,13 @@ const Contact = () => {
                     name="phone"
                     value={formData.phone}
                     onChange={handleChange}
-                    className="w-full bg-[#1a1a1a] border border-[#FFD700]/20 rounded-lg px-4 py-3 text-[#F5F5DC] focus:outline-none focus:border-[#FFD700] transition-colors"
+                    className="w-full bg-gray-50 border-2 border-gray-200 rounded-xl px-4 py-3.5 text-gray-800 focus:outline-none focus:border-[#C41E3A] focus:bg-white transition-all placeholder-gray-400"
                     placeholder="+91 123 456 7890"
                   />
                 </div>
 
                 <div>
-                  <label htmlFor="message" className="block text-[#F5F5DC] mb-2 font-medium">
+                  <label htmlFor="message" className="block text-gray-800 mb-2 font-semibold text-sm">
                     Your Message *
                   </label>
                   <textarea
@@ -197,7 +227,7 @@ const Contact = () => {
                     onChange={handleChange}
                     required
                     rows="5"
-                    className="w-full bg-[#1a1a1a] border border-[#FFD700]/20 rounded-lg px-4 py-3 text-[#F5F5DC] focus:outline-none focus:border-[#FFD700] transition-colors resize-none"
+                    className="w-full bg-gray-50 border-2 border-gray-200 rounded-xl px-4 py-3.5 text-gray-800 focus:outline-none focus:border-[#C41E3A] focus:bg-white transition-all resize-none placeholder-gray-400"
                     placeholder="Tell us how we can help you..."
                   ></textarea>
                 </div>
@@ -207,13 +237,13 @@ const Contact = () => {
                   disabled={isSubmitting}
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  className={`w-full btn-premium bg-gradient-to-r from-[#FFD700] to-[#D2691E] text-[#0D0D0D] py-4 rounded-full font-bold text-lg shadow-lg hover:shadow-[#FFD700]/50 flex items-center justify-center space-x-2 ${
+                  className={`w-full bg-gradient-to-r from-[#C41E3A] to-[#8B0000] text-white py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center space-x-2 ${
                     isSubmitting ? 'opacity-70 cursor-not-allowed' : ''
                   }`}
                 >
                   {isSubmitting ? (
                     <>
-                      <div className="animate-spin rounded-full h-5 w-5 border-2 border-[#0D0D0D] border-t-transparent"></div>
+                      <div className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent"></div>
                       <span>Sending...</span>
                     </>
                   ) : (
@@ -228,7 +258,11 @@ const Contact = () => {
                   <motion.div
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="text-center text-[#FFD700] font-medium bg-[#FFD700]/10 py-3 rounded-lg border border-[#FFD700]/20"
+                    className={`text-center font-semibold py-3 rounded-xl border-2 ${
+                      messageType === 'success'
+                        ? 'text-green-700 bg-green-50 border-green-200'
+                        : 'text-red-700 bg-red-50 border-red-200'
+                    }`}
                   >
                     {submitMessage}
                   </motion.div>
@@ -244,12 +278,12 @@ const Contact = () => {
               className="space-y-6"
             >
               {/* Google Map */}
-              <div className="card-premium p-2 h-[400px]">
+              <div className="bg-white rounded-2xl p-3 shadow-xl border border-gray-100 h-[420px]">
                 <iframe
                   src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3563.547891234567!2d87.7435634!3d25.8638469!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39e545a3856b05bf%3A0x7c6023311a46cddd!2sMANSOOR%20HOTEL!5e0!3m2!1sen!2sin!4v1234567890123!5m2!1sen!2sin"
                   width="100%"
                   height="100%"
-                  style={{ border: 0, borderRadius: '8px' }}
+                  style={{ border: 0, borderRadius: '12px' }}
                   allowFullScreen=""
                   loading="lazy"
                   referrerPolicy="no-referrer-when-downgrade"
@@ -258,8 +292,8 @@ const Contact = () => {
               </div>
 
               {/* Why Visit Us */}
-              <div className="card-premium p-6">
-                <h3 className="text-2xl font-bold text-[#FFD700] mb-4 font-['Playfair_Display']">
+              <div className="bg-gradient-to-br from-[#C41E3A]/5 to-white rounded-2xl p-6 shadow-lg border border-[#C41E3A]/10">
+                <h3 className="text-2xl font-bold text-[#C41E3A] mb-5 font-['Playfair_Display']">
                   Why Visit Us?
                 </h3>
                 <ul className="space-y-3">
@@ -271,18 +305,20 @@ const Contact = () => {
                     'Hygiene certified kitchen',
                     'Home delivery available',
                   ].map((item, index) => (
-                    <li key={index} className="flex items-start space-x-3 text-[#F5F5DC]/70">
-                      <span className="text-[#FFD700] mt-1">✓</span>
-                      <span>{item}</span>
+                    <li key={index} className="flex items-start space-x-3 text-gray-700">
+                      <span className="text-[#C41E3A] font-bold text-lg">✓</span>
+                      <span className="font-medium">{item}</span>
                     </li>
                   ))}
                 </ul>
               </div>
 
               {/* Special Note */}
-              <div className="bg-gradient-to-r from-[#FFD700]/10 to-[#D2691E]/10 border border-[#FFD700]/20 rounded-lg p-6">
-                <p className="text-[#FFD700] font-semibold mb-2">🎁 Special Orders</p>
-                <p className="text-[#F5F5DC]/70 text-sm">
+              <div className="bg-gradient-to-br from-amber-50 to-orange-50 border-2 border-amber-200 rounded-2xl p-6 shadow-lg">
+                <p className="text-[#C41E3A] font-bold text-lg mb-2 flex items-center gap-2">
+                  <span className="text-2xl">🎁</span> Special Orders
+                </p>
+                <p className="text-gray-700 text-sm leading-relaxed font-medium">
                   Planning a celebration? We accept bulk orders for weddings, parties, and corporate events. 
                   Contact us at least 48 hours in advance for the best service!
                 </p>
@@ -293,24 +329,24 @@ const Contact = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 px-4 bg-gradient-to-b from-transparent to-[#1A0F0A]">
+      <section className="py-16 px-4 bg-gradient-to-br from-[#C41E3A] via-[#8B0000] to-[#C41E3A]">
         <div className="max-w-4xl mx-auto text-center">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-[#FFD700] mb-6 font-['Playfair_Display']">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-4 font-['Playfair_Display'] drop-shadow-lg">
               Ready to Satisfy Your Sweet Cravings?
             </h2>
-            <p className="text-[#F5F5DC]/70 text-lg mb-8">
+            <p className="text-white/90 text-lg mb-8 font-medium">
               Visit our store today or order online for home delivery!
             </p>
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={() => window.location.href = '/'}
-              className="btn-premium bg-gradient-to-r from-[#FFD700] to-[#D2691E] text-[#0D0D0D] px-12 py-5 rounded-full text-xl font-bold shadow-2xl hover:shadow-[#FFD700]/50"
+              className="bg-white text-[#C41E3A] px-12 py-4 rounded-xl text-xl font-bold shadow-2xl hover:shadow-white/30 transition-all duration-300"
             >
               Browse Our Menu
             </motion.button>
