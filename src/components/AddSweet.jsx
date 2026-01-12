@@ -46,25 +46,68 @@ const AddSweet = ({ sweetType = 'normal' }) => {
     return allProducts[selectedCategory] || [];
   };
 
-  const handleImageChange = (e) => {
+  const compressImage = (file, maxWidth = 800, quality = 0.7) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          let width = img.width;
+          let height = img.height;
+
+          // Calculate new dimensions
+          if (width > maxWidth) {
+            height = (height * maxWidth) / width;
+            width = maxWidth;
+          }
+
+          canvas.width = width;
+          canvas.height = height;
+
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, width, height);
+
+          // Convert to base64 with compression
+          const compressedBase64 = canvas.toDataURL('image/jpeg', quality);
+          resolve(compressedBase64);
+        };
+        img.onerror = reject;
+        img.src = e.target.result;
+      };
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+  };
+
+  const handleImageChange = async (e) => {
     const file = e.target.files[0];
     if (file) {
-      if (file.size > 5 * 1024 * 1024) {
-        setError('File size exceeds 5MB');
+      if (file.size > 10 * 1024 * 1024) {
+        setError('File size exceeds 10MB');
         setTimeout(() => setError(null), 3000);
         return;
       }
 
-      const reader = new FileReader();
-      reader.onload = () => {
-        const base64String = reader.result;
-        setImagePreview(base64String);
+      try {
+        // Compress the image before setting it
+        const compressedImage = await compressImage(file);
+        console.log('📸 Image compressed:', {
+          originalSize: file.size,
+          compressedSize: compressedImage.length,
+          reduction: ((1 - compressedImage.length / file.size) * 100).toFixed(2) + '%'
+        });
+        
+        setImagePreview(compressedImage);
         setFormData(prev => ({
           ...prev,
-          image: base64String
+          image: compressedImage
         }));
-      };
-      reader.readAsDataURL(file);
+      } catch (error) {
+        console.error('Error compressing image:', error);
+        setError('Failed to process image. Please try another image.');
+        setTimeout(() => setError(null), 3000);
+      }
     }
   };
 
