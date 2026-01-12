@@ -65,8 +65,8 @@ const RemoveSweet = () => {
         throw new Error('Failed to remove sweet');
       }
 
-      // Remove from local state
-      setSweets(sweets.filter(sweet => sweet.id !== sweetToDelete.id));
+      // Remove from local state using functional update
+      setSweets(prevSweets => prevSweets.filter(sweet => sweet.id !== sweetToDelete.id));
       setSweetToDelete(null);
       alert(`${sweetToDelete.name} has been removed from inventory.`);
     } catch (err) {
