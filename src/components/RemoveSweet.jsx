@@ -24,7 +24,12 @@ const RemoveSweet = () => {
         throw new Error('Failed to fetch sweets');
       }
       const data = await response.json();
-      setSweets(data);
+      // Normalize the data: map _id to id for consistency
+      const normalizedData = data.map(sweet => ({
+        ...sweet,
+        id: sweet._id || sweet.id
+      }));
+      setSweets(normalizedData);
       setError(null);
     } catch (err) {
       setError(err.message);
