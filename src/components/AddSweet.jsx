@@ -254,47 +254,6 @@ const AddSweet = ({ sweetType = 'normal' }) => {
               </select>
             </div>
 
-            {/* Existing Products Dropdown */}
-            <motion.div initial={{ opacity: 0, y: -6 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.2 }}>
-              <label className="block text-xs sm:text-sm font-semibold text-yellow-600 mb-1.5 sm:mb-2">
-                Select Existing Product
-              </label>
-              <select
-                name="existingProduct"
-                value={selectedSweetId ?? ''}
-                onChange={(e) => {
-                  const value = e.target.value;
-                  if (value) {
-                    setFormData(prev => ({ 
-                      ...prev, 
-                      name: value
-                    }));
-                    setSelectedSweetId(value);
-                  } else {
-                    setFormData(prev => ({ ...prev, name: '' }));
-                    setSelectedSweetId(null);
-                  }
-                }}
-                disabled={!selectedCategory}
-                className={`w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base border rounded-lg sm:rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all ${
-                  !selectedCategory ? 'bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed' : 'bg-white border-gray-300 text-gray-800'
-                }`}
-              >
-                {!selectedCategory ? (
-                  <option value="">Select a category first</option>
-                ) : (
-                  <>
-                    <option value="">Select a product (optional)</option>
-                    {getProductsForCategory().map((product) => (
-                      <option key={product} value={product}>
-                        {product}
-                      </option>
-                    ))}
-                  </>
-                )}
-              </select>
-            </motion.div>
-
             {/* Sweet Name */}
             <div>
               <label className="block text-xs sm:text-sm font-semibold text-yellow-600 mb-1.5 sm:mb-2">

@@ -48,7 +48,7 @@ const Cart = () => {
   };
 
   const getTotalItems = () => {
-    return cart.reduce((total, item) => total + (item.quantity ?? 0), 0);
+    return cart.length;
   };
 
   const handlePlaceOrderClick = () => {
@@ -310,7 +310,7 @@ const Cart = () => {
                   
                   <div className="space-y-4 mb-6">
                     <div className="flex justify-between text-gray-600">
-                      <span>Items ({getTotalItems().toFixed(2)})</span>
+                      <span>Items ({getTotalItems()})</span>
                       <span className="font-semibold text-gray-900">₹{getTotalAmount().toFixed(2)}</span>
                     </div>
                     <div className="h-px bg-gray-200"></div>
