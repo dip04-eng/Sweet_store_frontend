@@ -1,78 +1,13 @@
 # robots.txt for Mansoor Hotel & Sweets
-# https://sweet-store-frontend-ten.vercel.app
+# https://mansoorhotel.in
 
-# Allow all major search engines
-User-agent: Googlebot
-Allow: /
-Disallow: /admin
-Disallow: /admin-login
-Crawl-delay: 1
-
-User-agent: Googlebot-Image
-Allow: /
-Allow: /*.png$
-Allow: /*.jpg$
-Allow: /*.jpeg$
-Allow: /*.gif$
-Allow: /*.webp$
-Allow: /*.svg$
-
-User-agent: Bingbot
-Allow: /
-Disallow: /admin
-Disallow: /admin-login
-Crawl-delay: 1
-
-User-agent: Slurp
-Allow: /
-Disallow: /admin
-Disallow: /admin-login
-Crawl-delay: 2
-
-User-agent: DuckDuckBot
-Allow: /
-Disallow: /admin
-Disallow: /admin-login
-
-User-agent: Baiduspider
-Allow: /
-Disallow: /admin
-Disallow: /admin-login
-Crawl-delay: 2
-
-User-agent: YandexBot
-Allow: /
-Disallow: /admin
-Disallow: /admin-login
-Crawl-delay: 2
-
-User-agent: facebookexternalhit
-Allow: /
-
-User-agent: Twitterbot
-Allow: /
-
-User-agent: LinkedInBot
-Allow: /
-
-User-agent: WhatsApp
-Allow: /
-
-User-agent: Pinterest
-Allow: /
-
-# Default rule for all other bots
 User-agent: *
 Allow: /
+
+# Block non-public or sensitive routes (only if they exist)
 Disallow: /admin
 Disallow: /admin-login
 Disallow: /api/
-Disallow: /*.json$
-Disallow: /node_modules/
-Crawl-delay: 2
 
-# Sitemap locations
-Sitemap: https://sweet-store-frontend-ten.vercel.app/sitemap.xml
-
-# Host directive
-Host: https://sweet-store-frontend-ten.vercel.app
+# Sitemap
+Sitemap: https://mansoorhotel.in/sitemap.xml
