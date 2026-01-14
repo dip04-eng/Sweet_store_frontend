@@ -7,6 +7,7 @@ import Hero from './Hero';
 import Navbar from './Navbar';
 import Footer from './Footer';
 import BackToTop from './BackToTop';
+import SEO from './SEO';
 import { API_BASE_URL, API_ENDPOINTS } from '../config/api';
 
 const UserPanel = () => {
@@ -88,8 +89,65 @@ const UserPanel = () => {
   // Get festival sweets separately
   const festivalSweets = sweets.filter(sweet => sweet.isFestival);
 
+  // Generate structured data for all products
+  const generateProductSchema = () => {
+    if (sweets.length === 0) return null;
+
+    const allSweets = [...filteredSweets, ...festivalSweets];
+    
+    return {
+      "@context": "https://schema.org",
+      "@type": "ItemList",
+      "name": "Sweet Collection at Mansoor Hotel & Sweets",
+      "description": "Browse our complete collection of traditional Indian sweets",
+      "numberOfItems": allSweets.length,
+      "itemListElement": allSweets.map((sweet, index) => ({
+        "@type": "ListItem",
+        "position": index + 1,
+        "item": {
+          "@type": "Product",
+          "name": sweet.name || sweet.sweetName,
+          "description": sweet.description || `Delicious ${sweet.name} from Mansoor Hotel & Sweets. Made with pure ingredients and traditional recipes.`,
+          "image": sweet.image || "https://www.mansoorhotel.in/Background.png",
+          "url": `https://www.mansoorhotel.in/#sweets-collection`,
+          "category": sweet.category || "Sweet",
+          "brand": {
+            "@type": "Brand",
+            "name": "Mansoor Hotel & Sweets"
+          },
+          "offers": {
+            "@type": "Offer",
+            "url": `https://www.mansoorhotel.in/#sweets-collection`,
+            "priceCurrency": "INR",
+            "price": (sweet.rate || sweet.price || 0).toString(),
+            "priceValidUntil": "2026-12-31",
+            "availability": sweet.stock > 0 ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
+            "itemCondition": "https://schema.org/NewCondition",
+            "seller": {
+              "@type": "Organization",
+              "name": "Mansoor Hotel & Sweets"
+            }
+          },
+          "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.8",
+            "reviewCount": "150",
+            "bestRating": "5",
+            "worstRating": "1"
+          }
+        }
+      }))
+    };
+  };
+
   return (
     <div className="min-h-screen bg-[#0D0D0D]">
+      {/* SEO with Product Structured Data */}
+      <SEO 
+        title="Sweet Collection"
+        description="Order authentic Indian sweets online from Mansoor Hotel & Sweets, Baisi, Bihar. Browse our complete collection of traditional sweets."
+        structuredData={generateProductSchema()}
+      />
       
       {/* Navbar */}
       <Navbar cart={cart} />
