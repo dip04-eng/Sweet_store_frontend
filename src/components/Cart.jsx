@@ -221,9 +221,6 @@ const Cart = () => {
                                   <option value="kg">kg</option>
                                   <option value="grams">grams</option>
                                 </select>
-                                <span className="text-white text-sm font-semibold">
-                                  ≈₹{(item.rate * (item.quantity ?? 0.5)).toFixed(2)}
-                                </span>
                               </div>
                             </div>
                           ) : (
@@ -277,9 +274,6 @@ const Cart = () => {
                           <div className="text-right min-w-[100px]">
                             <div className="text-xl font-bold text-[#C41E3A]">
                               ₹{(item.rate * (item.quantity ?? 0)).toFixed(2)}
-                            </div>
-                            <div className="text-xs text-gray-500">
-                              ₹{item.rate} × {(item.quantity ?? 0) < 1 ? (item.quantity ?? 0).toFixed(3) : (item.quantity ?? 0).toFixed(2)}
                             </div>
                           </div>
                           <motion.button

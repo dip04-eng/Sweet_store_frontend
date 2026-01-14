@@ -48,20 +48,14 @@ const Navbar = ({ cart = [] }) => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-2 sm:space-x-3 group touch-manipulation" aria-label="Mansoor Hotel & Sweets - Home">
+          <Link to="/" className="flex items-center group touch-manipulation" aria-label="Mansoor Hotel & Sweets - Home">
             <motion.div
-              whileHover={{ scale: 1.1 }}
+              whileHover={{ scale: 1.12 }}
               transition={{ duration: 0.3 }}
-              className="relative flex-shrink-0"
+              className="relative flex-shrink-0 drop-shadow-lg"
             >
-              <img src="/hotel_logo2-removebg-preview.png" alt="Mansoor Hotel & Sweets Logo" className="h-24 w-24 sm:h-28 sm:w-28 md:h-36 md:w-36 lg:h-40 lg:w-40 object-contain" aria-hidden="true" />
+              <img src="/hotel_logo2-removebg-preview.png" alt="Mansoor Hotel & Sweets Logo" className="h-32 w-32 sm:h-40 sm:w-40 md:h-48 md:w-48 lg:h-56 lg:w-56 object-contain transition-all duration-300" aria-hidden="true" />
             </motion.div>
-            <div className="min-w-0">
-              <span className="text-base sm:text-xl md:text-2xl font-bold text-[#C41E3A] font-['Playfair_Display'] leading-tight block">
-                MANSOOR HOTEL
-              </span>
-              <span className="text-xs text-[#8B0000] font-light tracking-wider block">& SWEETS</span>
-            </div>
           </Link>
 
           {/* Desktop Navigation */}
