@@ -52,11 +52,17 @@ const SEO = ({
       <meta name="twitter:description" content={finalDescription} />
       <meta name="twitter:image" content={image} />
       
-      {/* Structured Data */}
+      {/* Structured Data - supports both single schema and array of schemas */}
       {structuredData && (
-        <script type="application/ld+json">
-          {JSON.stringify(structuredData)}
-        </script>
+        Array.isArray(structuredData) 
+          ? structuredData.map((schema, index) => (
+              <script key={index} type="application/ld+json">
+                {JSON.stringify(schema)}
+              </script>
+            ))
+          : <script type="application/ld+json">
+              {JSON.stringify(structuredData)}
+            </script>
       )}
     </Helmet>
   );

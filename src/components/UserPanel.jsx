@@ -89,55 +89,48 @@ const UserPanel = () => {
   // Get festival sweets separately
   const festivalSweets = sweets.filter(sweet => sweet.isFestival);
 
-  // Generate structured data for all products
+  // Generate structured data for all products (standalone Product schemas, not ItemList)
+  // This prevents Google from interpreting as Merchant Listings or invalid Carousels
   const generateProductSchema = () => {
     if (sweets.length === 0) return null;
 
     const allSweets = [...filteredSweets, ...festivalSweets];
     
-    return {
+    // Return array of standalone Product schemas (not wrapped in ItemList)
+    // Limit to 10 products to avoid excessive markup
+    return allSweets.slice(0, 10).map((sweet) => ({
       "@context": "https://schema.org",
-      "@type": "ItemList",
-      "name": "Sweet Collection at Mansoor Hotel & Sweets",
-      "description": "Browse our complete collection of traditional Indian sweets",
-      "numberOfItems": allSweets.length,
-      "itemListElement": allSweets.map((sweet, index) => ({
-        "@type": "ListItem",
-        "position": index + 1,
-        "item": {
-          "@type": "Product",
-          "name": sweet.name || sweet.sweetName,
-          "description": sweet.description || `Delicious ${sweet.name} from Mansoor Hotel & Sweets. Made with pure ingredients and traditional recipes.`,
-          "image": sweet.image || "https://mansoorhotel.in/Background.png",
-          "url": `https://mansoorhotel.in/#sweets-collection`,
-          "category": sweet.category || "Sweet",
-          "brand": {
-            "@type": "Brand",
-            "name": "Mansoor Hotel & Sweets"
-          },
-          "offers": {
-            "@type": "Offer",
-            "url": `https://mansoorhotel.in/#sweets-collection`,
-            "priceCurrency": "INR",
-            "price": (sweet.rate || sweet.price || 0).toString(),
-            "priceValidUntil": "2026-12-31",
-            "availability": sweet.stock > 0 ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
-            "itemCondition": "https://schema.org/NewCondition",
-            "seller": {
-              "@type": "Organization",
-              "name": "Mansoor Hotel & Sweets"
-            }
-          },
-          "aggregateRating": {
-            "@type": "AggregateRating",
-            "ratingValue": "4.8",
-            "reviewCount": "150",
-            "bestRating": "5",
-            "worstRating": "1"
-          }
+      "@type": "Product",
+      "name": sweet.name || sweet.sweetName,
+      "description": sweet.description || `Delicious ${sweet.name || sweet.sweetName} from Mansoor Hotel & Sweets. Made with pure ingredients and traditional recipes.`,
+      "image": sweet.image || "https://mansoorhotel.in/Background.png",
+      "url": `https://mansoorhotel.in/#sweets-collection`,
+      "category": sweet.category || "Sweet",
+      "brand": {
+        "@type": "Brand",
+        "name": "Mansoor Hotel & Sweets"
+      },
+      "offers": {
+        "@type": "Offer",
+        "url": `https://mansoorhotel.in/#sweets-collection`,
+        "priceCurrency": "INR",
+        "price": (sweet.rate || sweet.price || 0).toString(),
+        "priceValidUntil": "2026-12-31",
+        "availability": sweet.stock > 0 ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
+        "itemCondition": "https://schema.org/NewCondition",
+        "seller": {
+          "@type": "Organization",
+          "name": "Mansoor Hotel & Sweets"
         }
-      }))
-    };
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.8",
+        "reviewCount": "150",
+        "bestRating": "5",
+        "worstRating": "1"
+      }
+    }));
   };
 
   return (
