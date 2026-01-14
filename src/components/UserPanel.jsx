@@ -108,8 +108,8 @@ const UserPanel = () => {
           "@type": "Product",
           "name": sweet.name || sweet.sweetName,
           "description": sweet.description || `Delicious ${sweet.name} from Mansoor Hotel & Sweets. Made with pure ingredients and traditional recipes.`,
-          "image": sweet.image || "https://www.mansoorhotel.in/Background.png",
-          "url": `https://www.mansoorhotel.in/#sweets-collection`,
+          "image": sweet.image || "https://mansoorhotel.in/Background.png",
+          "url": `https://mansoorhotel.in/#sweets-collection`,
           "category": sweet.category || "Sweet",
           "brand": {
             "@type": "Brand",
@@ -117,7 +117,7 @@ const UserPanel = () => {
           },
           "offers": {
             "@type": "Offer",
-            "url": `https://www.mansoorhotel.in/#sweets-collection`,
+            "url": `https://mansoorhotel.in/#sweets-collection`,
             "priceCurrency": "INR",
             "price": (sweet.rate || sweet.price || 0).toString(),
             "priceValidUntil": "2026-12-31",

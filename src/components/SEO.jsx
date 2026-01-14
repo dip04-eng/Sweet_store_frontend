@@ -4,13 +4,13 @@ const SEO = ({
   title,
   description,
   keywords,
-  image = 'https://sweet-store-frontend-ten.vercel.app/Background.png',
+  image = 'https://mansoorhotel.in/Background.png',
   url,
   type = 'website',
   structuredData = null,
   noindex = false
 }) => {
-  const siteUrl = 'https://sweet-store-frontend-ten.vercel.app';
+  const siteUrl = 'https://mansoorhotel.in';
   const fullUrl = url ? `${siteUrl}${url}` : siteUrl;
   const siteName = 'Mansoor Hotel & Sweets';
   
