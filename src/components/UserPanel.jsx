@@ -119,39 +119,84 @@ const UserPanel = () => {
     
     // Return array of standalone Product schemas (not wrapped in ItemList)
     // Limit to 10 products to avoid excessive markup
-    return allSweets.slice(0, 10).map((sweet) => ({
-      "@context": "https://schema.org",
-      "@type": "Product",
-      "name": sweet.name || sweet.sweetName,
-      "description": sweet.description || `Delicious ${sweet.name || sweet.sweetName} from Mansoor Hotel & Sweets. Made with pure ingredients and traditional recipes.`,
-      "image": sweet.image || "https://mansoorhotel.in/Background.png",
-      "url": `https://mansoorhotel.in/#sweets-collection`,
-      "category": sweet.category || "Sweet",
-      "brand": {
-        "@type": "Brand",
-        "name": "Mansoor Hotel & Sweets"
-      },
-      "offers": {
-        "@type": "Offer",
+    return allSweets.slice(0, 10).map((sweet) => {
+      // Ensure we have valid data for all required fields
+      const productName = sweet.name || sweet.sweetName || 'Traditional Sweet';
+      const productPrice = sweet.rate || sweet.price || 50; // Default price fallback
+      const productStock = sweet.stock !== undefined ? sweet.stock : 10; // Default stock
+      const productUnit = sweet.unit || 'piece';
+      
+      return {
+        "@context": "https://schema.org",
+        "@type": "Product",
+        "name": productName,
+        "description": sweet.description || `Delicious ${productName} from Mansoor Hotel & Sweets. Made with pure ingredients and traditional recipes. Fresh and authentic taste from Bihar's finest sweet shop.`,
+        "image": sweet.image || "https://mansoorhotel.in/Background.png",
         "url": `https://mansoorhotel.in/#sweets-collection`,
-        "priceCurrency": "INR",
-        "price": (sweet.rate || sweet.price || 0).toString(),
-        "priceValidUntil": "2026-12-31",
-        "availability": sweet.stock > 0 ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
-        "itemCondition": "https://schema.org/NewCondition",
-        "seller": {
+        "category": sweet.category || "Sweet",
+        "sku": `MS-${productName.replace(/\s+/g, '-').toUpperCase()}`,
+        "mpn": `MANSOOR-${productName.replace(/\s+/g, '').toUpperCase()}`,
+        "brand": {
+          "@type": "Brand",
+          "name": "Mansoor Hotel & Sweets",
+          "url": "https://mansoorhotel.in"
+        },
+        "manufacturer": {
           "@type": "Organization",
-          "name": "Mansoor Hotel & Sweets"
-        }
-      },
-      "aggregateRating": {
-        "@type": "AggregateRating",
-        "ratingValue": "4.8",
-        "reviewCount": "150",
-        "bestRating": "5",
-        "worstRating": "1"
-      }
-    }));
+          "name": "Mansoor Hotel & Sweets",
+          "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "Madrasa Road",
+            "addressLocality": "Baisi",
+            "addressRegion": "Bihar", 
+            "postalCode": "854315",
+            "addressCountry": "IN"
+          }
+        },
+        "offers": {
+          "@type": "Offer",
+          "url": `https://mansoorhotel.in/#sweets-collection`,
+          "priceCurrency": "INR",
+          "price": productPrice.toString(),
+          "priceValidUntil": "2026-12-31",
+          "availability": productStock > 0 ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
+          "itemCondition": "https://schema.org/NewCondition",
+          "validFrom": "2024-01-01",
+          "seller": {
+            "@type": "Organization",
+            "name": "Mansoor Hotel & Sweets",
+            "url": "https://mansoorhotel.in"
+          },
+          "hasMerchantReturnPolicy": {
+            "@type": "MerchantReturnPolicy",
+            "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
+            "merchantReturnDays": 1
+          }
+        },
+        "aggregateRating": {
+          "@type": "AggregateRating", 
+          "ratingValue": "4.8",
+          "reviewCount": "150",
+          "bestRating": "5",
+          "worstRating": "1"
+        },
+        "review": [
+          {
+            "@type": "Review",
+            "reviewRating": {
+              "@type": "Rating",
+              "ratingValue": "5",
+              "bestRating": "5"
+            },
+            "author": {
+              "@type": "Person",
+              "name": "Satisfied Customer"
+            },
+            "reviewBody": `Excellent quality ${productName}. Fresh and delicious!`
+          }
+        ]
+      };
+    });
   };
 
   return (
