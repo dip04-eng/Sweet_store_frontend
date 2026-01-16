@@ -96,7 +96,7 @@ const Cart = () => {
     <div className="min-h-screen bg-[#FFFBF5]">
       <Navbar cart={cart} />
       
-      <div className="pt-24 pb-16 px-4">
+      <div className="pt-20 xs:pt-24 sm:pt-24 md:pt-28 pb-16 px-3 xs:px-4 sm:px-6 safe-area-insets">
         <div className="max-w-6xl mx-auto">
           {/* Header */}
           <motion.div

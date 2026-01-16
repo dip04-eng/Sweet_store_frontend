@@ -10,25 +10,25 @@ const Hero = () => {
   };
 
   return (
-    <div className="relative h-screen w-full overflow-hidden" role="banner" aria-label="Welcome to Mansoor Hotel & Sweets">
+    <div className="relative h-screen w-full overflow-hidden min-h-[600px] hero-responsive" role="banner" aria-label="Welcome to Mansoor Hotel & Sweets">
       {/* Background Image */}
       <div className="absolute inset-0">
         <img 
           src="/Background.png" 
           alt="Mansoor Hotel & Sweets - Traditional Indian Sweet Shop in Baisi, Bihar featuring our signature sweets and warm hospitality since 1976" 
-          className="w-full h-full object-cover object-center md:object-cover"
+          className="w-full h-full object-cover object-center"
           loading="eager"
           fetchpriority="high"
           style={{
             objectPosition: 'center center',
           }}
         />
-        {/* Overlay for better text visibility - stronger on mobile */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/10 to-black/50 md:from-black/20 md:via-transparent md:to-black/40"></div>
+        {/* Responsive Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-black/60 md:from-black/20 md:via-transparent md:to-black/40"></div>
       </div>
 
-      {/* Hero Content */}
-      <div className="relative z-10 h-full flex items-center justify-center px-4 sm:px-6 py-20 sm:py-16">
+      {/* Hero Content - Mobile First Design */}
+      <div className="relative z-10 h-full flex items-center justify-center px-4 sm:px-6 md:px-8 py-20 sm:py-16">
         <div className="max-w-5xl mx-auto text-center w-full">
           {/* Animated Title */}
           <motion.div

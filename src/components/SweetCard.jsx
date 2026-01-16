@@ -70,7 +70,7 @@ const SweetCard = ({ sweet, onAddToCart }) => {
           alt={`${sweet.name} - Traditional Indian sweet from Mansoor Hotel & Sweets, Baisi Bihar. ${sweet.description ? sweet.description.substring(0, 100) : 'Handcrafted with pure ingredients.'}`}
           title={`Order ${sweet.name} online - ₹${sweet.rate}/${sweet.unit === 'piece' ? 'piece' : 'kg'}`}
           loading="lazy"
-          className="w-full h-40 sm:h-44 md:h-48 object-cover"
+          className="w-full h-36 xs:h-40 sm:h-44 md:h-48 object-cover img-responsive"
           onError={(e) => {
             console.error('❌ Image load error for:', sweet.name);
             console.error('Image data:', {
@@ -91,7 +91,7 @@ const SweetCard = ({ sweet, onAddToCart }) => {
       </div>
       
       {/* Content */}
-      <div className="p-5 sm:p-6">
+      <div className="p-3 xs:p-4 sm:p-5 md:p-6 spacing-responsive">
         {/* Title */}
         <h3 className="text-lg sm:text-xl font-bold text-[#C41E3A] mb-2 truncate font-['Playfair_Display']">
           {sweet.name}

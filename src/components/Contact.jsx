@@ -92,7 +92,7 @@ const Contact = () => {
       <Navbar />
 
       {/* Hero Section */}
-      <section className="relative pt-32 pb-16 px-4">
+      <section className="relative pt-28 xs:pt-32 sm:pt-32 md:pt-36 pb-12 xs:pb-16 px-3 xs:px-4 sm:px-6">
         <div className="absolute inset-0 bg-gradient-to-br from-[#C41E3A]/5 to-transparent pointer-events-none"></div>
         <div className="max-w-7xl mx-auto relative">
           <motion.div
@@ -115,7 +115,7 @@ const Contact = () => {
       {/* Contact Info Cards */}
       <section className="py-12 sm:py-16 px-4">
         <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 xs:gap-5 sm:gap-6">
             {contactInfo.map((info, index) => (
               <motion.div
                 key={index}

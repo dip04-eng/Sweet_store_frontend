@@ -64,7 +64,7 @@ const FestivalCard = ({ sweet, onAddToCart }) => {
         <div className="absolute inset-3 border-2 border-[#C9A227]/30 rounded-lg pointer-events-none"></div>
         
         {/* Content Container */}
-        <div className="p-4 pt-5">
+        <div className="p-3 xs:p-4 sm:p-4 pt-4 xs:pt-5 spacing-responsive">
           {/* Image Container */}
           <div className="relative overflow-hidden rounded-lg mb-4 bg-white">
             <motion.img
@@ -72,7 +72,7 @@ const FestivalCard = ({ sweet, onAddToCart }) => {
               transition={{ duration: 0.4 }}
               src={sweet.image || 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="300"%3E%3Crect fill="%23FFD700" width="400" height="300"/%3E%3Ctext fill="%230D0D0D" font-size="24" font-weight="bold" x="50%25" y="50%25" text-anchor="middle" dominant-baseline="middle"%3E🍬 Sweet%3C/text%3E%3C/svg%3E'}
               alt={sweet.name}
-              className="w-full h-44 sm:h-48 object-contain rounded-lg"
+              className="w-full h-40 xs:h-44 sm:h-48 object-contain rounded-lg img-contain-responsive"
               onError={(e) => {
                 e.target.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="300"%3E%3Crect fill="%23FFD700" width="400" height="300"/%3E%3Ctext fill="%230D0D0D" font-size="24" font-weight="bold" x="50%25" y="50%25" text-anchor="middle" dominant-baseline="middle"%3E🍬 Sweet%3C/text%3E%3C/svg%3E';
               }}

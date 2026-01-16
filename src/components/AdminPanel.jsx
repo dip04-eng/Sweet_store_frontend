@@ -122,8 +122,8 @@ const AdminPanel = () => {
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50">
       {/* Header */}
       <header className="bg-white/80 backdrop-blur-md shadow-lg">
-        <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-14 sm:h-16">
+        <div className="max-w-7xl mx-auto px-3 xs:px-4 sm:px-4 md:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-16 xs:h-16 sm:h-16 min-h-[64px]">
             <div className="flex items-center flex-wrap gap-2">
               <button
                 onClick={handleBack}

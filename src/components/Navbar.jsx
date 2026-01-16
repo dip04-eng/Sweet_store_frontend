@@ -196,7 +196,7 @@ const Navbar = ({ cart = [] }) => {
             role="menu"
             aria-label="Mobile navigation"
           >
-            <div className="px-4 sm:px-6 py-6 space-y-2 max-w-7xl mx-auto">
+            <div className="px-3 xs:px-4 sm:px-6 py-4 xs:py-5 sm:py-6 space-y-2 max-w-7xl mx-auto safe-area-insets">
               {navLinks.map((link, index) => (
                 <motion.div
                   key={link.name}
@@ -212,7 +212,7 @@ const Navbar = ({ cart = [] }) => {
                     }}
                     role="menuitem"
                     aria-current={location.pathname === link.path ? 'page' : undefined}
-                    className={`relative block px-5 py-3.5 rounded-xl font-semibold text-base transition-all duration-300 group overflow-hidden ${
+                    className={`relative block px-4 xs:px-5 py-3 xs:py-3.5 sm:py-3.5 rounded-xl font-semibold text-base xs:text-base sm:text-base transition-all duration-300 group overflow-hidden touch-manipulation min-h-[48px] flex items-center ${
                       location.pathname === link.path 
                         ? 'text-white bg-gradient-to-r from-[#C41E3A] to-[#8B0000] shadow-lg' 
                         : 'text-[#2B1B17] hover:text-[#C41E3A] hover:bg-gradient-to-r hover:from-[#FFD700]/10 hover:to-[#C41E3A]/10'
