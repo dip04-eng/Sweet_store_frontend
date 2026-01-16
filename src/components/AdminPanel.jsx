@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { ArrowLeft, Plus, Trash, Eye, BarChart3, LogOut, Settings, TrendingUp, Calendar, PartyPopper, ShoppingCart } from 'lucide-react';
+import { ArrowLeft, Plus, Trash, Edit, Eye, BarChart3, LogOut, Settings, TrendingUp, Calendar, PartyPopper, ShoppingCart } from 'lucide-react';
 import AddSweet from './AddSweet';
+import EditSweet from './EditSweet';
 import RemoveSweet from './RemoveSweet';
 import ViewOrders from './ViewOrders';
 import DailySummary from './DailySummary';
@@ -113,6 +114,7 @@ const AdminPanel = () => {
 
   const manageTabs = [
     { id: 'add', label: 'Add Sweet', icon: Plus, component: AddSweet },
+    { id: 'edit', label: 'Edit Sweet', icon: Edit, component: EditSweet },
     { id: 'remove', label: 'Remove Sweet', icon: Trash, component: RemoveSweet }
   ];
 
@@ -204,7 +206,7 @@ const AdminPanel = () => {
             <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 w-[90%] max-w-md">
               <div className="bg-white rounded-2xl shadow-2xl p-6">
                 <h3 className="text-xl font-bold text-gray-800 mb-4">Manage Sweets</h3>
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-3 gap-3">
                   {manageTabs.map(tab => {
                     const Icon = tab.icon;
                     return (

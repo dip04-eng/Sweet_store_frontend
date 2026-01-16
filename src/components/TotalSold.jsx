@@ -102,12 +102,33 @@ const TotalSold = () => {
     try {
       setIsDownloading(true);
       
+      // Transform sweetsSold object to sweets_breakdown array for PDF
+      const sweetsBreakdown = Object.entries(salesData.sweetsSold || {}).map(([name, data]) => ({
+        name: name,
+        quantity: data.quantity,
+        rate: data.price,
+        total: data.total,
+        unit: data.unit || 'kg'
+      }));
+
+      // Calculate average order value
+      const avgOrderValue = salesData.totalOrders > 0 ? salesData.totalRevenue / salesData.totalOrders : 0;
+
+      // Prepare sales data for PDF
+      const pdfSalesData = {
+        total_amount: salesData.totalRevenue || 0,
+        total_orders: salesData.totalOrders || 0,
+        total_sweets_sold: salesData.totalItems || 0,  // Number of different sweet types
+        avg_order_value: avgOrderValue,
+        sweets_breakdown: sweetsBreakdown
+      };
+      
       const response = await fetch(`${API_BASE_URL}${API_ENDPOINTS.DOWNLOAD_SALES_REPORT}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
           date: selectedDate,
-          salesData: salesData,
+          sales_data: pdfSalesData,
           orders: orders
         })
       });
@@ -207,7 +228,7 @@ const TotalSold = () => {
             >
               <span className="text-2xl font-semibold opacity-80">₹</span>
 
-              <p className="text-sm opacity-90">Total Revenue</p>
+              <p className="text-sm opacity-90">Total Amount</p>
               <p className="text-3xl font-bold">₹{salesData.totalRevenue.toFixed(2)}</p>
             </motion.div>
 

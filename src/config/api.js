@@ -11,6 +11,7 @@ export const API_ENDPOINTS = {
   
   // Admin endpoints
   ADD_SWEET: '/admin/add_sweet',
+  UPDATE_SWEET: '/admin/update_sweet',
   UPDATE_SWEET_STOCK: '/admin/update_stock',
   REMOVE_SWEET: '/admin/remove_sweet',
   GET_ORDERS: '/admin/orders',
@@ -23,3 +24,4 @@ export const API_ENDPOINTS = {
   // Contact endpoint
   SUBMIT_CONTACT: '/contact'
 };
+6
