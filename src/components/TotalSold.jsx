@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Calendar, TrendingUp, Package, DollarSign } from 'lucide-react';
+import { Calendar, TrendingUp, Package, IndianRupee, DollarSign } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { API_BASE_URL, API_ENDPOINTS } from '../config/api';
 
@@ -136,7 +136,8 @@ const TotalSold = () => {
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.1 }}
             >
-              <DollarSign className="h-8 w-8 mb-2 opacity-80" />
+              <span className="text-2xl font-semibold opacity-80">₹</span>
+
               <p className="text-sm opacity-90">Total Revenue</p>
               <p className="text-3xl font-bold">₹{salesData.totalRevenue.toFixed(2)}</p>
             </motion.div>
@@ -169,7 +170,7 @@ const TotalSold = () => {
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.4 }}
             >
-              <DollarSign className="h-8 w-8 mb-2 opacity-80" />
+              <span className="text-2xl font-semibold opacity-80">₹</span>
               <p className="text-sm opacity-90">Avg. Order Value</p>
               <p className="text-3xl font-bold">
                 ₹{salesData.totalOrders > 0 ? (salesData.totalRevenue / salesData.totalOrders).toFixed(2) : '0.00'}
@@ -196,12 +197,12 @@ const TotalSold = () => {
             ) : (
               <div className="overflow-x-auto">
                 <table className="w-full">
-                  <thead className="bg-gray-50 border-b border-gray-200">
+                  <thead className="bg-gray-300 border-b border-gray-200">
                     <tr>
-                      <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">Sweet Name</th>
-                      <th className="px-6 py-4 text-center text-sm font-semibold text-gray-700">Quantity Sold</th>
-                      <th className="px-6 py-4 text-center text-sm font-semibold text-gray-700">Price</th>
-                      <th className="px-6 py-4 text-right text-sm font-semibold text-gray-700">Total Revenue</th>
+                      <th className="px-6 py-4 text-left text-lg font-semibold text-gray-700">Sweet Name</th>
+                      <th className="px-6 py-4 text-center text-lg font-semibold text-gray-700">Quantity</th>
+                      <th className="px-6 py-4 text-center text-lg font-semibold text-gray-700">Rate</th>
+                      <th className="px-6 py-4 text-right text-lg font-semibold text-gray-700">Total Amount</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-200">

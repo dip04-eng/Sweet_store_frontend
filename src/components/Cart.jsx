@@ -102,40 +102,91 @@ const Cart = () => {
           <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="flex flex-col sm:flex-row items-start sm:items-center mb-6 sm:mb-12 gap-2 sm:gap-4"
+            className="relative mb-8 sm:mb-12"
           >
-            <Link
-              to="/"
-              className="flex items-center text-[#C41E3A] hover:text-[#A01828] transition-colors font-semibold"
-            >
-              <ArrowLeft className="h-5 w-5 sm:h-6 sm:w-6 mr-2" />
-              <span className="text-sm sm:text-base">Back to Shop</span>
-            </Link>
-            <div className="hidden sm:block h-6 w-px bg-gray-300"></div>
-            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-[#C41E3A] font-['Playfair_Display']">
-              Your Sweet Cart
-            </h1>
+            {/* Gradient Background */}
+            <div className="absolute inset-0 bg-gradient-to-r from-purple-500/10 via-pink-500/10 to-red-500/10 rounded-3xl blur-xl"></div>
+            
+            <div className="relative bg-white/80 backdrop-blur-sm border-2 border-purple-200/50 rounded-2xl p-6 sm:p-8 shadow-xl">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+                <Link
+                  to="/"
+                  className="flex items-center text-[#C41E3A] hover:text-[#A01828] transition-all hover:scale-105 font-semibold group"
+                >
+                  <motion.div
+                    whileHover={{ x: -5 }}
+                    className="mr-2"
+                  >
+                    <ArrowLeft className="h-5 w-5 sm:h-6 sm:w-6 group-hover:drop-shadow-lg" />
+                  </motion.div>
+                  <span className="text-sm sm:text-base">Back to Store</span>
+                </Link>
+                <div className="hidden sm:block h-8 w-px bg-gradient-to-b from-purple-300 via-pink-300 to-red-300"></div>
+                <div className="flex items-center gap-3">
+                  <motion.div
+                    animate={{ 
+                      rotate: [0, 10, -10, 0],
+                      scale: [1, 1.1, 1]
+                    }}
+                    transition={{ 
+                      duration: 2,
+                      repeat: Infinity,
+                      repeatDelay: 3
+                    }}
+                  >
+                    <ShoppingCart className="h-8 w-8 sm:h-10 sm:w-10 text-[#C41E3A] drop-shadow-lg" />
+                  </motion.div>
+                  <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-[#C41E3A] via-[#FF1744] to-[#C41E3A] bg-clip-text text-transparent font-['Playfair_Display'] drop-shadow-sm">
+                    Your Sweet Cart
+                  </h1>
+                </div>
+              </div>
+            </div>
           </motion.div>
 
           {cart.length === 0 ? (
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
-              className="bg-white border-2 border-gray-200 rounded-2xl shadow-lg p-12 sm:p-16 text-center max-w-2xl mx-auto"
+              className="relative max-w-2xl mx-auto"
             >
-              <ShoppingBag className="h-20 w-20 text-gray-300 mx-auto mb-6" />
-              <h2 className="text-2xl sm:text-3xl font-bold text-[#C41E3A] mb-4 font-['Playfair_Display']">
-                Your cart is empty
-              </h2>
-              <p className="text-gray-600 mb-8">
-                Add some delicious sweets to get started!
-              </p>
-              <Link
-                to="/#sweets-collection"
-                className="inline-flex items-center bg-[#C41E3A] text-white px-8 py-3 rounded-lg font-semibold shadow-lg hover:bg-[#A01828] transition-colors"
-              >
-                Browse Sweets
-              </Link>
+              {/* Animated gradient background */}
+              <div className="absolute inset-0 bg-gradient-to-br from-purple-400/20 via-pink-400/20 to-red-400/20 rounded-3xl blur-2xl animate-pulse"></div>
+              
+              <div className="relative bg-white/90 backdrop-blur-md border-2 border-purple-200 rounded-3xl shadow-2xl p-12 sm:p-16 text-center overflow-hidden">
+                {/* Decorative elements */}
+                <div className="absolute top-0 left-0 w-32 h-32 bg-gradient-to-br from-yellow-300/30 to-orange-300/30 rounded-full blur-3xl"></div>
+                <div className="absolute bottom-0 right-0 w-40 h-40 bg-gradient-to-tl from-pink-300/30 to-purple-300/30 rounded-full blur-3xl"></div>
+                
+                <motion.div
+                  animate={{ 
+                    y: [0, -10, 0],
+                    rotate: [0, 5, -5, 0]
+                  }}
+                  transition={{ 
+                    duration: 3,
+                    repeat: Infinity,
+                    ease: "easeInOut"
+                  }}
+                  className="relative z-10"
+                >
+                  <ShoppingBag className="h-24 w-24 text-[#C41E3A]/70 mx-auto mb-6 drop-shadow-lg" />
+                </motion.div>
+                
+                <h2 className="relative z-10 text-3xl sm:text-4xl font-bold bg-gradient-to-r from-[#C41E3A] to-[#FF1744] bg-clip-text text-transparent mb-4 font-['Playfair_Display']">
+                  Your cart is empty
+                </h2>
+                <p className="relative z-10 text-gray-600 mb-8 text-lg">
+                  Add some delicious sweets to get started!
+                </p>
+                <Link
+                  to="/#sweets-collection"
+                  className="relative z-10 inline-flex items-center bg-gradient-to-r from-[#C41E3A] to-[#FF1744] text-white px-10 py-4 rounded-xl font-semibold shadow-2xl hover:shadow-[#C41E3A]/50 hover:scale-105 transition-all duration-300"
+                >
+                  <ShoppingBag className="h-5 w-5 mr-2" />
+                  Browse Sweets
+                </Link>
+              </div>
             </motion.div>
           ) : (
             <div className="grid lg:grid-cols-3 gap-6 md:gap-8">
@@ -149,14 +200,18 @@ const Cart = () => {
                       animate={{ opacity: 1, x: 0 }}
                       exit={{ opacity: 0, x: 20 }}
                       transition={{ delay: index * 0.1 }}
-                      className="bg-white border-2 border-gray-200 rounded-xl shadow-md p-3 sm:p-4 md:p-6 hover:shadow-lg transition-shadow"
+                      whileHover={{ scale: 1.02, y: -4 }}
+                      className="relative bg-white border-2 border-purple-100 rounded-2xl shadow-lg p-3 sm:p-4 md:p-6 hover:shadow-2xl hover:shadow-purple-200/50 hover:border-purple-300 transition-all duration-300 overflow-hidden"
                     >
+                      {/* Gradient accent */}
+                      <div className="absolute top-0 left-0 w-2 h-full bg-gradient-to-b from-purple-500 via-pink-500 to-red-500"></div>
                       <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4">
-                        <div className="relative flex-shrink-0">
+                        <div className="relative flex-shrink-0 group">
+                          <div className="absolute inset-0 bg-gradient-to-br from-yellow-300/50 to-orange-300/50 rounded-xl blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                           <img
                             src={item.image || 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="100" height="100"%3E%3Crect fill="%23f0f0f0" width="100" height="100"/%3E%3Ctext fill="%23999" font-size="40" x="50%25" y="50%25" text-anchor="middle" dominant-baseline="middle"%3E🍬%3C/text%3E%3C/svg%3E'}
                             alt={item.name}
-                            className="w-20 h-20 sm:w-24 sm:h-24 object-cover rounded-lg border-2 border-gray-100"
+                            className="relative w-20 h-20 sm:w-24 sm:h-24 object-cover rounded-xl border-2 border-purple-200 shadow-md group-hover:shadow-lg group-hover:scale-105 transition-all duration-300"
                           />
                         </div>
                         
@@ -168,10 +223,10 @@ const Cart = () => {
                             ₹{item.rate} per {item.unit || 'piece'}
                           </p>
                           
-                          {/* Quantity/Weight Controls */}
+                          {/* Quantity/Weight Controls with Price */}
                           {item.unit === 'kg' ? (
-                            // Weight input with unit selector for kg items
-                            <div className="mt-3">
+                            // Weight input with unit selector and price for kg items
+                            <div className="mt-3 flex items-center gap-4 flex-wrap">
                               <div className="flex items-center gap-2 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-full px-4 py-2 w-fit">
                                 <span className="text-white text-sm font-semibold">Weight:</span>
                                 <input
@@ -222,6 +277,11 @@ const Cart = () => {
                                   <option value="grams">grams</option>
                                 </select>
                               </div>
+                              
+                              {/* Price aligned with weight for all screens */}
+                              <div className="text-xl font-bold text-[#C41E3A]">
+                                ₹{(item.rate * (item.quantity ?? 0)).toFixed(2)}
+                              </div>
                             </div>
                           ) : (
                             // Quantity controls for piece items
@@ -253,29 +313,40 @@ const Cart = () => {
                             </div>
                           )}
                           
-                          {/* Mobile Layout */}
-                          <div className="flex items-center justify-between mt-3 sm:hidden">
-                            <div className="text-lg font-bold text-[#C41E3A]">
-                              ₹{(item.rate * (item.quantity ?? 0)).toFixed(2)}
+                          {/* Mobile Delete Button - Only for piece items since kg items show price inline */}
+                          {item.unit !== 'kg' && (
+                            <div className="flex items-center justify-between mt-3 sm:hidden">
+                              <div className="text-lg font-bold text-[#C41E3A]">
+                                ₹{(item.rate * (item.quantity ?? 0)).toFixed(2)}
+                              </div>
+                              <motion.button
+                                whileHover={{ scale: 1.1 }}
+                                whileTap={{ scale: 0.9 }}
+                                onClick={() => removeFromCart(index)}
+                                className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                              >
+                                <Trash2 className="h-4 w-4" />
+                              </motion.button>
                             </div>
-                            <motion.button
-                              whileHover={{ scale: 1.1 }}
-                              whileTap={{ scale: 0.9 }}
-                              onClick={() => removeFromCart(index)}
-                              className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
-                            >
-                              <Trash2 className="h-4 w-4" />
-                            </motion.button>
-                          </div>
+                          )}
+                          
+                          {/* Mobile Delete Button for kg items - separate since price is shown inline */}
+                          {item.unit === 'kg' && (
+                            <div className="flex justify-end mt-3 sm:hidden">
+                              <motion.button
+                                whileHover={{ scale: 1.1 }}
+                                whileTap={{ scale: 0.9 }}
+                                onClick={() => removeFromCart(index)}
+                                className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                              >
+                                <Trash2 className="h-4 w-4" />
+                              </motion.button>
+                            </div>
+                          )}
                         </div>
                         
-                        {/* Desktop Layout */}
-                        <div className="hidden sm:flex items-center gap-4">
-                          <div className="text-right min-w-[100px]">
-                            <div className="text-xl font-bold text-[#C41E3A]">
-                              ₹{(item.rate * (item.quantity ?? 0)).toFixed(2)}
-                            </div>
-                          </div>
+                        {/* Desktop Delete Button - Price is now inline with weight/quantity */}
+                        <div className="hidden sm:flex items-center">
                           <motion.button
                             whileHover={{ scale: 1.1 }}
                             whileTap={{ scale: 0.9 }}
@@ -296,32 +367,47 @@ const Cart = () => {
                 <motion.div
                   initial={{ opacity: 0, x: 20 }}
                   animate={{ opacity: 1, x: 0 }}
-                  className="bg-white border-2 border-gray-200 rounded-xl shadow-lg p-6 lg:sticky lg:top-24"
+                  className="relative bg-white border-2 border-purple-200 rounded-2xl shadow-2xl p-6 lg:sticky lg:top-24 overflow-hidden"
                 >
-                  <h3 className="text-2xl font-bold text-[#C41E3A] mb-6 font-['Playfair_Display']">
-                    Order Summary
-                  </h3>
+                  {/* Decorative gradient background */}
+                  <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-purple-300/20 to-pink-300/20 rounded-full blur-3xl"></div>
+                  <div className="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-yellow-300/20 to-orange-300/20 rounded-full blur-2xl"></div>
                   
-                  <div className="space-y-4 mb-6">
-                    <div className="flex justify-between text-gray-600">
-                      <span>Items ({getTotalItems()})</span>
-                      <span className="font-semibold text-gray-900">₹{getTotalAmount().toFixed(2)}</span>
+                  <div className="relative z-10">
+                    <div className="flex items-center gap-3 mb-6">
+                      <div className="p-2 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl">
+                        <ShoppingCart className="h-6 w-6 text-white" />
+                      </div>
+                      <h3 className="text-2xl font-bold bg-gradient-to-r from-[#C41E3A] to-[#FF1744] bg-clip-text text-transparent font-['Playfair_Display']">
+                        Order Summary
+                      </h3>
                     </div>
-                    <div className="h-px bg-gray-200"></div>
-                    <div className="flex justify-between text-xl font-bold">
-                      <span className="text-gray-900">Total</span>
-                      <span className="text-[#C41E3A]">₹{getTotalAmount().toFixed(2)}</span>
+                    
+                    <div className="bg-gradient-to-br from-purple-50/50 to-pink-50/50 rounded-xl p-4 mb-6 border border-purple-100">
+                      <div className="flex justify-between text-gray-700 mb-3">
+                        <span className="flex items-center gap-2">
+                          <ShoppingBag className="h-4 w-4 text-purple-500" />
+                          Items ({getTotalItems()})
+                        </span>
+                        <span className="font-semibold text-gray-900">₹{getTotalAmount().toFixed(2)}</span>
+                      </div>
+                      <div className="h-px bg-gradient-to-r from-purple-200 via-pink-200 to-purple-200 my-3"></div>
+                      <div className="flex justify-between text-xl font-bold">
+                        <span className="text-gray-900">Total</span>
+                        <span className="bg-gradient-to-r from-[#C41E3A] to-[#FF1744] bg-clip-text text-transparent">₹{getTotalAmount().toFixed(2)}</span>
+                      </div>
                     </div>
+                    
+                    <motion.button
+                      whileHover={{ scale: 1.05, y: -2 }}
+                      whileTap={{ scale: 0.95 }}
+                      onClick={handlePlaceOrderClick}
+                      className="w-full bg-gradient-to-r from-[#C41E3A] to-[#FF1744] text-white py-4 rounded-xl font-bold shadow-xl hover:shadow-2xl hover:shadow-[#C41E3A]/50 transition-all duration-300 text-lg flex items-center justify-center gap-2"
+                    >
+                      <ShoppingCart className="h-5 w-5" />
+                      Place Order
+                    </motion.button>
                   </div>
-                  
-                  <motion.button
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    onClick={handlePlaceOrderClick}
-                    className="w-full bg-[#C41E3A] text-white py-4 rounded-lg font-semibold shadow-lg hover:bg-[#A01828] transition-colors text-lg"
-                  >
-                    Place Order
-                  </motion.button>
                 </motion.div>
               </div>
             </div>

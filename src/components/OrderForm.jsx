@@ -41,10 +41,21 @@ const OrderForm = ({ cart, totalAmount, onClose, onSuccess }) => {
   }, []);
 
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
+    const { name, value } = e.target;
+    
+    // Restrict mobile number to 10 digits and numbers only
+    if (name === 'mobile') {
+      const numericValue = value.replace(/\D/g, '').slice(0, 10);
+      setFormData({
+        ...formData,
+        [name]: numericValue
+      });
+    } else {
+      setFormData({
+        ...formData,
+        [name]: value
+      });
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -162,6 +173,7 @@ const OrderForm = ({ cart, totalAmount, onClose, onSuccess }) => {
                 value={formData.mobile}
                 onChange={handleChange}
                 required
+                maxLength="10"
                 pattern="[0-9]{10}"
                 className="w-full px-3 text-gray-900 sm:px-4 py-2 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-lg sm:rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
                 placeholder="10-digit mobile number"

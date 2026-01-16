@@ -1,154 +1,252 @@
 import { motion } from 'framer-motion';
-import { Award, Heart, Users, Clock } from 'lucide-react';
-import { GiCupcake } from 'react-icons/gi';
+import { Award, Heart, Users, Clock, Star, TrendingUp, ChefHat, Sparkles } from 'lucide-react';
+import { GiCupcake, GiCandyCanes } from 'react-icons/gi';
 import Navbar from './Navbar';
 import Footer from './Footer';
+import SEO from './SEO';
 
 const About = () => {
-  const stats = [
-    { icon: Clock, label: 'Years of Excellence', value: '50+' },
-    { icon: Users, label: 'Happy Customers', value: '100K+' },
-    { icon: Award, label: 'Awards Won', value: '25+' },
-    { icon: Heart, label: 'Sweets Varieties', value: '100+' },
+  const milestones = [
+    { year: '1976', title: 'The Beginning', description: 'Mansoor & Sons started with a dream to serve authentic sweets' },
+    { year: '1990', title: 'Expansion', description: 'Opened our iconic Madrasa Road location in Baisi' },
+    { year: '2010', title: 'Recognition', description: 'Became Bihar\'s most trusted sweet shop' },
+    { year: '2026', title: 'Digital Era', description: 'Launched online ordering to serve customers nationwide' },
   ];
 
-  const traditions = [
+  const values = [
     {
+      icon: Heart,
       title: 'Pure Ingredients',
-      description: 'We use only the finest quality ingredients sourced from trusted suppliers.',
-      icon: '🌾',
+      description: 'Only the finest quality ghee, milk, and ingredients in every sweet',
+      color: '#C41E3A',
     },
     {
+      icon: ChefHat,
       title: 'Traditional Recipes',
-      description: 'Time-tested family recipes passed down through generations.',
-      icon: '📜',
+      description: 'Time-tested family recipes passed down through generations',
+      color: '#FFD700',
     },
     {
-      title: 'Handcrafted Love',
-      description: 'Every sweet is made with care and attention to detail by expert artisans.',
-      icon: '👨‍🍳',
+      icon: Users,
+      title: 'Family Heritage',
+      description: 'Three generations of sweet-making excellence and dedication',
+      color: '#8B0000',
     },
     {
-      title: 'Hygiene First',
-      description: 'Maintaining the highest standards of cleanliness and quality.',
-      icon: '✨',
+      icon: Award,
+      title: 'Quality Promise',
+      description: 'Freshly prepared daily with uncompromising quality standards',
+      color: '#C41E3A',
     },
   ];
 
-  const gallery = [
-    'https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=600&q=80',
-    'https://images.unsplash.com/photo-1621303837174-89787a7d4729?w=600&q=80',
-    'https://images.unsplash.com/photo-1628840042765-356cda07504e?w=600&q=80',
-    'https://images.unsplash.com/photo-1623428454614-abaf00244e52?w=600&q=80',
-    'https://images.unsplash.com/photo-1586985289688-ca3cf47d3e6e?w=600&q=80',
-    'https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=600&q=80',
+  const stats = [
+    { number: '50+', label: 'Years of Excellence', icon: Clock },
+    { number: '100+', label: 'Sweet Varieties', icon: GiCupcake },
+    { number: '10,000+', label: 'Happy Customers', icon: Users },
+    { number: '4.8', label: 'Customer Rating', icon: Star },
   ];
 
   return (
-    <div className="min-h-screen bg-[#0D0D0D]">
-      <Navbar />
+    <div className="min-h-screen bg-gradient-to-b from-[#0D0D0D] via-[#1A0F0A] to-[#0D0D0D]">
+      {/* SEO Component */}
+      <SEO 
+        title="About Us - Mansoor Hotel & Sweets | Family-Owned Since 1976"
+        description="Learn about Mansoor Hotel & Sweets' 50+ year journey in Baisi, Bihar. Family-owned since 1976, serving authentic Indian sweets with traditional recipes and pure ingredients."
+        keywords="About Mansoor Hotel, Mansoor & Sons history, traditional sweet shop, Baisi Bihar sweets heritage, family-owned business"
+        url="/about"
+      />
+
+      {/* Navbar */}
+      <Navbar cart={[]} />
 
       {/* Hero Section */}
-      <section className="relative pt-32 pb-20 px-4 overflow-hidden">
-        <div className="absolute inset-0 opacity-10">
-          <GiCupcake className="absolute top-20 left-10 h-32 w-32 text-[#FFD700] animate-float" />
-          <GiCupcake className="absolute bottom-20 right-10 h-40 w-40 text-[#FFD700] animate-float" style={{ animationDelay: '1s' }} />
+      <section className="relative h-[60vh] sm:h-[70vh] flex items-center justify-center overflow-hidden mt-16 sm:mt-20">
+        {/* Background Image */}
+        <div className="absolute inset-0">
+          <img 
+            src="/Background.png" 
+            alt="Mansoor Hotel & Sweets Heritage" 
+            className="w-full h-full object-cover opacity-30"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#0D0D0D]/80 via-[#C41E3A]/20 to-[#0D0D0D]"></div>
         </div>
 
-        <div className="max-w-7xl mx-auto relative z-10">
+        {/* Hero Content */}
+        <div className="relative z-10 text-center px-4 sm:px-6">
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="text-center"
           >
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-gold-gradient mb-4 sm:mb-6 font-['Playfair_Display'] px-4">
-              Our Story
+            <motion.div
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ delay: 0.3, type: "spring", stiffness: 200 }}
+              className="flex justify-center mb-6"
+            >
+              <div className="relative">
+                <Sparkles className="h-16 w-16 sm:h-20 sm:w-20 text-[#FFD700] animate-pulse" />
+                <div className="absolute inset-0 bg-[#FFD700]/20 blur-2xl"></div>
+              </div>
+            </motion.div>
+
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-4 font-['Playfair_Display']">
+              Our <span className="text-[#FFD700]">Sweet</span> Story
             </h1>
-            <p className="text-base sm:text-lg md:text-xl text-[#F5F5DC]/80 max-w-3xl mx-auto leading-relaxed px-4">
-              A legacy of sweetness that has been delighting families for over five decades
-            </p>
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.6 }}
+              className="text-lg sm:text-xl md:text-2xl text-[#F5F5DC]/80 max-w-3xl mx-auto leading-relaxed"
+            >
+              Crafting happiness in every bite since <span className="text-[#FFD700] font-bold">1976</span>
+            </motion.p>
           </motion.div>
         </div>
+
+        {/* Floating Sweet Icons */}
+        <motion.div
+          animate={{ y: [0, -20, 0] }}
+          transition={{ duration: 3, repeat: Infinity }}
+          className="absolute top-20 left-10 opacity-20"
+        >
+          <GiCupcake className="h-24 w-24 text-[#FFD700]" />
+        </motion.div>
+        <motion.div
+          animate={{ y: [0, 20, 0] }}
+          transition={{ duration: 3, repeat: Infinity, delay: 1 }}
+          className="absolute bottom-20 right-10 opacity-20"
+        >
+          <GiCandyCanes className="h-24 w-24 text-[#C41E3A]" />
+        </motion.div>
       </section>
 
       {/* Stats Section */}
-      <section className="py-12 sm:py-16 px-4">
+      <section className="py-16 sm:py-20 px-4 relative">
         <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
             {stats.map((stat, index) => (
               <motion.div
                 key={index}
-                initial={{ opacity: 0, scale: 0.8 }}
+                initial={{ opacity: 0, scale: 0.5 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
-                className="card-premium p-4 sm:p-6 text-center"
+                className="relative group"
               >
-                <stat.icon className="h-10 w-10 sm:h-12 sm:w-12 text-[#FFD700] mx-auto mb-3 sm:mb-4" />
-                <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#FFD700] mb-1 sm:mb-2">{stat.value}</h3>
-                <p className="text-[#F5F5DC]/70 text-xs sm:text-sm">{stat.label}</p>
+                <div className="bg-gradient-to-br from-[#C41E3A]/10 to-[#8B0000]/10 backdrop-blur-xl rounded-2xl p-6 sm:p-8 border border-[#FFD700]/20 hover:border-[#FFD700]/50 transition-all duration-500 hover:transform hover:scale-105">
+                  <div className="absolute inset-0 bg-gradient-to-br from-[#FFD700]/0 to-[#FFD700]/10 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                  
+                  <div className="relative z-10">
+                    <stat.icon className="h-10 w-10 sm:h-12 sm:w-12 text-[#FFD700] mb-4 mx-auto" />
+                    <div className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-2 font-['Playfair_Display']">
+                      {stat.number}
+                    </div>
+                    <div className="text-sm sm:text-base text-[#F5F5DC]/70">
+                      {stat.label}
+                    </div>
+                  </div>
+                </div>
               </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Story Section */}
-      <section className="py-20 px-4">
+      {/* Our Story Section */}
+      <section className="py-16 sm:py-20 px-4">
         <div className="max-w-7xl mx-auto">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            {/* Text Content */}
             <motion.div
               initial={{ opacity: 0, x: -50 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               className="space-y-6"
             >
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-[#FFD700] font-['Playfair_Display']">
-                The MANSOOR Legacy
-              </h2>
-              <div className="space-y-4 text-[#F5F5DC]/80 leading-relaxed">
-                <p>
-                  Established in the heart of tradition, <span className="text-[#FFD700] font-semibold">MANSOOR HOTEL & SWEETS</span> began its journey 
-                  with a simple mission: to bring the authentic taste of homemade sweets to every household.
+              <div>
+                <motion.div
+                  initial={{ width: 0 }}
+                  whileInView={{ width: '60px' }}
+                  viewport={{ once: true }}
+                  className="h-1 bg-gradient-to-r from-[#C41E3A] to-[#FFD700] mb-4"
+                ></motion.div>
+                <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-[#FFD700] font-['Playfair_Display'] mb-6">
+                  The MANSOOR Legacy
+                </h2>
+              </div>
+              
+              <div className="space-y-5 text-[#F5F5DC]/80 leading-relaxed text-base sm:text-lg">
+                <p className="bg-gradient-to-r from-[#C41E3A]/5 to-transparent p-4 rounded-lg border-l-4 border-[#FFD700]">
+                  In <span className="text-[#FFD700] font-semibold">1976</span>, in the historic town of <span className="text-[#FFD700] font-semibold">Baisi, Bihar</span>, a sweet dream was born. 
+                  <span className="text-[#FFD700] font-semibold"> Mansoor & Sons</span> started with a simple vision: to share the authentic taste of traditional Indian sweets made with love, care, and the finest ingredients.
                 </p>
+                
                 <p>
-                  What started as a small family venture by the founders, <span className="text-[#FFD700] font-semibold">MANSOOR & SONS</span>, 
-                  has now blossomed into a beloved destination for sweet lovers across the region. Our commitment to quality, 
-                  purity, and taste has remained unchanged through the generations.
+                  What began as a modest sweet shop on <span className="text-[#FFD700] font-semibold">Madrasa Road</span> has grown into a beloved institution, 
+                  serving generations of families with the same dedication to quality and authenticity that our founders instilled from day one.
                 </p>
+                
                 <p>
-                  Every sweet we create tells a story of dedication, craftsmanship, and love. From our signature rasgullas 
-                  to the melt-in-your-mouth laddoos, each delicacy is prepared using time-honored recipes and the finest ingredients.
+                  For over <span className="text-[#FFD700] font-semibold">50 years</span>, <span className="text-[#FFD700] font-semibold">Mansoor Hotel & Sweets</span> has been 
+                  the heartbeat of celebrations, festivals, and everyday joys in Bihar and beyond. From weddings to Eid,Diwali, from simple family gatherings to grand 
+                  celebrations, our sweets have been part of countless precious memories.
                 </p>
-                <p>
-                  Today, we continue to uphold the values our founders instilled in us: <span className="text-[#FFD700]">purity, quality, and tradition</span>. 
-                  Join us in celebrating the sweet moments of life.
+
+                <p className="text-[#FFD700] font-semibold italic">
+                  "We don't just make sweets; we create moments of happiness that last a lifetime."
                 </p>
               </div>
+
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                className="inline-block"
+              >
+                <div className="bg-gradient-to-r from-[#C41E3A] to-[#8B0000] text-white px-8 py-4 rounded-full font-bold shadow-2xl border-2 border-[#FFD700]/50">
+                  <TrendingUp className="inline-block mr-2 h-5 w-5" />
+                  Three Generations of Excellence
+                </div>
+              </motion.div>
             </motion.div>
 
+            {/* Image */}
             <motion.div
               initial={{ opacity: 0, x: 50 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               className="relative"
             >
-              <div className="card-premium p-2">
-                <img
-                  src="https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=800&q=80"
-                  alt="Mansoor Sweets"
-                  className="w-full h-[400px] object-cover rounded-lg"
+              <div className="relative rounded-2xl overflow-hidden shadow-2xl">
+                <img 
+                  src="/Background.png" 
+                  alt="Mansoor Hotel & Sweets - Traditional Sweet Making" 
+                  className="w-full h-[400px] sm:h-[500px] object-cover"
                 />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0D0D0D] via-transparent to-transparent"></div>
+                
+                {/* Overlay Badge */}
+                <div className="absolute bottom-6 left-6 bg-white/95 backdrop-blur-sm rounded-xl p-4 shadow-xl">
+                  <div className="flex items-center gap-3">
+                    <Award className="h-10 w-10 text-[#FFD700]" />
+                    <div>
+                      <div className="text-2xl font-bold text-[#C41E3A] font-['Playfair_Display']">Since 1976</div>
+                      <div className="text-sm text-gray-600">Trusted by Thousands</div>
+                    </div>
+                  </div>
+                </div>
               </div>
-              <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-gradient-to-br from-[#FFD700] to-[#D2691E] rounded-full blur-3xl opacity-30"></div>
+
+              {/* Decorative Elements */}
+              <div className="absolute -top-6 -right-6 w-32 h-32 bg-gradient-to-br from-[#FFD700] to-[#C41E3A] rounded-full blur-3xl opacity-30"></div>
+              <div className="absolute -bottom-6 -left-6 w-32 h-32 bg-gradient-to-br from-[#C41E3A] to-[#8B0000] rounded-full blur-3xl opacity-30"></div>
             </motion.div>
           </div>
         </div>
       </section>
 
-      {/* Traditions Section */}
-      <section className="py-20 px-4 bg-gradient-to-b from-transparent to-[#1A0F0A]">
+      {/* Our Values Section */}
+      <section className="py-16 sm:py-20 px-4 bg-gradient-to-b from-transparent to-[#1A0F0A]">
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -156,124 +254,227 @@ const About = () => {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-[#FFD700] mb-4 font-['Playfair_Display']">
-              Our Tradition
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-4 font-['Playfair_Display']">
+              What Makes Us <span className="text-[#FFD700]">Special</span>
             </h2>
             <p className="text-[#F5F5DC]/70 text-lg max-w-2xl mx-auto">
-              What makes us special and sets us apart
+              Our commitment to excellence is built on these core values
             </p>
           </motion.div>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {traditions.map((tradition, index) => (
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
+            {values.map((value, index) => (
               <motion.div
                 key={index}
-                initial={{ opacity: 0, y: 30 }}
+                initial={{ opacity: 0, y: 50 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
-                className="card-premium p-6 text-center hover-glow"
+                transition={{ delay: index * 0.15 }}
+                whileHover={{ y: -10 }}
+                className="group"
               >
-                <div className="text-5xl mb-4">{tradition.icon}</div>
-                <h3 className="text-xl font-bold text-[#FFD700] mb-3 font-['Playfair_Display']">
-                  {tradition.title}
-                </h3>
-                <p className="text-[#F5F5DC]/70 text-sm leading-relaxed">
-                  {tradition.description}
-                </p>
+                <div className="relative bg-gradient-to-br from-white/5 to-white/[0.02] backdrop-blur-xl rounded-2xl p-8 border border-[#FFD700]/10 hover:border-[#FFD700]/40 transition-all duration-500 h-full">
+                  {/* Glow Effect */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-[#FFD700]/0 to-[#C41E3A]/0 group-hover:from-[#FFD700]/10 group-hover:to-[#C41E3A]/10 rounded-2xl transition-all duration-500"></div>
+                  
+                  <div className="relative z-10">
+                    <div className="mb-6">
+                      <div className="inline-block p-4 bg-gradient-to-br from-[#C41E3A]/20 to-[#8B0000]/20 rounded-xl group-hover:scale-110 transition-transform duration-300">
+                        <value.icon className="h-10 w-10" style={{ color: value.color }} />
+                      </div>
+                    </div>
+                    
+                    <h3 className="text-xl sm:text-2xl font-bold text-white mb-3 font-['Playfair_Display']">
+                      {value.title}
+                    </h3>
+                    
+                    <p className="text-[#F5F5DC]/70 leading-relaxed">
+                      {value.description}
+                    </p>
+                  </div>
+                </div>
               </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Gallery Section */}
-      <section className="py-20 px-4">
-        <div className="max-w-7xl mx-auto">
+      {/* Timeline Section */}
+      <section className="py-16 sm:py-20 px-4">
+        <div className="max-w-5xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-[#FFD700] mb-4 font-['Playfair_Display']">
-              Our Sweet Gallery
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-4 font-['Playfair_Display']">
+              Our <span className="text-[#FFD700]">Journey</span>
             </h2>
             <p className="text-[#F5F5DC]/70 text-lg">
-              A visual feast of our handcrafted delicacies
+              Milestones that shaped our legacy
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-            {gallery.map((image, index) => (
+          <div className="space-y-8">
+            {milestones.map((milestone, index) => (
               <motion.div
                 key={index}
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
+                initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50 }}
+                whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
-                whileHover={{ scale: 1.05 }}
-                className="card-premium p-2 cursor-pointer overflow-hidden"
+                transition={{ delay: index * 0.2 }}
+                className="relative"
               >
-                <img
-                  src={image}
-                  alt={`Sweet ${index + 1}`}
-                  className="w-full h-64 object-cover rounded-lg"
-                />
+                <div className="flex items-center gap-6">
+                  {/* Year Badge */}
+                  <motion.div
+                    whileHover={{ scale: 1.1, rotate: 5 }}
+                    className="flex-shrink-0 w-24 h-24 sm:w-28 sm:h-28 bg-gradient-to-br from-[#C41E3A] to-[#8B0000] rounded-full flex items-center justify-center shadow-2xl border-4 border-[#FFD700]"
+                  >
+                    <span className="text-xl sm:text-2xl font-bold text-white font-['Playfair_Display']">
+                      {milestone.year}
+                    </span>
+                  </motion.div>
+
+                  {/* Content */}
+                  <div className="flex-1 bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl rounded-2xl p-6 border border-[#FFD700]/20 hover:border-[#FFD700]/50 transition-all duration-300">
+                    <h3 className="text-xl sm:text-2xl font-bold text-[#FFD700] mb-2 font-['Playfair_Display']">
+                      {milestone.title}
+                    </h3>
+                    <p className="text-[#F5F5DC]/70 text-base sm:text-lg">
+                      {milestone.description}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Connector Line */}
+                {index < milestones.length - 1 && (
+                  <div className="absolute left-12 sm:left-14 top-24 sm:top-28 w-0.5 h-8 bg-gradient-to-b from-[#FFD700] to-transparent"></div>
+                )}
               </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Chef Section */}
-      <section className="py-20 px-4 bg-gradient-to-b from-[#1A0F0A] to-[#0D0D0D]">
+      {/* Location Section */}
+      <section className="py-16 sm:py-20 px-4 bg-gradient-to-b from-[#1A0F0A] to-[#0D0D0D]">
         <div className="max-w-7xl mx-auto">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              className="order-2 md:order-1"
-            >
-              <div className="card-premium p-2">
-                <img
-                  src="https://images.unsplash.com/photo-1556910103-1c02745aae4d?w=800&q=80"
-                  alt="Our Chef"
-                  className="w-full h-[500px] object-cover rounded-lg"
-                />
-              </div>
-            </motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-12"
+          >
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-4 font-['Playfair_Display']">
+              Visit Our <span className="text-[#FFD700]">Sweet Home</span>
+            </h2>
+            <p className="text-[#F5F5DC]/70 text-lg">
+              Located in the heart of Baisi, Bihar
+            </p>
+          </motion.div>
 
-            <motion.div
-              initial={{ opacity: 0, x: 50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              className="order-1 md:order-2 space-y-6"
-            >
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-[#FFD700] font-['Playfair_Display']">
-                Meet Our Master Chef
-              </h2>
-              <p className="text-[#F5F5DC]/80 leading-relaxed">
-                With over 30 years of expertise, our master chef has perfected the art of sweet-making. 
-                Trained under the guidance of veteran confectioners and armed with secret family recipes, 
-                he brings passion and precision to every creation.
-              </p>
-              <p className="text-[#F5F5DC]/80 leading-relaxed">
-                His dedication to maintaining traditional methods while embracing modern hygiene standards 
-                ensures that every bite you take is both authentic and safe.
-              </p>
-              <div className="flex items-center space-x-4 pt-4">
-                <div className="w-16 h-1 bg-gradient-to-r from-[#FFD700] to-[#D2691E]"></div>
-                <p className="text-[#FFD700] font-semibold italic">
-                  "Sweetness is not just taste, it's an emotion"
-                </p>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            className="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl rounded-3xl p-8 border border-[#FFD700]/20"
+          >
+            <div className="grid md:grid-cols-2 gap-8 items-center">
+              <div className="space-y-6">
+                <div className="flex items-start gap-4">
+                  <div className="p-3 bg-[#C41E3A]/20 rounded-lg">
+                    <Award className="h-6 w-6 text-[#FFD700]" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-white mb-2">Address</h3>
+                    <p className="text-[#F5F5DC]/80">
+                      Madrasa Road, Baisi<br />
+                      Bihar - 854315, India
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-4">
+                  <div className="p-3 bg-[#C41E3A]/20 rounded-lg">
+                    <Clock className="h-6 w-6 text-[#FFD700]" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-white mb-2">Business Hours</h3>
+                    <p className="text-[#F5F5DC]/80">
+                      Monday - Saturday: 9:00 AM - 9:00 PM<br />
+                      Sunday: 10:00 AM - 8:00 PM
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-4">
+                  <div className="p-3 bg-[#C41E3A]/20 rounded-lg">
+                    <Users className="h-6 w-6 text-[#FFD700]" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-white mb-2">Contact</h3>
+                    <p className="text-[#F5F5DC]/80">
+                      +91 9155197891<br />
+                      +91 7463067892<br />
+                      mansoors.info@gmail.com
+                    </p>
+                  </div>
+                </div>
               </div>
-            </motion.div>
-          </div>
+
+              <div className="relative h-[400px] rounded-2xl overflow-hidden shadow-2xl">
+                <iframe
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3591.123456789!2d87.7311!3d25.8597!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjXCsDUxJzM1LjAiTiA4N8KwNDMnNTIuMCJF!5e0!3m2!1sen!2sin!4v1234567890"
+                  width="100%"
+                  height="100%"
+                  style={{ border: 0 }}
+                  allowFullScreen=""
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  title="Mansoor Hotel & Sweets Location"
+                  className="brightness-90"
+                ></iframe>
+              </div>
+            </div>
+          </motion.div>
         </div>
       </section>
 
+      {/* CTA Section */}
+      <section className="py-16 sm:py-20 px-4">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="max-w-4xl mx-auto text-center bg-gradient-to-br from-[#C41E3A] to-[#8B0000] rounded-3xl p-12 relative overflow-hidden shadow-2xl"
+        >
+          {/* Decorative Elements */}
+          <div className="absolute top-0 right-0 w-64 h-64 bg-[#FFD700]/10 rounded-full blur-3xl"></div>
+          <div className="absolute bottom-0 left-0 w-64 h-64 bg-white/5 rounded-full blur-3xl"></div>
+
+          <div className="relative z-10">
+            <Heart className="h-16 w-16 text-[#FFD700] mx-auto mb-6 animate-pulse" />
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-6 font-['Playfair_Display']">
+              Be Part of Our Sweet Journey
+            </h2>
+            <p className="text-lg sm:text-xl text-white/90 mb-8 max-w-2xl mx-auto">
+              Experience the taste of tradition. Order your favorite sweets today and become part of our growing family!
+            </p>
+            <motion.a
+              href="/"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="inline-block bg-white text-[#C41E3A] px-10 py-4 rounded-full font-bold text-lg shadow-2xl hover:shadow-[#FFD700]/50 transition-all duration-300"
+            >
+              Explore Our Collection
+            </motion.a>
+          </div>
+        </motion.div>
+      </section>
+
+      {/* Footer */}
       <Footer />
     </div>
   );

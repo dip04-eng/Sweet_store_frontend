@@ -15,8 +15,9 @@ const ViewOrders = () => {
     return `${year}-${month}-${day}`;
   }); // Date filter defaults to today
   const [searchQuery, setSearchQuery] = useState(''); // Search query
-  const [deliverySort, setDeliverySort] = useState('asc'); // 'asc' or 'desc'
-  const [orderSort, setOrderSort] = useState('asc'); // 'asc' or 'desc'
+  const [deliverySort, setDeliverySort] = useState('asc'); // 'asc' or 'desc' or null
+  const [orderSort, setOrderSort] = useState('asc'); // 'asc' or 'desc' or null
+  const [activeSortColumn, setActiveSortColumn] = useState('order'); // 'order' or 'delivery' - which column is actively sorting
   const [showPendingPaymentOnly, setShowPendingPaymentOnly] = useState(false); // Filter for delivered with pending payment
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -44,6 +45,7 @@ const ViewOrders = () => {
   const [editOrder, setEditOrder] = useState(null);
   const [editForm, setEditForm] = useState({ customerName: '', mobile: '', total: '', advancePaid: '', status: 'pending' });
   const [additionalAdvance, setAdditionalAdvance] = useState(0);
+  const [showAdvanceExceedWarning, setShowAdvanceExceedWarning] = useState(false); // Warning when trying to exceed due amount
   const [toast, setToast] = useState(null); // { message, type: 'success' | 'danger' }
   
   // Add items functionality
@@ -131,30 +133,29 @@ const ViewOrders = () => {
       return statusMatch && dateMatch && searchMatch && pendingPaymentMatch;
     })
     .sort((a, b) => {
-      // If orderSort is active, sort by order date
-      if (orderSort) {
+      // Sort based on which column is active
+      if (activeSortColumn === 'order') {
         const dateA = new Date(a.orderDate || '9999-12-31');
         const dateB = new Date(b.orderDate || '9999-12-31');
         const comparison = dateA - dateB;
         return orderSort === 'asc' ? comparison : -comparison;
+      } else {
+        // Sort by delivery date
+        const dateA = new Date(a.deliveryDate || '9999-12-31');
+        const dateB = new Date(b.deliveryDate || '9999-12-31');
+        const comparison = dateA - dateB;
+        return deliverySort === 'asc' ? comparison : -comparison;
       }
-      
-      // Otherwise sort by delivery date
-      const dateA = new Date(a.deliveryDate || '9999-12-31');
-      const dateB = new Date(b.deliveryDate || '9999-12-31');
-      const comparison = dateA - dateB;
-      
-      return deliverySort === 'asc' ? comparison : -comparison;
     });
 
   const toggleDeliverySort = () => {
     setDeliverySort(deliverySort === 'asc' ? 'desc' : 'asc');
-    setOrderSort(null); // Disable order sort when delivery sort is active
+    setActiveSortColumn('delivery'); // Make delivery the active sort column
   };
 
   const toggleOrderSort = () => {
     setOrderSort(orderSort === 'asc' ? 'desc' : 'asc');
-    setDeliverySort(null); // Disable delivery sort when order sort is active
+    setActiveSortColumn('order'); // Make order the active sort column
   };
 
   const openDownloadModal = () => {
@@ -224,6 +225,64 @@ const ViewOrders = () => {
     } catch (err) {
       console.error('Download error:', err);
       setToast({ message: 'Failed to download statement', type: 'danger' });
+      setTimeout(() => setToast(null), 2500);
+    } finally {
+      setIsDownloading(false);
+    }
+  };
+
+  const viewStatement = async () => {
+    // Filter orders by date range
+    const ordersInRange = orders.filter(order => {
+      const orderDate = order.orderDate ? order.orderDate.split('T')[0] : '';
+      return orderDate >= downloadStartDate && orderDate <= downloadEndDate;
+    });
+
+    if (ordersInRange.length === 0) {
+      setToast({ message: 'No orders found in selected date range', type: 'danger' });
+      setTimeout(() => setToast(null), 2500);
+      return;
+    }
+
+    try {
+      setIsDownloading(true);
+      setShowDownloadModal(false);
+      
+      // Prepare filter info for the PDF header
+      const filters = {
+        statusFilter: 'All',
+        dateRange: `${downloadStartDate} to ${downloadEndDate}`,
+        pendingPayment: false
+      };
+
+      const response = await fetch(`${API_BASE_URL}${API_ENDPOINTS.DOWNLOAD_STATEMENT}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          orders: ordersInRange,
+          filters: filters
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to generate PDF');
+      }
+
+      // Get the PDF blob
+      const blob = await response.blob();
+      
+      // Open in new tab for viewing (no download)
+      const url = window.URL.createObjectURL(blob);
+      window.open(url, '_blank');
+      
+      // Clean up URL after a delay
+      setTimeout(() => window.URL.revokeObjectURL(url), 10000);
+
+      setToast({ message: 'Statement opened in new tab!', type: 'success' });
+      setTimeout(() => setToast(null), 2500);
+    } catch (err) {
+      console.error('View error:', err);
+      setToast({ message: 'Failed to view statement', type: 'danger' });
       setTimeout(() => setToast(null), 2500);
     } finally {
       setIsDownloading(false);
@@ -476,7 +535,7 @@ const ViewOrders = () => {
             ) : (
               <>
                 <Download className="h-4 w-4" />
-                <span>Download PDF</span>
+                <span>View Range</span>
               </>
             )}
           </button>
@@ -527,21 +586,27 @@ const ViewOrders = () => {
                     <th className="px-2 sm:px-3 md:px-4 py-3 sm:py-4 text-left text-xs sm:text-sm font-semibold whitespace-nowrap">
                       <button 
                         onClick={toggleOrderSort}
-                        className="flex items-center gap-2 hover:text-yellow-300 transition-colors"
-                        title="Click to sort by order date"
+                        className={`flex items-center gap-2 transition-colors ${activeSortColumn === 'order' ? 'text-yellow-300' : 'hover:text-yellow-300'}`}
+                        title="Click to sort by order date (Up=Ascending, Down=Descending)"
                       >
                         <span>Order Date</span>
-                        {orderSort === 'asc' ? <ArrowUp className="h-4 w-4" /> : <ArrowDown className="h-4 w-4" />}
+                        <div className="flex flex-col -space-y-1">
+                          <ArrowUp className={`h-3 w-3 ${activeSortColumn === 'order' && orderSort === 'asc' ? 'text-yellow-300' : 'text-white/40'}`} />
+                          <ArrowDown className={`h-3 w-3 ${activeSortColumn === 'order' && orderSort === 'desc' ? 'text-yellow-300' : 'text-white/40'}`} />
+                        </div>
                       </button>
                     </th>
                     <th className="px-2 sm:px-3 md:px-4 py-3 sm:py-4 text-left text-xs sm:text-sm font-semibold whitespace-nowrap">
                       <button 
                         onClick={toggleDeliverySort}
-                        className="flex items-center gap-2 hover:text-yellow-300 transition-colors"
-                        title="Click to sort by delivery date"
+                        className={`flex items-center gap-2 transition-colors ${activeSortColumn === 'delivery' ? 'text-yellow-300' : 'hover:text-yellow-300'}`}
+                        title="Click to sort by delivery date (Up=Ascending, Down=Descending)"
                       >
                         <span>Delivery Date</span>
-                        {deliverySort === 'asc' ? <ArrowUp className="h-4 w-4" /> : <ArrowDown className="h-4 w-4" />}
+                        <div className="flex flex-col -space-y-1">
+                          <ArrowUp className={`h-3 w-3 ${activeSortColumn === 'delivery' && deliverySort === 'asc' ? 'text-yellow-300' : 'text-white/40'}`} />
+                          <ArrowDown className={`h-3 w-3 ${activeSortColumn === 'delivery' && deliverySort === 'desc' ? 'text-yellow-300' : 'text-white/40'}`} />
+                        </div>
                       </button>
                     </th>
                     <th className="px-2 sm:px-3 md:px-4 py-3 sm:py-4 text-left text-xs sm:text-sm font-semibold whitespace-nowrap">Amount</th>
@@ -799,7 +864,7 @@ const ViewOrders = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-xs sm:text-sm font-semibold text-yellow-600 mb-1.5 sm:mb-2">Amount</label>
+                  <label className="block text-xs sm:text-sm font-semibold text-yellow-600 mb-1.5 sm:mb-2">Total Amount</label>
                   <input
                     type="number"
                     min="0"
@@ -826,28 +891,50 @@ const ViewOrders = () => {
                   <input
                     type="number"
                     min="0"
-                    step="0.01"
-                    max={Math.max(0, (parseFloat(editForm.total) || 0) - (parseFloat(editForm.advancePaid) || 0))}
+                    step="1"
                     value={additionalAdvance}
                     onChange={(e) => {
-                      const value = parseFloat(e.target.value) || 0;
+                      const inputValue = e.target.value;
                       const remaining = (parseFloat(editForm.total) || 0) - (parseFloat(editForm.advancePaid) || 0);
-                      if (value <= remaining) {
-                        setAdditionalAdvance(e.target.value);
-                      } else {
-                        setToast({ 
-                          message: `Advance payment cannot exceed the remaining amount of ₹${remaining.toFixed(2)}`, 
-                          type: 'danger' 
-                        });
-                        setTimeout(() => setToast(null), 3000);
+                      
+                      // Allow empty input
+                      if (inputValue === '') {
+                        setAdditionalAdvance('');
+                        setShowAdvanceExceedWarning(false);
+                        return;
                       }
+                      
+                      const value = parseFloat(inputValue) || 0;
+                      
+                      // Block if value exceeds remaining due amount
+                      if (value > remaining) {
+                        // Show warning and don't update the value
+                        setShowAdvanceExceedWarning(true);
+                        // Auto-hide warning after 10 seconds
+                        setTimeout(() => setShowAdvanceExceedWarning(false), 10000);
+                        return; // Block the input
+                      }
+                      
+                      // Value is valid, update it
+                      setShowAdvanceExceedWarning(false);
+                      setAdditionalAdvance(inputValue);
                     }}
-                    className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base bg-white border border-gray-300 rounded-lg sm:rounded-xl text-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+                    className={`w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base bg-white border rounded-lg sm:rounded-xl text-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all ${
+                      showAdvanceExceedWarning 
+                        ? 'border-red-500 ring-2 ring-red-300' 
+                        : 'border-gray-300'
+                    }`}
                     placeholder="Enter additional amount"
                   />
+                  {showAdvanceExceedWarning && (
+                    <p className="text-xs text-red-600 mt-1 font-semibold animate-pulse bg-red-50 px-2 py-1 rounded">⚠️ Amount more than: ₹{Math.max(0, (parseFloat(editForm.total) || 0) - (parseFloat(editForm.advancePaid) || 0)).toFixed(2)} Not allowed</p>
+                  )}
+                  {parseFloat(additionalAdvance) === ((parseFloat(editForm.total) || 0) - (parseFloat(editForm.advancePaid) || 0)) && parseFloat(additionalAdvance) > 0 && (
+                    <p className="text-xs text-green-600 mt-1 font-semibold">✓ Full payment entered</p>
+                  )}
                   <p className="text-xs text-gray-600 mt-1">Total Advance: ₹{((parseFloat(editForm.advancePaid) || 0) + (parseFloat(additionalAdvance) || 0)).toFixed(2)}</p>
                   <p className="text-xs text-red-600 mt-1 font-semibold">Remaining Due: ₹{Math.max(0, ((parseFloat(editForm.total) || 0) - ((parseFloat(editForm.advancePaid) || 0) + (parseFloat(additionalAdvance) || 0)))).toFixed(2)}</p>
-                  <p className="text-xs text-blue-600 mt-1">Maximum allowed: ₹{Math.max(0, (parseFloat(editForm.total) || 0) - (parseFloat(editForm.advancePaid) || 0)).toFixed(2)}</p>
+                 
                 </div>
                 
                 {/* Current Order Items */}
@@ -1369,9 +1456,13 @@ const ViewOrders = () => {
                       type="button"
                       onClick={() => {
                         const today = new Date();
-                        const firstDay = new Date(today.getFullYear(), today.getMonth(), 1);
-                        setDownloadStartDate(firstDay.toISOString().split('T')[0]);
-                        setDownloadEndDate(today.toISOString().split('T')[0]);
+                        const year = today.getFullYear();
+                        const month = String(today.getMonth() + 1).padStart(2, '0');
+                        const day = String(today.getDate()).padStart(2, '0');
+                        const todayStr = `${year}-${month}-${day}`;
+                        const firstDayStr = `${year}-${month}-01`;
+                        setDownloadStartDate(firstDayStr);
+                        setDownloadEndDate(todayStr);
                       }}
                       className="px-3 py-1 text-xs bg-pink-100 text-pink-700 rounded-full hover:bg-pink-200 transition-colors"
                     >
@@ -1389,6 +1480,18 @@ const ViewOrders = () => {
                     Cancel
                   </button>
                   <button
+                    onClick={viewStatement}
+                    disabled={!downloadStartDate || !downloadEndDate || downloadStartDate > downloadEndDate}
+                    className={`flex-1 px-4 py-2.5 rounded-lg font-semibold flex items-center justify-center gap-2 transition-all touch-manipulation min-h-[44px] ${
+                      !downloadStartDate || !downloadEndDate || downloadStartDate > downloadEndDate
+                        ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                        : 'bg-gradient-to-r from-blue-500 to-purple-500 text-white hover:shadow-lg'
+                    }`}
+                  >
+                    <Eye className="h-4 w-4" />
+                    View PDF
+                  </button>
+                  <button
                     onClick={downloadStatement}
                     disabled={!downloadStartDate || !downloadEndDate || downloadStartDate > downloadEndDate}
                     className={`flex-1 px-4 py-2.5 rounded-lg font-semibold flex items-center justify-center gap-2 transition-all touch-manipulation min-h-[44px] ${
@@ -1398,7 +1501,7 @@ const ViewOrders = () => {
                     }`}
                   >
                     <Download className="h-4 w-4" />
-                    Download PDF
+                    View Range
                   </button>
                 </div>
 

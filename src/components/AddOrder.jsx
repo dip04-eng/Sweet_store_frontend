@@ -24,10 +24,11 @@ const AddOrder = () => {
 
   // List of admins
   const adminList = [
-    'Admin 1',
-    'Admin 2 ',
-    'Admin 3',
-    'Admin 4'
+    'Nawed Ashraf',
+    'Intekhab Ashraf',
+    'Intezar Ashraf',
+    'Nehal Ashraf',
+    'Nadeem Ashraf'
   ];
 
   useEffect(() => {

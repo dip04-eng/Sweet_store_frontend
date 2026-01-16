@@ -78,7 +78,7 @@ const AdminLogin = () => {
         className="absolute top-6 left-6 flex items-center text-[#FFD700] hover:text-[#F5F5DC] transition-colors z-10"
       >
         <ArrowLeft className="h-5 w-5 mr-2" />
-        <span className="hidden sm:inline">Back to Home</span>
+        <span className="hidden sm:inline">Back to Store</span>
       </Link>
 
       {/* Login Card */}

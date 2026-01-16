@@ -134,7 +134,7 @@ const DailySummary = () => {
           >
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-gray-500 text-xs sm:text-sm">Revenue</p>
+                <p className="text-gray-500 text-xs sm:text-sm">Total Amount</p>
                 <p className="text-2xl sm:text-3xl font-bold text-green-600">₹{totalRevenue}</p>
               </div>
               <TrendingUp className="h-8 w-8 sm:h-10 sm:w-10 text-green-400" />

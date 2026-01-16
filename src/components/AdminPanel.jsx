@@ -130,16 +130,16 @@ const AdminPanel = () => {
                 className="flex items-center text-purple-600 hover:text-purple-800 transition-colors text-sm sm:text-base"
               >
                 <ArrowLeft className="h-4 w-4 sm:h-5 sm:w-5 mr-1 sm:mr-2" />
-                <span className="hidden sm:inline">Back to Home</span>
+                <span className="hidden sm:inline">Back to Store</span>
               </button>
               <h1 className="text-base sm:text-xl md:text-2xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
                 Admin Dashboard
               </h1>
             </div>
             <div className="flex items-center space-x-4">
-              <div className="text-xs sm:text-sm text-gray-600 hidden md:block">
+              {/* <div className="text-xs sm:text-sm text-gray-600 hidden md:block">
                 Sweet Store Management
-              </div>
+              </div> */}
               <button
                 onClick={handleLogout}
                 className="flex items-center space-x-2 px-3 sm:px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg transition-colors text-sm font-medium"
