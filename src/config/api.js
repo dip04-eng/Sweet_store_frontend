@@ -21,4 +21,4 @@ export const API_ENDPOINTS = {
   
   // Contact endpoint
   SUBMIT_CONTACT: '/contact'
-};.
+};
