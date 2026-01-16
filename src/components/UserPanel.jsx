@@ -8,6 +8,7 @@ import Navbar from './Navbar';
 import Footer from './Footer';
 import BackToTop from './BackToTop';
 import SEO from './SEO';
+import ErrorMessage from './ErrorMessage';
 import { API_BASE_URL, API_ENDPOINTS } from '../config/api';
 
 const UserPanel = () => {
@@ -41,9 +42,20 @@ const UserPanel = () => {
   const fetchSweets = async () => {
     try {
       setLoading(true);
-      const response = await fetch(`${API_BASE_URL}${API_ENDPOINTS.GET_SWEETS}`);
+      setError(null);
+      
+      // Add timeout for better user experience
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+      
+      const response = await fetch(`${API_BASE_URL}${API_ENDPOINTS.GET_SWEETS}`, {
+        signal: controller.signal
+      });
+      
+      clearTimeout(timeoutId);
+      
       if (!response.ok) {
-        throw new Error('Failed to fetch sweets');
+        throw new Error(`Server responded with ${response.status}: ${response.statusText}`);
       }
       const data = await response.json();
       console.log('📦 Fetched sweets:', data);
@@ -52,8 +64,17 @@ const UserPanel = () => {
       setSweets(data);
       setError(null);
     } catch (err) {
-      setError(err.message);
+      if (err.name === 'AbortError') {
+        setError('Request timed out. Please check your internet connection and try again.');
+      } else if (err.message.includes('Failed to fetch')) {
+        setError('Cannot connect to server. Please ensure the backend server is running.');
+      } else {
+        setError(err.message);
+      }
       console.error('Error fetching sweets:', err);
+      
+      // Optionally set some demo data for development
+      setSweets([]);
     } finally {
       setLoading(false);
     }
@@ -220,29 +241,15 @@ const UserPanel = () => {
               <p className="text-[#F5F5DC]/70 mt-6 text-lg">Loading delicious sweets...</p>
             </div>
           ) : error ? (
-            /* Error State */
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              className="text-center py-20"
-            >
-              <div className="card-premium max-w-md mx-auto p-8">
-                <div className="text-6xl mb-6">😞</div>
-                <h3 className="text-2xl font-bold text-[#FFD700] mb-3 font-['Playfair_Display']">
-                  Oops! Something went wrong
-                </h3>
-                <p className="text-[#F5F5DC]/70 mb-6">{error}</p>
-                <motion.button 
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={fetchSweets}
-                  className="btn-premium bg-gradient-to-r from-[#FFD700] to-[#D2691E] text-[#0D0D0D] px-8 py-3 rounded-full font-bold inline-flex items-center space-x-2"
-                >
-                  <RefreshCw className="h-5 w-5" />
-                  <span>Try Again</span>
-                </motion.button>
-              </div>
-            </motion.div>
+            /* Enhanced Error State */
+            <div className="text-center py-20">
+              <ErrorMessage 
+                error={error}
+                onRetry={fetchSweets}
+                type="api"
+                className="max-w-md mx-auto"
+              />
+            </div>
           ) : filteredSweets.length === 0 ? (
             /* No Results for Selected Category */
             <motion.div

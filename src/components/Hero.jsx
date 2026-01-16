@@ -22,6 +22,12 @@ const Hero = () => {
           style={{
             objectPosition: 'center center',
           }}
+          onError={(e) => {
+            console.error('Failed to load background image');
+            // Set a gradient fallback if image fails to load
+            e.target.style.display = 'none';
+            e.target.parentElement.style.background = 'linear-gradient(135deg, #C41E3A 0%, #8B0000 50%, #FFD700 100%)';
+          }}
         />
         {/* Responsive Overlay */}
         <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-black/60 md:from-black/20 md:via-transparent md:to-black/40"></div>

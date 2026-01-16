@@ -79,8 +79,16 @@ const Navbar = ({ cart = [] }) => {
                 src="\hotel_logo2-removebg-preview.png" 
                 alt="Mansoor Hotel & Sweets Logo" 
                 className="relative h-10 w-10 sm:h-12 sm:w-12 md:h-16 md:w-16 lg:h-18 lg:w-18 object-contain transition-all duration-300" 
-                aria-hidden="true" 
-                
+                aria-hidden="true"
+                onError={(e) => {
+                  console.error('Failed to load logo image');
+                  // Replace with text fallback if image fails
+                  e.target.style.display = 'none';
+                  const fallback = document.createElement('div');
+                  fallback.innerHTML = '🍬';
+                  fallback.className = 'text-2xl md:text-4xl';
+                  e.target.parentNode.appendChild(fallback);
+                }}
               />
             </motion.div>
             <motion.div
@@ -92,7 +100,16 @@ const Navbar = ({ cart = [] }) => {
                 src="/Name.png" 
                 alt="Mansoor Hotel & Sweets Name" 
                 className="h-6 sm:h-8 md:h-10 lg:h-12 w-auto object-contain transition-all duration-300 opacity-90 group-hover:opacity-100" 
-                aria-hidden="true" 
+                aria-hidden="true"
+                onError={(e) => {
+                  console.error('Failed to load name image');
+                  // Replace with text fallback if image fails
+                  e.target.style.display = 'none';
+                  const fallback = document.createElement('div');
+                  fallback.innerHTML = '<span class="text-lg md:text-xl font-bold text-[#C41E3A]">MANSOOR<br/>SWEETS</span>';
+                  fallback.className = 'text-center leading-tight';
+                  e.target.parentNode.appendChild(fallback);
+                }}
               />
             </motion.div>
           </Link>
