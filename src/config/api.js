@@ -18,6 +18,7 @@ export const API_ENDPOINTS = {
   UPDATE_ORDER_STATUS: '/admin/update_order_status',
   EDIT_ORDER: '/admin/edit_order',
   DOWNLOAD_STATEMENT: '/admin/download_statement',
+  DOWNLOAD_SALES_REPORT: '/admin/download_sales_report',
   
   // Contact endpoint
   SUBMIT_CONTACT: '/contact'

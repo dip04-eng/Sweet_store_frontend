@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Calendar, TrendingUp, Package, IndianRupee, DollarSign } from 'lucide-react';
+import { Calendar, TrendingUp, Package, IndianRupee, DollarSign, Download } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { API_BASE_URL, API_ENDPOINTS } from '../config/api';
 
@@ -24,6 +24,7 @@ const TotalSold = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(false);
   const [salesData, setSalesData] = useState(null);
+  const [isDownloading, setIsDownloading] = useState(false);
 
   useEffect(() => {
     if (selectedDate) {
@@ -92,6 +93,45 @@ const TotalSold = () => {
     });
   };
 
+  const downloadSalesReport = async () => {
+    if (!salesData || !orders.length) {
+      alert('No sales data available for the selected date');
+      return;
+    }
+
+    try {
+      setIsDownloading(true);
+      
+      const response = await fetch(`${API_BASE_URL}${API_ENDPOINTS.DOWNLOAD_SALES_REPORT}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          date: selectedDate,
+          salesData: salesData,
+          orders: orders
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to generate sales report');
+      }
+
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `sales_report_${selectedDate}.pdf`;
+      a.click();
+      window.URL.revokeObjectURL(url);
+      
+    } catch (error) {
+      console.error('Error downloading sales report:', error);
+      alert('Failed to download sales report. Please try again.');
+    } finally {
+      setIsDownloading(false);
+    }
+  };
+
   return (
     <div>
       <motion.div 
@@ -103,15 +143,44 @@ const TotalSold = () => {
           <TrendingUp className="h-6 w-6 text-gray-900 mr-2" />
           <h2 className="text-2xl font-bold text-gray-900">Sales Report</h2>
         </div>
-        <div className="flex items-center w-full sm:w-auto">
-          <Calendar className="h-5 w-5 text-gray-900 mr-2" />
-          <input
-            type="date"
-            value={selectedDate}
-            onChange={(e) => setSelectedDate(e.target.value)}
-            className="bg-white border border-gray-300 rounded-lg px-4 py-2 text-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-500 flex-1 sm:flex-none"
-            placeholder="Select date"
-          />
+        <div className="flex items-center gap-4 w-full sm:w-auto">
+          <div className="flex items-center">
+            <Calendar className="h-5 w-5 text-gray-900 mr-2" />
+            <input
+              type="date"
+              value={selectedDate}
+              onChange={(e) => setSelectedDate(e.target.value)}
+              className="bg-white border border-gray-300 rounded-lg px-4 py-2 text-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-500 flex-1 sm:flex-none"
+              placeholder="Select date"
+            />
+          </div>
+          
+          {salesData && orders.length > 0 && (
+            <motion.button
+              onClick={downloadSalesReport}
+              disabled={isDownloading}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="flex items-center px-4 py-2 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg font-semibold shadow-lg hover:from-green-600 hover:to-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
+              title="Download Sales Report as PDF"
+            >
+              {isDownloading ? (
+                <>
+                  <motion.div
+                    animate={{ rotate: 360 }}
+                    transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                    className="h-4 w-4 border-2 border-white border-t-transparent rounded-full mr-2"
+                  />
+                  Generating...
+                </>
+              ) : (
+                <>
+                  <Download className="h-4 w-4 mr-2" />
+                  Download Report
+                </>
+              )}
+            </motion.button>
+          )}
         </div>
       </motion.div>
 
