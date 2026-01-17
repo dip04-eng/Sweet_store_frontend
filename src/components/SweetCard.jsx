@@ -115,10 +115,10 @@ const SweetCard = ({ sweet, onAddToCart }) => {
         </div>
 
         {/* Quantity/Weight Selector */}
-        <div className="flex items-center justify-center mb-4 -mx-4">
+        <div className="flex items-center justify-center mb-4">
           {isKgItem ? (
             // Weight input for Kg items
-            <div className="flex items-center gap-2 bg-gradient-to-r from-[#C41E3A] to-[#8B0000] rounded-full px-8 py-3 justify-center min-w-full whitespace-nowrap overflow-hidden border-2 border-[#FFD700]/50">
+            <div className="flex items-center gap-2 bg-gradient-to-r from-[#C41E3A] to-[#8B0000] rounded-full px-4 py-2 justify-center border border-[#FFD700]/50 shadow-md">
               <label className="text-xs text-white/90 font-semibold">Weight:</label>
 
               {/* Weight input field */}
@@ -127,7 +127,7 @@ const SweetCard = ({ sweet, onAddToCart }) => {
                 value={weight}
                 onChange={handleWeightChange}
                 placeholder="0"
-                className="w-16 bg-white/20 text-[#FFD700] text-center rounded px-2 py-1 text-sm font-bold focus:outline-none focus:ring-2 focus:ring-[#FFD700] backdrop-blur-sm"
+                className="w-14 bg-white/20 text-[#FFD700] text-center rounded px-2 py-1 text-sm font-bold focus:outline-none focus:ring-2 focus:ring-[#FFD700] backdrop-blur-sm"
               />
 
               {/* Unit selector */}
@@ -140,14 +140,16 @@ const SweetCard = ({ sweet, onAddToCart }) => {
                 <option value="Kg" className="text-[#C41E3A]">Kg</option>
               </select>
 
-              <span className="text-xs text-white/80 font-semibold">
-                ≈ ₹{weight === '' ? '0.00' : (sweet.rate * getWeightInKg()).toFixed(2)}
-              </span>
+              {/* Price Display - Fixed Alignment */}
+              <div className="flex items-center gap-1 text-xs text-white/90 font-semibold">
+                <span>≈</span>
+                <span className="text-[#FFD700]">₹{weight === '' ? '0.00' : (sweet.rate * getWeightInKg()).toFixed(2)}</span>
+              </div>
             </div>
           ) : (
             // Quantity selector for piece items
-            <div className="flex items-center justify-center gap-3 bg-gradient-to-r from-[#C41E3A] to-[#8B0000] rounded-full px-6 py-3 w-full border-2 border-[#FFD700]/50">
-              <label className="text-sm text-white/90 font-semibold">Piece:</label>
+            <div className="flex items-center justify-center gap-2 bg-gradient-to-r from-[#C41E3A] to-[#8B0000] rounded-full px-4 py-2 border border-[#FFD700]/50 shadow-md">
+              <label className="text-xs text-white/90 font-semibold">Piece:</label>
 
               {/* Minus Button */}
               <motion.button
@@ -155,17 +157,17 @@ const SweetCard = ({ sweet, onAddToCart }) => {
                 whileTap={{ scale: 0.9 }}
                 onClick={() => handleQuantityChange(-1)}
                 disabled={quantity <= 1}
-                className={`p-2 rounded-full transition-all ${quantity <= 1
-                    ? 'bg-white/20 text-white/30 cursor-not-allowed'
-                    : 'bg-[#FFD700] text-[#C41E3A] hover:bg-[#FFC107]'
+                className={`p-1.5 rounded-full transition-all ${quantity <= 1
+                  ? 'bg-white/20 text-white/30 cursor-not-allowed'
+                  : 'bg-[#FFD700] text-[#C41E3A] hover:bg-[#FFC107]'
                   }`}
               >
-                <Minus className="h-4 w-4" />
+                <Minus className="h-3.5 w-3.5" />
               </motion.button>
 
               {/* Quantity Display */}
-              <div className="min-w-[60px] text-center">
-                <div className="text-2xl font-bold text-[#FFD700]">{quantity}</div>
+              <div className="min-w-[40px] text-center">
+                <div className="text-xl font-bold text-[#FFD700]">{quantity}</div>
               </div>
 
               {/* Plus Button */}
@@ -173,14 +175,16 @@ const SweetCard = ({ sweet, onAddToCart }) => {
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
                 onClick={() => handleQuantityChange(1)}
-                className="p-2 rounded-full bg-[#FFD700] text-[#C41E3A] hover:bg-[#FFC107] transition-all"
+                className="p-1.5 rounded-full bg-[#FFD700] text-[#C41E3A] hover:bg-[#FFC107] transition-all"
               >
-                <Plus className="h-4 w-4" />
+                <Plus className="h-3.5 w-3.5" />
               </motion.button>
 
-              <span className="text-sm text-white/90 ml-2 font-semibold">
-                ≈ ₹{(sweet.rate * quantity).toFixed(2)}
-              </span>
+              {/* Price Display - Fixed Alignment */}
+              <div className="flex items-center gap-1 text-xs text-white/90 font-semibold ml-1">
+                <span>≈</span>
+                <span className="text-[#FFD700]">₹{(sweet.rate * quantity).toFixed(2)}</span>
+              </div>
             </div>
           )}
         </div>
@@ -192,8 +196,8 @@ const SweetCard = ({ sweet, onAddToCart }) => {
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
           className={`w-full btn-premium flex items-center justify-center py-3 px-6 rounded-full font-bold transition-all duration-300 shadow-lg text-sm sm:text-base border-2 touch-manipulation min-h-[48px] ${isAdding
-              ? 'bg-green-600 text-white border-green-700'
-              : 'bg-gradient-to-r from-[#FFD700] to-[#FFC107] text-[#8B0000] hover:shadow-[#FFD700]/50 border-[#C41E3A]/30'
+            ? 'bg-green-600 text-white border-green-700'
+            : 'bg-gradient-to-r from-[#FFD700] to-[#FFC107] text-[#8B0000] hover:shadow-[#FFD700]/50 border-[#C41E3A]/30'
             }`}
         >
           {isAdding ? (

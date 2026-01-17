@@ -41,12 +41,25 @@ const AddOrder = () => {
       const response = await fetch(`${API_BASE_URL}${API_ENDPOINTS.GET_SERVER_DATE}`);
       const data = await response.json();
       setServerDate(data.date);
-      setFormData(prev => ({ ...prev, deliveryDate: data.date }));
+
+      // Set delivery date to tomorrow
+      const today = new Date(data.date);
+      const tomorrow = new Date(today);
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      const tomorrowDate = tomorrow.toISOString().split('T')[0];
+
+      setFormData(prev => ({ ...prev, deliveryDate: tomorrowDate }));
     } catch (error) {
       console.error('Error fetching server date:', error);
-      const today = new Date().toISOString().split('T')[0];
-      setServerDate(today);
-      setFormData(prev => ({ ...prev, deliveryDate: today }));
+      const today = new Date();
+      setServerDate(today.toISOString().split('T')[0]);
+
+      // Set delivery date to tomorrow
+      const tomorrow = new Date(today);
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      const tomorrowDate = tomorrow.toISOString().split('T')[0];
+
+      setFormData(prev => ({ ...prev, deliveryDate: tomorrowDate }));
     }
   };
 
@@ -115,7 +128,16 @@ const AddOrder = () => {
   };
 
   const handleFormChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+
+    // Restrict mobile number to 10 digits only
+    if (name === 'mobile') {
+      // Only allow digits and limit to 10 characters
+      const digitsOnly = value.replace(/\D/g, '').slice(0, 10);
+      setFormData({ ...formData, [name]: digitsOnly });
+    } else {
+      setFormData({ ...formData, [name]: value });
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -281,6 +303,7 @@ const AddOrder = () => {
                   onChange={handleFormChange}
                   required
                   pattern="[0-9]{10}"
+                  maxLength="10"
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                   placeholder="10-digit mobile number"
                 />

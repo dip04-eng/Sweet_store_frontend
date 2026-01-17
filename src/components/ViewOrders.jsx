@@ -379,8 +379,6 @@ const ViewOrders = () => {
   const submitEdit = async (e) => {
     e.preventDefault();
     if (!editOrder) return;
-
-    // Validate that additional advance doesn't exceed remaining amount
     const currentTotal = Number(editForm.total || 0);
     const currentAdvance = Number(editForm.advancePaid || 0);
     const additionalAmount = Number(additionalAdvance || 0);
@@ -404,7 +402,7 @@ const ViewOrders = () => {
           advancePaid: newAdvancePaid,
           deliveryDate: editForm.deliveryDate,
           status: editForm.status,
-          items: editOrderItems // Include updated items
+          items: editOrderItems
         })
       });
       if (!res.ok) throw new Error('Failed to update order');
@@ -972,7 +970,8 @@ const ViewOrders = () => {
                                 −
                               </button>
                               <input
-                                type="text"
+                                type="number"
+                                step={item.unit === 'Kg' ? "any" : "1"}
                                 value={item.quantity}
                                 onChange={(e) => {
                                   const inputValue = e.target.value;
@@ -985,20 +984,16 @@ const ViewOrders = () => {
                                     return;
                                   }
 
-                                  // Allow only numbers and decimals
-                                  if (!/^\d*\.?\d*$/.test(inputValue)) {
-                                    return;
-                                  }
-
                                   const value = parseFloat(inputValue);
-
-                                  if (!isNaN(value) && value > 0) {
+                                  if (!isNaN(value)) {
                                     const newItems = [...editOrderItems];
-                                    const isInGrams = item.weightUnit === 'grams';
-                                    newItems[index].quantity = item.unit === 'Kg' && !isInGrams ? value : (isInGrams ? Math.round(value) : value);
+                                    const isKgItem = item.unit === 'Kg';
+                                    // Store value directly for kg items, round for piece items
+                                    newItems[index].quantity = isKgItem ? value : Math.floor(value);
                                     setEditOrderItems(newItems);
+                                    // Recalculate total
                                     const newTotal = newItems.reduce((sum, it) => {
-                                      const qty = it.quantity === '' ? 0 : it.quantity;
+                                      const qty = it.quantity === '' ? 0 : parseFloat(it.quantity) || 0;
                                       const qtyInKg = (it.weightUnit === 'grams') ? qty / 1000 : qty;
                                       return sum + (it.price * qtyInKg);
                                     }, 0);
@@ -1196,37 +1191,49 @@ const ViewOrders = () => {
                           ))}
                       </select>
                       <div className="flex gap-2">
-                        <input
-                          type="text"
-                          value={selectedQuantity}
-                          onChange={(e) => {
-                            const value = e.target.value;
-                            // Allow empty string, numbers, and decimals
-                            if (value === '' || /^\d*\.?\d*$/.test(value)) {
-                              setSelectedQuantity(value === '' ? '' : value);
-                            }
-                          }}
-                          onBlur={(e) => {
-                            // Set to 1 if empty when losing focus
-                            if (e.target.value === '' || parseFloat(e.target.value) <= 0) {
-                              setSelectedQuantity(1);
-                            }
-                          }}
-                          className="w-20 sm:w-24 px-2 sm:px-3 py-2 text-xs sm:text-sm bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                          placeholder="Qty"
-                        />
                         {(() => {
                           const sweet = availableSweets.find(s => s._id === selectedSweet);
-                          return sweet && sweet.unit === 'Kg' ? (
-                            <select
-                              value={selectedWeightUnit}
-                              onChange={(e) => setSelectedWeightUnit(e.target.value)}
-                              className="px-2 py-2 text-xs sm:text-sm bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            >
-                              <option value="Kg">Kg</option>
-                              <option value="grams">grams</option>
-                            </select>
-                          ) : null;
+                          const isKgItem = sweet?.unit === 'Kg';
+                          return (
+                            <>
+                              <input
+                                type="text"
+                                value={selectedQuantity}
+                                onChange={(e) => {
+                                  const value = e.target.value;
+                                  if (isKgItem) {
+                                    // Allow decimals for Kg items
+                                    if (value === '' || /^\d*\.?\d*$/.test(value)) {
+                                      setSelectedQuantity(value === '' ? '' : value);
+                                    }
+                                  } else {
+                                    // Only allow whole numbers for piece items
+                                    if (value === '' || /^\d+$/.test(value)) {
+                                      setSelectedQuantity(value === '' ? '' : parseInt(value));
+                                    }
+                                  }
+                                }}
+                                onBlur={(e) => {
+                                  // Set to 1 if empty when losing focus
+                                  if (e.target.value === '' || parseFloat(e.target.value) <= 0) {
+                                    setSelectedQuantity(1);
+                                  }
+                                }}
+                                className="w-20 sm:w-24 px-2 sm:px-3 py-2 text-xs sm:text-sm bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                placeholder={isKgItem ? "Qty" : "Pcs"}
+                              />
+                              {isKgItem && (
+                                <select
+                                  value={selectedWeightUnit}
+                                  onChange={(e) => setSelectedWeightUnit(e.target.value)}
+                                  className="px-2 py-2 text-xs sm:text-sm bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                >
+                                  <option value="Kg">Kg</option>
+                                  <option value="grams">grams</option>
+                                </select>
+                              )}
+                            </>
+                          );
                         })()}
                         <button
                           type="button"
