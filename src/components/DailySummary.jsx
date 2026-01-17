@@ -17,14 +17,14 @@ const DailySummary = () => {
     try {
       setLoading(true);
       const url = `${API_BASE_URL}${API_ENDPOINTS.GET_DAILY_SUMMARY}`;
-      
+
       const response = await fetch(url);
-      
+
       if (!response.ok) {
         const errorText = await response.text();
         throw new Error(`Server error (${response.status}): ${errorText || 'Failed to fetch daily summary'}`);
       }
-      
+
       const data = await response.json();
       setSummaryData(data);
       setError(null);
@@ -45,7 +45,7 @@ const DailySummary = () => {
   const totalOrders = summaryData?.total_orders || 0;
   const totalRevenue = summaryData?.total_revenue || 0;
   const totalItemsSold = summaryData?.total_items_sold || 0;
-  const totalKgSold = summaryData?.total_kg_sold || 0;
+  const totalKgSold = summaryData?.total_Kg_sold || 0;
   const totalPiecesSold = summaryData?.total_pieces_sold || 0;
   const popularSweets = summaryData?.popular_sweets || [];
   const ordersList = summaryData?.orders || [];
@@ -61,7 +61,7 @@ const DailySummary = () => {
 
   return (
     <div>
-      <motion.div 
+      <motion.div
         className="flex items-center justify-between mb-4 sm:mb-6"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -93,7 +93,7 @@ const DailySummary = () => {
               </ol>
             </div>
           </div>
-          <button 
+          <button
             onClick={fetchDailySummary}
             className="px-4 sm:px-6 py-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg hover:shadow-lg text-sm sm:text-base font-semibold"
           >
@@ -107,13 +107,13 @@ const DailySummary = () => {
           <p className="text-gray-600 text-sm sm:text-base">Daily summary will appear when orders are placed.</p>
         </div>
       ) : (
-        <motion.div 
+        <motion.div
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-6 sm:mb-8"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
         >
           {/* Stats Cards */}
-          <motion.div 
+          <motion.div
             className="bg-white border border-gray-200 rounded-xl p-4 sm:p-5 md:p-6 shadow-sm hover:shadow-md transition-shadow"
             whileHover={{ scale: 1.05 }}
             transition={{ type: "spring", stiffness: 300 }}
@@ -127,7 +127,7 @@ const DailySummary = () => {
             </div>
           </motion.div>
 
-          <motion.div 
+          <motion.div
             className="bg-white border border-gray-200 rounded-xl p-4 sm:p-5 md:p-6 shadow-sm hover:shadow-md transition-shadow"
             whileHover={{ scale: 1.05 }}
             transition={{ type: "spring", stiffness: 300 }}
@@ -141,7 +141,7 @@ const DailySummary = () => {
             </div>
           </motion.div>
 
-          <motion.div 
+          <motion.div
             className="bg-white border border-gray-200 rounded-xl p-4 sm:p-5 md:p-6 shadow-sm hover:shadow-md transition-shadow"
             whileHover={{ scale: 1.05 }}
             transition={{ type: "spring", stiffness: 300 }}
@@ -151,11 +151,11 @@ const DailySummary = () => {
                 <p className="text-gray-500 text-xs sm:text-sm">Items Sold</p>
                 <p className="text-2xl sm:text-3xl font-bold text-blue-600">
                   {(totalKgSold > 0 || totalPiecesSold > 0) ? (
-                    totalKgSold > 0 && totalPiecesSold > 0 
-                      ? `${totalKgSold} kg + ${totalPiecesSold} pcs`
-                      : totalKgSold > 0 
-                      ? `${totalKgSold} kg`
-                      : `${totalPiecesSold} pcs`
+                    totalKgSold > 0 && totalPiecesSold > 0
+                      ? `${totalKgSold} Kg + ${totalPiecesSold} pcs`
+                      : totalKgSold > 0
+                        ? `${totalKgSold} Kg`
+                        : `${totalPiecesSold} pcs`
                   ) : (
                     totalItemsSold > 0 ? totalItemsSold : '0'
                   )}
@@ -165,7 +165,7 @@ const DailySummary = () => {
             </div>
           </motion.div>
 
-          <motion.div 
+          <motion.div
             className="bg-white border border-gray-200 rounded-xl p-4 sm:p-5 md:p-6 shadow-sm hover:shadow-md transition-shadow"
             whileHover={{ scale: 1.05 }}
             transition={{ type: "spring", stiffness: 300 }}
@@ -184,7 +184,7 @@ const DailySummary = () => {
       {!loading && !error && totalOrders > 0 && (
         <div className="grid lg:grid-cols-2 gap-4 sm:gap-6 md:gap-8">
           {/* Popular Sweets */}
-          <motion.div 
+          <motion.div
             className="bg-white border border-gray-200 rounded-xl p-4 sm:p-6 shadow-sm"
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -193,17 +193,16 @@ const DailySummary = () => {
             <h3 className="text-lg sm:text-xl font-bold text-yellow-600 mb-3 sm:mb-4">Popular Sweets</h3>
             <div className="space-y-2 sm:space-y-3">
               {popularSweets.length > 0 ? popularSweets.map((sweet, index) => (
-                <motion.div 
-                  key={sweet.name} 
+                <motion.div
+                  key={sweet.name}
                   className="flex items-center justify-between p-2.5 sm:p-3 bg-gray-50 border border-gray-200 rounded-lg sm:rounded-xl"
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.1 * index }}
                 >
                   <div className="flex items-center min-w-0 flex-1">
-                    <div className={`w-6 h-6 sm:w-8 sm:h-8 rounded-full flex items-center justify-center text-white font-bold mr-2 sm:mr-3 text-xs sm:text-base flex-shrink-0 ${
-                      index === 0 ? 'bg-yellow-500' : index === 1 ? 'bg-gray-400' : index === 2 ? 'bg-orange-600' : 'bg-purple-500'
-                    }`}>
+                    <div className={`w-6 h-6 sm:w-8 sm:h-8 rounded-full flex items-center justify-center text-white font-bold mr-2 sm:mr-3 text-xs sm:text-base flex-shrink-0 ${index === 0 ? 'bg-yellow-500' : index === 1 ? 'bg-gray-400' : index === 2 ? 'bg-orange-600' : 'bg-purple-500'
+                      }`}>
                       {index + 1}
                     </div>
                     <span className="font-semibold text-gray-800 text-xs sm:text-sm md:text-base truncate">{sweet.name}</span>
@@ -219,7 +218,7 @@ const DailySummary = () => {
           </motion.div>
 
           {/* Recent Orders */}
-          <motion.div 
+          <motion.div
             className="bg-white border border-gray-200 rounded-xl p-4 sm:p-6 shadow-sm"
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -228,8 +227,8 @@ const DailySummary = () => {
             <h3 className="text-lg sm:text-xl font-bold text-yellow-600 mb-3 sm:mb-4">Recent Orders</h3>
             <div className="space-y-2 sm:space-y-3 max-h-60 sm:max-h-80 overflow-y-auto">
               {ordersList.length > 0 ? ordersList.slice(0, 10).map((order, index) => (
-                <motion.div 
-                  key={order._id || order.id || index} 
+                <motion.div
+                  key={order._id || order.id || index}
                   className="flex items-center justify-between p-2.5 sm:p-3 bg-gray-50 border border-gray-200 rounded-lg sm:rounded-xl"
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -241,7 +240,7 @@ const DailySummary = () => {
                   </div>
                   <div className="text-right flex-shrink-0 ml-2">
                     <div className="font-bold text-purple-600 text-xs sm:text-sm md:text-base">₹{order.total}</div>
-                    
+
                   </div>
                 </motion.div>
               )) : (

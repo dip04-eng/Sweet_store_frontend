@@ -12,7 +12,7 @@ const AddOrder = () => {
   const [success, setSuccess] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [serverDate, setServerDate] = useState(null);
-  
+
   const [formData, setFormData] = useState({
     adminName: '',
     customerName: '',
@@ -73,7 +73,7 @@ const AddOrder = () => {
       updatedCart[existingIndex].quantity += 1;
       setCart(updatedCart);
     } else {
-      setCart([...cart, { ...sweet, quantity: 1, weightUnit: sweet.unit === 'kg' ? 'kg' : undefined }]);
+      setCart([...cart, { ...sweet, quantity: 1, weightUnit: sweet.unit === 'Kg' ? 'Kg' : undefined }]);
     }
   };
 
@@ -89,16 +89,16 @@ const AddOrder = () => {
 
   const updateWeightUnit = (index, newUnit) => {
     const updatedCart = [...cart];
-    const oldUnit = updatedCart[index].weightUnit || 'kg';
+    const oldUnit = updatedCart[index].weightUnit || 'Kg';
     updatedCart[index].weightUnit = newUnit;
-    
+
     // Convert quantity when switching units
-    if (oldUnit === 'kg' && newUnit === 'grams') {
+    if (oldUnit === 'Kg' && newUnit === 'grams') {
       updatedCart[index].quantity = updatedCart[index].quantity * 1000;
-    } else if (oldUnit === 'grams' && newUnit === 'kg') {
+    } else if (oldUnit === 'grams' && newUnit === 'Kg') {
       updatedCart[index].quantity = updatedCart[index].quantity / 1000;
     }
-    
+
     setCart(updatedCart);
   };
 
@@ -120,7 +120,7 @@ const AddOrder = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (!formData.adminName) {
       alert('Please select which admin is placing this order');
       return;
@@ -184,7 +184,7 @@ const AddOrder = () => {
     }
   };
 
-  const filteredSweets = sweets.filter(sweet => 
+  const filteredSweets = sweets.filter(sweet =>
     sweet.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     sweet.category?.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -356,20 +356,20 @@ const AddOrder = () => {
                         </button>
                         <input
                           type="number"
-                          min={item.unit === 'kg' ? (item.weightUnit === 'grams' ? '1' : '0.01') : '1'}
-                          step={item.unit === 'kg' ? (item.weightUnit === 'grams' ? '1' : '0.01') : '1'}
+                          min={item.unit === 'Kg' ? (item.weightUnit === 'grams' ? '1' : '0.01') : '1'}
+                          step={item.unit === 'Kg' ? (item.weightUnit === 'grams' ? '1' : '0.01') : '1'}
                           value={item.quantity === '' ? '' : item.quantity}
                           onChange={(e) => {
                             const inputValue = e.target.value;
                             const updatedCart = [...cart];
-                            
+
                             // Allow empty or any input during editing
                             if (inputValue === '') {
                               updatedCart[index].quantity = '';
                               setCart(updatedCart);
                               return;
                             }
-                            
+
                             const value = parseFloat(inputValue);
                             if (!isNaN(value)) {
                               updatedCart[index].quantity = value;
@@ -381,7 +381,7 @@ const AddOrder = () => {
                             const value = parseFloat(e.target.value);
                             if (e.target.value === '' || isNaN(value) || value <= 0) {
                               const isInGrams = item.weightUnit === 'grams';
-                              const minValue = item.unit === 'kg' ? (isInGrams ? 1 : 0.01) : 1;
+                              const minValue = item.unit === 'Kg' ? (isInGrams ? 1 : 0.01) : 1;
                               const updatedCart = [...cart];
                               updatedCart[index].quantity = minValue;
                               setCart(updatedCart);
@@ -396,17 +396,17 @@ const AddOrder = () => {
                         >
                           <Plus className="h-4 w-4" />
                         </button>
-                        {item.unit === 'kg' && (
+                        {item.unit === 'Kg' && (
                           <select
-                            value={item.weightUnit || 'kg'}
+                            value={item.weightUnit || 'Kg'}
                             onChange={(e) => updateWeightUnit(index, e.target.value)}
                             className="text-xs px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-500"
                           >
-                            <option value="kg">kg</option>
+                            <option value="Kg">Kg</option>
                             <option value="grams">grams</option>
                           </select>
                         )}
-                        {item.unit !== 'kg' && (
+                        {item.unit !== 'Kg' && (
                           <span className="text-xs text-gray-600 px-1">{item.unit || 'pcs'}</span>
                         )}
                         <button

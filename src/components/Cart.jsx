@@ -104,7 +104,7 @@ const Cart = () => {
             animate={{ opacity: 1, y: 0 }}
             className="relative mb-8 sm:mb-12"
           >
-            {/* Gradient Background */}
+            {/* Gradient BacKground */}
             <div className="absolute inset-0 bg-gradient-to-r from-purple-500/10 via-pink-500/10 to-red-500/10 rounded-3xl blur-xl"></div>
 
             <div className="relative bg-white/80 backdrop-blur-sm border-2 border-purple-200/50 rounded-2xl p-6 sm:p-8 shadow-xl">
@@ -150,7 +150,7 @@ const Cart = () => {
               animate={{ opacity: 1, scale: 1 }}
               className="relative max-w-2xl mx-auto"
             >
-              {/* Animated gradient background */}
+              {/* Animated gradient bacKground */}
               <div className="absolute inset-0 bg-gradient-to-br from-purple-400/20 via-pink-400/20 to-red-400/20 rounded-3xl blur-2xl animate-pulse"></div>
 
               <div className="relative bg-white/90 backdrop-blur-md border-2 border-purple-200 rounded-3xl shadow-2xl p-12 sm:p-16 text-center overflow-hidden">
@@ -224,14 +224,14 @@ const Cart = () => {
                           </p>
 
                           {/* Quantity/Weight Controls with Price and Delete */}
-                          {item.unit === 'kg' ? (
-                            // Weight input with unit selector, price, and delete for kg items - all in one row
+                          {item.unit === 'Kg' ? (
+                            // Weight input with unit selector, price, and delete for Kg items - all in one row
                             <div className="mt-3 flex items-center gap-2 sm:gap-4 flex-wrap">
                               <div className="flex items-center gap-1 sm:gap-2 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-full px-2 sm:px-4 py-1.5 sm:py-2">
                                 <span className="text-white text-xs sm:text-sm font-semibold">Weight:</span>
                                 <input
                                   type="text"
-                                  value={weightInputs[index] !== undefined ? weightInputs[index] : (item.quantity > 0 ? ((item.weightUnit || 'kg') === 'kg' ? item.quantity : Math.round(item.quantity * 1000)) : '0')}
+                                  value={weightInputs[index] !== undefined ? weightInputs[index] : (item.quantity > 0 ? ((item.weightUnit || 'Kg') === 'Kg' ? item.quantity : Math.round(item.quantity * 1000)) : '0')}
                                   onFocus={(e) => e.target.select()}
                                   onChange={(e) => {
                                     const inputValue = e.target.value;
@@ -246,7 +246,7 @@ const Cart = () => {
                                     } else {
                                       const value = parseFloat(inputValue);
                                       if (!isNaN(value) && value > 0) {
-                                        const weightInKg = item.weightUnit === 'kg' ? value : value / 1000;
+                                        const weightInKg = item.weightUnit === 'Kg' ? value : value / 1000;
                                         updateQuantity(index, weightInKg);
                                       }
                                     }
@@ -262,7 +262,7 @@ const Cart = () => {
                                   className="w-12 sm:w-16 px-1 sm:px-2 py-1 text-center bg-white text-gray-900 font-bold rounded border-0 focus:outline-none focus:ring-2 focus:ring-white text-sm"
                                 />
                                 <select
-                                  value={item.weightUnit || 'kg'}
+                                  value={item.weightUnit || 'Kg'}
                                   onChange={(e) => {
                                     const newUnit = e.target.value;
                                     const updatedCart = [...cart];
@@ -273,7 +273,7 @@ const Cart = () => {
                                   }}
                                   className="bg-red-700 text-white px-1 sm:px-2 py-1 rounded font-semibold text-xs sm:text-sm border-0 focus:outline-none focus:ring-2 focus:ring-white cursor-pointer"
                                 >
-                                  <option value="kg">kg</option>
+                                  <option value="Kg">Kg</option>
                                   <option value="grams">grams</option>
                                 </select>
                               </div>
@@ -352,7 +352,7 @@ const Cart = () => {
                   animate={{ opacity: 1, x: 0 }}
                   className="relative bg-white border-2 border-purple-200 rounded-2xl shadow-2xl p-6 lg:sticky lg:top-24 overflow-hidden"
                 >
-                  {/* Decorative gradient background */}
+                  {/* Decorative gradient bacKground */}
                   <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-purple-300/20 to-pink-300/20 rounded-full blur-3xl"></div>
                   <div className="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-yellow-300/20 to-orange-300/20 rounded-full blur-2xl"></div>
 

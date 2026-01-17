@@ -4,7 +4,7 @@ const SEO = ({
   title,
   description,
   keywords,
-  image = 'https://mansoorhotel.in/Background.png',
+  image = 'https://mansoorhotel.in/BacKground.png',
   url,
   type = 'website',
   structuredData = null,

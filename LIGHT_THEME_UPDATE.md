@@ -6,17 +6,17 @@ Updated the Admin Panel components to use a light theme matching the design in t
 ## Changes Made
 
 ### ✅ 1. AdminPanel.jsx (Already Light Theme)
-- Background: `bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50`
+- BacKground: `bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50`
 - Header: White with backdrop blur
 - Tabs: Purple to pink gradient for active, gray for inactive
-- Content area: White background
+- Content area: White bacKground
 
 ### ✅ 2. AddSweet.jsx
 **Updated Colors:**
-- **Background**: Gray-50 with border (light gray card)
+- **BacKground**: Gray-50 with border (light gray card)
 - **Headings**: Yellow-500 (matching screenshot)
 - **Labels**: Yellow-600
-- **Inputs**: White background, gray-300 border, gray-800 text
+- **Inputs**: White bacKground, gray-300 border, gray-800 text
 - **Focus**: Purple-500 ring
 - **Required asterisk**: Red-500
 - **Buttons**: 
@@ -24,33 +24,33 @@ Updated the Admin Panel components to use a light theme matching the design in t
   - Stock update: Purple to pink gradient
   - Increment: Green-500
   - Decrement: Red-500
-- **Success messages**: Green-50 background
-- **Error messages**: Red-50 background
+- **Success messages**: Green-50 bacKground
+- **Error messages**: Red-50 bacKground
 - **Image upload**: Yellow-400 border, yellow-500 icon
-- **Summary card**: Purple-100 to pink-100 gradient background
+- **Summary card**: Purple-100 to pink-100 gradient bacKground
 - **Stock info**: Purple-600 text
 
 ### ✅ 3. RemoveSweet.jsx
 **Updated Colors:**
 - **Heading**: Yellow-500
 - **Icon**: Red-500
-- **Search bar**: White background, gray-300 border
-- **Cards**: White background with gray-200 border
+- **Search bar**: White bacKground, gray-300 border
+- **Cards**: White bacKground with gray-200 border
 - **Sweet names**: Yellow-600
 - **Prices/Stock**: Purple-600
 - **Delete button**: Red-500 (hover: red-600)
-- **Modal**: White background with shadow
+- **Modal**: White bacKground with shadow
 - **Warning icon**: Red-500
-- **Cancel button**: Gray-200 background
+- **Cancel button**: Gray-200 bacKground
 - **Confirm button**: Red-500
 
 ### 🔧 4. ViewOrders.jsx (Needs Update)
 Remaining dark theme elements to change:
 - Headings: `text-[#FFD700]` → `text-yellow-500`
 - Text: `text-[#F5F5DC]` → `text-gray-700`
-- Backgrounds: `bg-[#1a1a1a]` → `bg-white`
+- BacKgrounds: `bg-[#1a1a1a]` → `bg-white`
 - Borders: `border-[#FFD700]/20` → `border-gray-300`
-- Table: `card-premium` → white background with border
+- Table: `card-premium` → white bacKground with border
 - Table header: `gold-gradient` → `bg-gradient-to-r from-purple-500 to-pink-500`
 - Buttons: `gold-gradient` → purple to pink gradient
 
@@ -58,7 +58,7 @@ Remaining dark theme elements to change:
 Remaining dark theme elements to change:
 - Headings: `text-[#FFD700]` → `text-yellow-500`
 - Text: `text-[#F5F5DC]` → `text-gray-700`
-- Cards: `card-premium` → white background with border and shadow
+- Cards: `card-premium` → white bacKground with border and shadow
 - Icons: `text-[#FFD700]` → `text-purple-500`
 - Numbers: `text-[#FFD700]` → `text-purple-600`
 - Buttons: `gold-gradient` → purple to pink gradient
@@ -76,7 +76,7 @@ Remaining dark theme elements to change:
 - **Danger/Remove**: `bg-red-500 hover:bg-red-600`
 - **Secondary**: `bg-gray-200 hover:bg-gray-300`
 
-### Backgrounds
+### BacKgrounds
 - **Main**: `bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50`
 - **Cards**: `bg-white` or `bg-gray-50`
 - **Inputs**: `bg-white`

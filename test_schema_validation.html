@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,66 +11,78 @@
             max-width: 1200px;
             margin: 20px auto;
             padding: 20px;
-            background: #f5f5f5;
+            bacKground: #f5f5f5;
         }
+
         .container {
-            background: white;
+            bacKground: white;
             padding: 30px;
             border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
+
         h1 {
             color: #C41E3A;
             border-bottom: 3px solid #C41E3A;
             padding-bottom: 10px;
         }
+
         .success {
-            background: #d4edda;
+            bacKground: #d4edda;
             color: #155724;
             padding: 15px;
             border-radius: 5px;
             margin: 15px 0;
             border-left: 4px solid #28a745;
         }
+
         .info {
-            background: #d1ecf1;
+            bacKground: #d1ecf1;
             color: #0c5460;
             padding: 15px;
             border-radius: 5px;
             margin: 15px 0;
             border-left: 4px solid #17a2b8;
         }
+
         pre {
-            background: #f8f9fa;
+            bacKground: #f8f9fa;
             padding: 15px;
             border-radius: 5px;
             overflow-x: auto;
             border: 1px solid #dee2e6;
         }
+
         .field-check {
             margin: 10px 0;
             padding: 10px;
-            background: #f8f9fa;
+            bacKground: #f8f9fa;
             border-radius: 4px;
         }
+
         .field-check.valid {
             border-left: 4px solid #28a745;
         }
+
         .field-check.invalid {
             border-left: 4px solid #dc3545;
         }
+
         .check-icon {
             font-weight: bold;
             margin-right: 10px;
         }
+
         .valid .check-icon {
             color: #28a745;
         }
+
         .invalid .check-icon {
             color: #dc3545;
         }
+
         button {
-            background: #C41E3A;
+            bacKground: #C41E3A;
             color: white;
             padding: 12px 24px;
             border: none;
@@ -78,15 +91,17 @@
             font-size: 16px;
             margin: 10px 5px;
         }
+
         button:hover {
-            background: #a01729;
+            bacKground: #a01729;
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <h1>🔍 Product Schema Validation Test</h1>
-        
+
         <div class="info">
             <strong>Testing structured data for Mansoor Hotel & Sweets</strong><br>
             This page simulates the product schema that will be generated for your website.
@@ -94,11 +109,11 @@
 
         <h2>Sample Product Schema</h2>
         <div id="validation-results"></div>
-        
+
         <button onclick="generateSchema()">Generate Test Schema</button>
         <button onclick="validateSchema()">Validate Required Fields</button>
         <button onclick="copyToClipboard()">Copy JSON</button>
-        
+
         <h2>Generated Schema JSON:</h2>
         <pre id="schema-output">Click "Generate Test Schema" to see the output</pre>
     </div>
@@ -113,7 +128,7 @@
                 description: "Soft and spongy cottage cheese balls soaked in sugar syrup",
                 image: "https://images.pexels.com/photos/7625056/pexels-photo-7625056.jpeg",
                 rate: 340,
-                unit: "kg",
+                unit: "Kg",
                 category: "Sweet",
                 stock: 50
             },
@@ -122,7 +137,7 @@
                 description: "Deep-fried milk solid balls soaked in rose-flavored sugar syrup",
                 image: "https://images.pexels.com/photos/1099680/pexels-photo-1099680.jpeg",
                 rate: 160,
-                unit: "kg",
+                unit: "Kg",
                 category: "Sweet",
                 stock: 40
             },
@@ -131,7 +146,7 @@
                 description: "Crispy, spiral-shaped sweet soaked in saffron sugar syrup",
                 image: "https://images.pexels.com/photos/5560763/pexels-photo-5560763.jpeg",
                 rate: 150,
-                unit: "kg",
+                unit: "Kg",
                 category: "Sweet",
                 stock: 60
             }
@@ -151,7 +166,7 @@
                         "@type": "Product",
                         "name": sweet.name || sweet.sweetName,
                         "description": sweet.description || `Delicious ${sweet.name} from Mansoor Hotel & Sweets. Made with pure ingredients and traditional recipes.`,
-                        "image": sweet.image || "https://www.mansoorhotel.in/Background.png",
+                        "image": sweet.image || "https://www.mansoorhotel.in/BacKground.png",
                         "url": `https://www.mansoorhotel.in/#sweets-collection`,
                         "category": sweet.category || "Sweet",
                         "brand": {
@@ -209,12 +224,12 @@
                     const exists = product[field] !== undefined && product[field] !== null;
                     const className = exists ? 'valid' : 'invalid';
                     const icon = exists ? '✓' : '✗';
-                    
+
                     html += `<div class="field-check ${className}">
                         <span class="check-icon">${icon}</span>
                         <strong>${field}:</strong> ${exists ? 'Present' : 'MISSING'}
                     </div>`;
-                    
+
                     if (!exists) allValid = false;
                 });
 
@@ -225,12 +240,12 @@
                         const exists = product.offers[field] !== undefined;
                         const className = exists ? 'valid' : 'invalid';
                         const icon = exists ? '✓' : '✗';
-                        
+
                         html += `<div class="field-check ${className}">
                             <span class="check-icon">${icon}</span>
                             <strong>offers.${field}:</strong> ${exists ? 'Present' : 'MISSING'}
                         </div>`;
-                        
+
                         if (!exists) allValid = false;
                     });
                 }
@@ -250,7 +265,7 @@
                 alert('Please generate schema first!');
                 return;
             }
-            
+
             const text = JSON.stringify(generatedSchema, null, 2);
             navigator.clipboard.writeText(text).then(() => {
                 alert('Schema copied to clipboard!');
@@ -258,10 +273,11 @@
         }
 
         // Auto-generate on load
-        window.onload = function() {
+        window.onload = function () {
             generateSchema();
             validateSchema();
         };
     </script>
 </body>
+
 </html>

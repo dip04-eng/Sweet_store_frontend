@@ -44,7 +44,7 @@ const AdminLogin = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#0D0D0D] via-[#1a1a1a] to-[#0D0D0D] flex items-center justify-center px-4 py-12 relative overflow-hidden">
-      {/* Animated Background Elements */}
+      {/* Animated BacKground Elements */}
       <div className="absolute inset-0 overflow-hidden">
         <motion.div
           animate={{
@@ -177,9 +177,8 @@ const AdminLogin = () => {
                 disabled={isLoading}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                className={`w-full bg-gradient-to-r from-[#FFD700] to-[#D2691E] text-[#0D0D0D] font-bold py-4 rounded-xl shadow-lg hover:shadow-[#FFD700]/50 transition-all duration-300 flex items-center justify-center space-x-2 ${
-                  isLoading ? 'opacity-70 cursor-not-allowed' : ''
-                }`}
+                className={`w-full bg-gradient-to-r from-[#FFD700] to-[#D2691E] text-[#0D0D0D] font-bold py-4 rounded-xl shadow-lg hover:shadow-[#FFD700]/50 transition-all duration-300 flex items-center justify-center space-x-2 ${isLoading ? 'opacity-70 cursor-not-allowed' : ''
+                  }`}
               >
                 {isLoading ? (
                   <>

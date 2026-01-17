@@ -91,10 +91,10 @@ const UserPanel = () => {
       updatedCart = [...cart];
       updatedCart[existingItemIndex].quantity += quantity;
     } else {
-      // Item doesn't exist, add new item with weightUnit for kg items
+      // Item doesn't exist, add new item with weightUnit for Kg items
       const newItem = { ...sweet, quantity };
-      if (sweet.unit === 'kg') {
-        newItem.weightUnit = 'kg';
+      if (sweet.unit === 'Kg') {
+        newItem.weightUnit = 'Kg';
       }
       updatedCart = [...cart, newItem];
     }
@@ -147,7 +147,7 @@ const UserPanel = () => {
         "@type": "Product",
         "name": productName,
         "description": sweet.description || `Delicious ${productName} from Mansoor Hotel & Sweets. Made with pure ingredients and traditional recipes. Fresh and authentic taste from Bihar's finest sweet shop.`,
-        "image": sweet.image || "https://mansoorhotel.in/Background.png",
+        "image": sweet.image || "https://mansoorhotel.in/BacKground.png",
         "url": `https://mansoorhotel.in/#sweets-collection`,
         "category": sweet.category || "Sweet",
         "sku": `MS-${productName.replace(/\s+/g, '-').toUpperCase()}`,
@@ -232,7 +232,7 @@ const UserPanel = () => {
 
       {/* Sweets Catalog Section */}
       <section id="sweets-collection" className="py-12 sm:py-16 md:py-20 lg:py-24 px-4 relative bg-[#E08B8B]">
-        {/* Decorative Background Elements */}
+        {/* Decorative BacKground Elements */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div className="absolute top-20 left-10 w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
           <div className="absolute bottom-20 right-10 w-80 h-80 bg-white/10 rounded-full blur-3xl"></div>
@@ -388,10 +388,10 @@ const UserPanel = () => {
       {/* Festival Special Sweets Section - Om Sweets Style */}
       {!loading && (
         <section id="festival-collection" className="py-16 sm:py-20 md:py-24 px-4 relative bg-[#D4A017]">
-          {/* Decorative Background Pattern */}
+          {/* Decorative BacKground Pattern */}
           <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-10">
             <div className="absolute inset-0" style={{
-              backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000000' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+              bacKgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000000' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
             }}></div>
           </div>
 

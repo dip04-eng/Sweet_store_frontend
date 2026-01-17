@@ -41,14 +41,14 @@ const RemoveSweet = () => {
 
   const filteredSweets = sweets.filter(sweet => {
     if (!selectedType) return false; // Don't show any sweets until type is selected
-    
+
     // First filter by sweet type (normal or festival)
     const isFestival = sweet.isFestival === true;
     const typeMatch = selectedType === 'festival' ? isFestival : !isFestival;
-    
+
     // Then filter by search term
     const searchMatch = sweet.name.toLowerCase().includes(searchTerm.toLowerCase());
-    
+
     return typeMatch && searchMatch;
   });
 
@@ -73,7 +73,7 @@ const RemoveSweet = () => {
       // Store the deleted sweet info before clearing
       const deletedSweetName = sweetToDelete.name;
       const deletedSweetId = sweetToDelete.id;
-      
+
       // Remove from local state using functional update to avoid stale state
       setSweets(prevSweets => prevSweets.filter(sweet => sweet.id !== deletedSweetId));
       setSweetToDelete(null);
@@ -93,7 +93,7 @@ const RemoveSweet = () => {
   return (
     <div>
       {/* Header */}
-      <motion.div 
+      <motion.div
         className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4 sm:mb-6 gap-2"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -113,22 +113,20 @@ const RemoveSweet = () => {
       <div className="flex gap-2 mb-4 sm:mb-6">
         <button
           onClick={() => setSelectedType('normal')}
-          className={`px-4 py-2 rounded-full font-semibold transition-all duration-300 text-sm ${
-            selectedType === 'normal'
+          className={`px-4 py-2 rounded-full font-semibold transition-all duration-300 text-sm ${selectedType === 'normal'
               ? 'bg-[#8B7355] text-white'
               : 'bg-white text-gray-600 border border-gray-300 hover:bg-gray-100'
-          }`}
+            }`}
         >
           Normal Days
         </button>
 
         <button
           onClick={() => setSelectedType('festival')}
-          className={`px-4 py-2 rounded-full font-semibold transition-all duration-300 text-sm ${
-            selectedType === 'festival'
+          className={`px-4 py-2 rounded-full font-semibold transition-all duration-300 text-sm ${selectedType === 'festival'
               ? 'bg-[#8B7355] text-white'
               : 'bg-white text-gray-600 border border-gray-300 hover:bg-gray-100'
-          }`}
+            }`}
         >
           Festival Special
         </button>
@@ -170,7 +168,7 @@ const RemoveSweet = () => {
           <div className="text-4xl sm:text-6xl mb-4">😞</div>
           <h3 className="text-lg sm:text-xl font-semibold text-gray-800 mb-2">Failed to load sweets</h3>
           <p className="text-gray-600 mb-4 text-sm sm:text-base">{error}</p>
-          <button 
+          <button
             onClick={fetchSweets}
             className="px-4 sm:px-6 py-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg hover:shadow-lg text-sm sm:text-base font-semibold"
           >
@@ -181,8 +179,8 @@ const RemoveSweet = () => {
         <>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
             {filteredSweets.map((sweet, index) => (
-              <motion.div 
-                key={sweet.id} 
+              <motion.div
+                key={sweet.id}
                 className="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow"
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
@@ -199,11 +197,11 @@ const RemoveSweet = () => {
                   <div className="space-y-1 text-xs sm:text-sm text-gray-600 mb-3 sm:mb-4">
                     <div className="flex justify-between">
                       <span>Price:</span>
-                      <span className="font-semibold text-purple-600">₹{sweet.rate}/kg</span>
+                      <span className="font-semibold text-purple-600">₹{sweet.rate}/Kg</span>
                     </div>
                     <div className="flex justify-between">
                       <span>Stock:</span>
-                      <span className="font-semibold text-purple-600">{sweet.stock} kg</span>
+                      <span className="font-semibold text-purple-600">{sweet.stock} Kg</span>
                     </div>
                   </div>
                   <motion.button
@@ -233,13 +231,13 @@ const RemoveSweet = () => {
       {/* Delete Confirmation Modal */}
       <AnimatePresence>
         {sweetToDelete && (
-          <motion.div 
+          <motion.div
             className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-3 sm:p-4"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
           >
-            <motion.div 
+            <motion.div
               className="bg-white rounded-xl p-4 sm:p-6 max-w-md w-full shadow-2xl"
               initial={{ scale: 0.9, y: 50 }}
               animate={{ scale: 1, y: 0 }}

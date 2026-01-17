@@ -11,10 +11,10 @@ const Hero = () => {
 
   return (
     <div className="relative h-screen w-full overflow-hidden min-h-[600px] hero-responsive" role="banner" aria-label="Welcome to Mansoor Hotel & Sweets">
-      {/* Background Image */}
+      {/* BacKground Image */}
       <div className="absolute inset-0">
         <img
-          src="/Background.png"
+          src="/BacKground.png"
           alt="Mansoor Hotel & Sweets - Traditional Indian Sweet Shop in Baisi, Bihar featuring our signature sweets and warm hospitality since 1968"
           className="w-full h-full object-cover object-center"
           loading="eager"
@@ -23,10 +23,10 @@ const Hero = () => {
             objectPosition: 'center center',
           }}
           onError={(e) => {
-            console.error('Failed to load background image');
+            console.error('Failed to load bacKground image');
             // Set a gradient fallback if image fails to load
             e.target.style.display = 'none';
-            e.target.parentElement.style.background = 'linear-gradient(135deg, #C41E3A 0%, #8B0000 50%, #FFD700 100%)';
+            e.target.parentElement.style.bacKground = 'linear-gradient(135deg, #C41E3A 0%, #8B0000 50%, #FFD700 100%)';
           }}
         />
         {/* Responsive Overlay */}

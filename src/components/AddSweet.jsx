@@ -97,7 +97,7 @@ const AddSweet = ({ sweetType = 'normal' }) => {
           compressedSize: compressedImage.length,
           reduction: ((1 - compressedImage.length / file.size) * 100).toFixed(2) + '%'
         });
-        
+
         setImagePreview(compressedImage);
         setFormData(prev => ({
           ...prev,
@@ -179,7 +179,7 @@ const AddSweet = ({ sweetType = 'normal' }) => {
       setSelectedSweetId(null);
       setSelectedCategory('');
       setImagePreview(null);
-      
+
       setTimeout(() => {
         setSuccess(false);
       }, 3000);
@@ -193,7 +193,7 @@ const AddSweet = ({ sweetType = 'normal' }) => {
 
   return (
     <div className="max-w-7xl mx-auto">
-      <motion.div 
+      <motion.div
         className="mb-6 sm:mb-8"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -210,14 +210,14 @@ const AddSweet = ({ sweetType = 'normal' }) => {
           </h1>
         </div>
         <p className="text-sm sm:text-base text-gray-600">
-          {sweetType === 'festival' 
-            ? 'Fill in the details for your festival special item' 
+          {sweetType === 'festival'
+            ? 'Fill in the details for your festival special item'
             : 'Fill in the details below to add a new sweet to your collection'}
         </p>
       </motion.div>
 
-      <motion.form 
-        onSubmit={handleSubmit} 
+      <motion.form
+        onSubmit={handleSubmit}
         className="bg-gray-50 rounded-xl p-4 sm:p-6 lg:p-8 mb-8 sm:mb-12 border border-gray-200"
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
@@ -299,7 +299,7 @@ const AddSweet = ({ sweetType = 'normal' }) => {
               >
                 <option value="">Select unit</option>
                 <option value="piece">Per Piece</option>
-                <option value="kg">Per Kg</option>
+                <option value="Kg">Per Kg</option>
               </select>
             </div>
 
@@ -318,10 +318,10 @@ const AddSweet = ({ sweetType = 'normal' }) => {
               />
             </div>
 
-            
+
 
             {error && (
-              <motion.div 
+              <motion.div
                 className="p-2.5 sm:p-3 bg-red-50 border border-red-200 rounded-lg sm:rounded-xl text-red-600 text-xs sm:text-sm"
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
@@ -331,7 +331,7 @@ const AddSweet = ({ sweetType = 'normal' }) => {
             )}
 
             {success && (
-              <motion.div 
+              <motion.div
                 className="p-2.5 sm:p-3 bg-green-50 border border-green-200 rounded-lg sm:rounded-xl text-green-600 text-xs sm:text-sm"
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
@@ -345,11 +345,10 @@ const AddSweet = ({ sweetType = 'normal' }) => {
               disabled={isSubmitting}
               whileHover={!isSubmitting ? { scale: 1.02 } : {}}
               whileTap={!isSubmitting ? { scale: 0.98 } : {}}
-              className={`w-full py-2.5 sm:py-3 px-4 sm:px-6 rounded-lg sm:rounded-xl font-semibold transition-all duration-300 text-sm sm:text-base ${
-                isSubmitting
+              className={`w-full py-2.5 sm:py-3 px-4 sm:px-6 rounded-lg sm:rounded-xl font-semibold transition-all duration-300 text-sm sm:text-base ${isSubmitting
                   ? 'bg-gray-400 cursor-not-allowed text-white'
                   : 'bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white shadow-lg'
-              }`}
+                }`}
             >
               {isSubmitting ? (
                 <div className="flex items-center justify-center">

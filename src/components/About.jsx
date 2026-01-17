@@ -62,10 +62,10 @@ const About = () => {
 
       {/* Hero Section */}
       <section className="relative h-[50vh] xs:h-[60vh] sm:h-[70vh] flex items-center justify-center overflow-hidden mt-16 xs:mt-16 sm:mt-20 min-h-[400px]">
-        {/* Background Image */}
+        {/* BacKground Image */}
         <div className="absolute inset-0">
           <img
-            src="/Background.png"
+            src="/BacKground.png"
             alt="Mansoor Hotel & Sweets Heritage"
             className="w-full h-full object-cover opacity-30"
           />
@@ -219,7 +219,7 @@ const About = () => {
             >
               <div className="relative rounded-2xl overflow-hidden shadow-2xl">
                 <img
-                  src="/Background.png"
+                  src="/BacKground.png"
                   alt="Mansoor Hotel & Sweets - Traditional Sweet Making"
                   className="w-full h-[400px] sm:h-[500px] object-cover"
                 />

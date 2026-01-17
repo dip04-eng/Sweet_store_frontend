@@ -23,7 +23,7 @@ const ViewOrders = () => {
   const [error, setError] = useState(null);
   const [isUpdating, setIsUpdating] = useState(false);
   const [isDownloading, setIsDownloading] = useState(false);
-  
+
   // Download date range modal state
   const [showDownloadModal, setShowDownloadModal] = useState(false);
   const [downloadStartDate, setDownloadStartDate] = useState(() => {
@@ -47,14 +47,14 @@ const ViewOrders = () => {
   const [additionalAdvance, setAdditionalAdvance] = useState(0);
   const [showAdvanceExceedWarning, setShowAdvanceExceedWarning] = useState(false); // Warning when trying to exceed due amount
   const [toast, setToast] = useState(null); // { message, type: 'success' | 'danger' }
-  
+
   // Add items functionality
   const [availableSweets, setAvailableSweets] = useState([]);
   const [editOrderItems, setEditOrderItems] = useState([]);
   const [originalOrderItems, setOriginalOrderItems] = useState([]); // Store original quantities
   const [selectedSweet, setSelectedSweet] = useState('');
   const [selectedQuantity, setSelectedQuantity] = useState(1);
-  const [selectedWeightUnit, setSelectedWeightUnit] = useState('kg');
+  const [selectedWeightUnit, setSelectedWeightUnit] = useState('Kg');
   const [showAddItems, setShowAddItems] = useState(false);
   const [sweetSearch, setSweetSearch] = useState('');
 
@@ -97,21 +97,21 @@ const ViewOrders = () => {
       } else {
         statusMatch = (order.status || '').toLowerCase() === statusFilter.toLowerCase();
       }
-      
+
       // Date filter - check only order date
       let dateMatch = true;
       if (dateFilter) {
         let orderDateStr = '';
-        
+
         // Get order date
         if (order.orderDate) {
           orderDateStr = order.orderDate.split('T')[0];
         }
-        
+
         // Match only if order date matches the filter
         dateMatch = orderDateStr === dateFilter;
       }
-      
+
       // Search filter - search by name, phone, address
       let searchMatch = true;
       if (searchQuery) {
@@ -121,7 +121,7 @@ const ViewOrders = () => {
         const address = (order.address || '').toLowerCase();
         searchMatch = name.includes(query) || phone.includes(query) || address.includes(query);
       }
-      
+
       // Pending payment filter - only show delivered orders with remaining payment
       let pendingPaymentMatch = true;
       if (showPendingPaymentOnly) {
@@ -129,7 +129,7 @@ const ViewOrders = () => {
         const hasPendingPayment = (order.total - (order.advancePaid || 0)) > 0;
         pendingPaymentMatch = isDelivered && hasPendingPayment;
       }
-      
+
       return statusMatch && dateMatch && searchMatch && pendingPaymentMatch;
     })
     .sort((a, b) => {
@@ -186,7 +186,7 @@ const ViewOrders = () => {
     try {
       setIsDownloading(true);
       setShowDownloadModal(false);
-      
+
       // Prepare filter info for the PDF header
       const filters = {
         statusFilter: 'All',
@@ -197,7 +197,7 @@ const ViewOrders = () => {
       const response = await fetch(`${API_BASE_URL}${API_ENDPOINTS.DOWNLOAD_STATEMENT}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
+        body: JSON.stringify({
           orders: ordersInRange,
           filters: filters
         })
@@ -209,7 +209,7 @@ const ViewOrders = () => {
 
       // Get the PDF blob
       const blob = await response.blob();
-      
+
       // Create download link
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
@@ -247,7 +247,7 @@ const ViewOrders = () => {
     try {
       setIsDownloading(true);
       setShowDownloadModal(false);
-      
+
       // Prepare filter info for the PDF header
       const filters = {
         statusFilter: 'All',
@@ -258,7 +258,7 @@ const ViewOrders = () => {
       const response = await fetch(`${API_BASE_URL}${API_ENDPOINTS.DOWNLOAD_STATEMENT}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
+        body: JSON.stringify({
           orders: ordersInRange,
           filters: filters
         })
@@ -270,11 +270,11 @@ const ViewOrders = () => {
 
       // Get the PDF blob
       const blob = await response.blob();
-      
+
       // Open in new tab for viewing (no download)
       const url = window.URL.createObjectURL(blob);
       window.open(url, '_blank');
-      
+
       // Clean up URL after a delay
       setTimeout(() => window.URL.revokeObjectURL(url), 10000);
 
@@ -303,7 +303,7 @@ const ViewOrders = () => {
     // Check if order was placed by admin (preference field starts with [Admin Name])
     const preference = order.preference || '';
     const adminMatch = preference.match(/^\[([^\]]+)\]/);
-    
+
     if (adminMatch && adminMatch[1]) {
       return {
         type: 'admin',
@@ -311,7 +311,7 @@ const ViewOrders = () => {
         display: `Approved by ${adminMatch[1]}`
       };
     }
-    
+
     return {
       type: 'customer',
       name: 'Customer',
@@ -345,7 +345,7 @@ const ViewOrders = () => {
     }
   };
 
-  
+
 
   const openEditModal = async (order) => {
     setEditOrder(order);
@@ -363,7 +363,7 @@ const ViewOrders = () => {
       deliveryDate: order.deliveryDate ? order.deliveryDate.split('T')[0] : '',
       status: (order.status || 'pending')
     });
-    
+
     // Fetch available sweets
     try {
       const response = await fetch(`${API_BASE_URL}${API_ENDPOINTS.GET_SWEETS}`);
@@ -379,19 +379,19 @@ const ViewOrders = () => {
   const submitEdit = async (e) => {
     e.preventDefault();
     if (!editOrder) return;
-    
+
     // Validate that additional advance doesn't exceed remaining amount
     const currentTotal = Number(editForm.total || 0);
     const currentAdvance = Number(editForm.advancePaid || 0);
     const additionalAmount = Number(additionalAdvance || 0);
     const newAdvancePaid = currentAdvance + additionalAmount;
-    
+
     if (newAdvancePaid > currentTotal) {
       setToast({ message: 'Advance payment cannot exceed total amount!', type: 'danger' });
       setTimeout(() => setToast(null), 3000);
       return;
     }
-    
+
     try {
       setIsUpdating(true);
       const res = await fetch(`${API_BASE_URL}${API_ENDPOINTS.EDIT_ORDER}/${editOrder._id || editOrder.id}`, {
@@ -432,7 +432,7 @@ const ViewOrders = () => {
 
   return (
     <div>
-      <motion.div 
+      <motion.div
         className="flex flex-col items-start mb-4 sm:mb-6 gap-3 sm:gap-4"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -462,7 +462,7 @@ const ViewOrders = () => {
               </button>
             )}
           </div>
-          
+
           <div className="flex items-center w-full sm:w-auto">
             <Filter className="h-4 w-4 sm:h-5 sm:w-5 text-gray-900 mr-2 flex-shrink-0" />
             <select
@@ -520,11 +520,10 @@ const ViewOrders = () => {
           <button
             onClick={openDownloadModal}
             disabled={isDownloading}
-            className={`flex items-center gap-2 px-4 py-2 rounded-lg font-semibold text-sm transition-all shadow-sm ${
-              isDownloading
+            className={`flex items-center gap-2 px-4 py-2 rounded-lg font-semibold text-sm transition-all shadow-sm ${isDownloading
                 ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
                 : 'bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:shadow-md hover:scale-105'
-            }`}
+              }`}
             title="Download statement as PDF"
           >
             {isDownloading ? (
@@ -553,7 +552,7 @@ const ViewOrders = () => {
           <div className="text-4xl sm:text-6xl mb-4">😞</div>
           <h3 className="text-lg sm:text-xl font-semibold text-gray-800 mb-2">Failed to load orders</h3>
           <p className="text-gray-600 mb-4 text-sm sm:text-base">{error}</p>
-          <button 
+          <button
             onClick={fetchOrders}
             className="px-4 sm:px-6 py-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg hover:shadow-lg text-sm sm:text-base font-semibold"
           >
@@ -575,7 +574,7 @@ const ViewOrders = () => {
               View all order details below
             </p>
           </div>
-          
+
           <div className="-mx-4 sm:mx-0 rounded-xl shadow-sm overflow-hidden">
             <div className="min-w-full align-middle overflow-x-auto">
               <table className="w-full bg-white border border-gray-200 table-auto">
@@ -584,7 +583,7 @@ const ViewOrders = () => {
                     <th className="px-2 sm:px-3 md:px-4 py-3 sm:py-4 text-left text-xs sm:text-sm font-semibold whitespace-nowrap">Customer</th>
                     <th className="px-2 sm:px-3 md:px-4 py-3 sm:py-4 text-left text-xs sm:text-sm font-semibold whitespace-nowrap">Contact</th>
                     <th className="px-2 sm:px-3 md:px-4 py-3 sm:py-4 text-left text-xs sm:text-sm font-semibold whitespace-nowrap">
-                      <button 
+                      <button
                         onClick={toggleOrderSort}
                         className={`flex items-center gap-2 transition-colors ${activeSortColumn === 'order' ? 'text-yellow-300' : 'hover:text-yellow-300'}`}
                         title="Click to sort by order date (Up=Ascending, Down=Descending)"
@@ -597,7 +596,7 @@ const ViewOrders = () => {
                       </button>
                     </th>
                     <th className="px-2 sm:px-3 md:px-4 py-3 sm:py-4 text-left text-xs sm:text-sm font-semibold whitespace-nowrap">
-                      <button 
+                      <button
                         onClick={toggleDeliverySort}
                         className={`flex items-center gap-2 transition-colors ${activeSortColumn === 'delivery' ? 'text-yellow-300' : 'hover:text-yellow-300'}`}
                         title="Click to sort by delivery date (Up=Ascending, Down=Descending)"
@@ -616,93 +615,92 @@ const ViewOrders = () => {
                     <th className="px-2 sm:px-3 md:px-4 py-3 sm:py-4 text-center text-xs sm:text-sm font-semibold whitespace-nowrap">Actions</th>
                   </tr>
                 </thead>
-            <tbody className="divide-y divide-gray-200">
-              {filteredOrders.map((order, index) => (
-                <motion.tr 
-                  key={order._id}
-                  className="bg-white"
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: index * 0.05 }}
-                >
-                  <td className="px-2 sm:px-3 md:px-4 py-3 sm:py-4">
-                    <div>
-                      <div className="font-semibold text-yellow-600 text-xs sm:text-sm md:text-base whitespace-nowrap">{order.customerName}</div>
-                    </div>
-                  </td>
-                  <td className="px-2 sm:px-3 md:px-4 py-3 sm:py-4">
-                    <div className="flex items-center text-xs sm:text-sm text-gray-600 whitespace-nowrap">
-                      <Phone className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
-                      {order.mobile}
-                    </div>
-                  </td>
-                  <td className="px-2 sm:px-3 md:px-4 py-3 sm:py-4">
-                    <div className="flex items-center text-xs sm:text-sm text-gray-600 whitespace-nowrap">
-                      <Calendar className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
-                      <span>{order.orderDate ? new Date(order.orderDate).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }) : 'N/A'}</span>
-                    </div>
-                  </td>
-                  <td className="px-2 sm:px-3 md:px-4 py-3 sm:py-4">
-                    <div className="flex items-center text-xs sm:text-sm text-purple-600 font-semibold whitespace-nowrap">
-                      <Calendar className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
-                      <span>{order.deliveryDate ? new Date(order.deliveryDate).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }) : 'N/A'}</span>
-                    </div>
-                  </td>
-                  <td className="px-2 sm:px-3 md:px-4 py-3 sm:py-4">
-                    <div className="font-semibold text-purple-600 text-xs sm:text-sm md:text-base whitespace-nowrap">₹{order.total}</div>
-                  </td>
-                  <td className="px-2 sm:px-3 md:px-4 py-3 sm:py-4">
-                    <div className="font-semibold text-red-600 text-xs sm:text-sm md:text-base whitespace-nowrap">
-                      ₹{(order.status || '').toLowerCase() === 'cancelled' ? 0 : (order.total - (order.advancePaid || 0))}
-                    </div>
-                  </td>
-                  <td className="px-2 sm:px-3 md:px-4 py-3 sm:py-4">
-                    {(() => {
-                      const approver = getApproverInfo(order);
-                      return (
-                        <div className={`text-xs sm:text-sm font-semibold whitespace-nowrap ${
-                          approver.type === 'admin' ? 'text-blue-600' : 'text-green-600'
-                        }`}>
-                          {approver.display}
+                <tbody className="divide-y divide-gray-200">
+                  {filteredOrders.map((order, index) => (
+                    <motion.tr
+                      key={order._id}
+                      className="bg-white"
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: index * 0.05 }}
+                    >
+                      <td className="px-2 sm:px-3 md:px-4 py-3 sm:py-4">
+                        <div>
+                          <div className="font-semibold text-yellow-600 text-xs sm:text-sm md:text-base whitespace-nowrap">{order.customerName}</div>
                         </div>
-                      );
-                    })()}
-                  </td>
-                  <td className="px-2 sm:px-3 md:px-4 py-3 sm:py-4">
-                    <span className={`px-2 sm:px-3 py-1 rounded-full text-xs font-semibold border whitespace-nowrap ${getStatusColor(order.status)}`}>
-                      {order.status ? order.status.charAt(0).toUpperCase() + order.status.slice(1) : 'N/A'}
-                    </span>
-                  </td>
-                  <td className="px-2 sm:px-3 md:px-4 py-3 sm:py-4">
-                    <div className="flex flex-nowrap items-center justify-center gap-2">
-                      <button
-                        onClick={() => setSelectedOrder(order)}
-                        className="inline-flex items-center px-2.5 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-purple-600 border border-purple-200 hover:bg-purple-50 whitespace-nowrap"
-                      >
-                        <Package className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
-                        <span>View</span>
-                      </button>
-                    </div>
-                  </td>
-                </motion.tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
+                      </td>
+                      <td className="px-2 sm:px-3 md:px-4 py-3 sm:py-4">
+                        <div className="flex items-center text-xs sm:text-sm text-gray-600 whitespace-nowrap">
+                          <Phone className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
+                          {order.mobile}
+                        </div>
+                      </td>
+                      <td className="px-2 sm:px-3 md:px-4 py-3 sm:py-4">
+                        <div className="flex items-center text-xs sm:text-sm text-gray-600 whitespace-nowrap">
+                          <Calendar className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
+                          <span>{order.orderDate ? new Date(order.orderDate).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }) : 'N/A'}</span>
+                        </div>
+                      </td>
+                      <td className="px-2 sm:px-3 md:px-4 py-3 sm:py-4">
+                        <div className="flex items-center text-xs sm:text-sm text-purple-600 font-semibold whitespace-nowrap">
+                          <Calendar className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
+                          <span>{order.deliveryDate ? new Date(order.deliveryDate).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }) : 'N/A'}</span>
+                        </div>
+                      </td>
+                      <td className="px-2 sm:px-3 md:px-4 py-3 sm:py-4">
+                        <div className="font-semibold text-purple-600 text-xs sm:text-sm md:text-base whitespace-nowrap">₹{order.total}</div>
+                      </td>
+                      <td className="px-2 sm:px-3 md:px-4 py-3 sm:py-4">
+                        <div className="font-semibold text-red-600 text-xs sm:text-sm md:text-base whitespace-nowrap">
+                          ₹{(order.status || '').toLowerCase() === 'cancelled' ? 0 : (order.total - (order.advancePaid || 0))}
+                        </div>
+                      </td>
+                      <td className="px-2 sm:px-3 md:px-4 py-3 sm:py-4">
+                        {(() => {
+                          const approver = getApproverInfo(order);
+                          return (
+                            <div className={`text-xs sm:text-sm font-semibold whitespace-nowrap ${approver.type === 'admin' ? 'text-blue-600' : 'text-green-600'
+                              }`}>
+                              {approver.display}
+                            </div>
+                          );
+                        })()}
+                      </td>
+                      <td className="px-2 sm:px-3 md:px-4 py-3 sm:py-4">
+                        <span className={`px-2 sm:px-3 py-1 rounded-full text-xs font-semibold border whitespace-nowrap ${getStatusColor(order.status)}`}>
+                          {order.status ? order.status.charAt(0).toUpperCase() + order.status.slice(1) : 'N/A'}
+                        </span>
+                      </td>
+                      <td className="px-2 sm:px-3 md:px-4 py-3 sm:py-4">
+                        <div className="flex flex-nowrap items-center justify-center gap-2">
+                          <button
+                            onClick={() => setSelectedOrder(order)}
+                            className="inline-flex items-center px-2.5 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-purple-600 border border-purple-200 hover:bg-purple-50 whitespace-nowrap"
+                          >
+                            <Package className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
+                            <span>View</span>
+                          </button>
+                        </div>
+                      </td>
+                    </motion.tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
         </>
       )}
 
       {/* Order Details Modal */}
       <AnimatePresence>
         {selectedOrder && (
-          <motion.div 
+          <motion.div
             className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-3 sm:p-4"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
           >
-            <motion.div 
+            <motion.div
               className="bg-white rounded-xl p-4 sm:p-6 max-w-2xl w-full max-h-[95vh] sm:max-h-[90vh] overflow-y-auto shadow-2xl"
               initial={{ scale: 0.9, y: 50 }}
               animate={{ scale: 1, y: 0 }}
@@ -741,7 +739,7 @@ const ViewOrders = () => {
                     {selectedOrder.createdAt && (
                       <div><strong>Order Time:</strong> {selectedOrder.createdAt}</div>
                     )}
-                    <div><strong>Status:</strong> 
+                    <div><strong>Status:</strong>
                       <span className={`ml-2 px-2 py-1 rounded text-xs font-semibold border ${getStatusColor(selectedOrder.status)}`}>
                         {selectedOrder.status ? selectedOrder.status.charAt(0).toUpperCase() + selectedOrder.status.slice(1) : 'N/A'}
                       </span>
@@ -764,13 +762,13 @@ const ViewOrders = () => {
                       <div className="flex-1">
                         <div className="font-semibold text-yellow-600 text-xs sm:text-sm md:text-base">{item.sweetName}</div>
                         <div className="text-xs sm:text-sm text-gray-500">
-                          ₹{item.price} × {item.quantity || 1} {item.unit === 'kg' ? 'kg' : item.unit || 'piece'}
+                          ₹{item.price} × {item.quantity || 1} {item.unit === 'Kg' ? 'Kg' : item.unit || 'piece'}
                         </div>
                       </div>
                       <div className="text-right">
                         <div className="font-bold text-purple-600 text-sm sm:text-base">₹{item.price * (item.quantity || 1)}</div>
                         <div className="text-xs text-gray-500">
-                          Qty: {item.quantity || 1} {item.unit === 'kg' ? 'kg' : item.unit || 'piece'}
+                          Qty: {item.quantity || 1} {item.unit === 'Kg' ? 'Kg' : item.unit || 'piece'}
                         </div>
                       </div>
                     </div>
@@ -896,16 +894,16 @@ const ViewOrders = () => {
                     onChange={(e) => {
                       const inputValue = e.target.value;
                       const remaining = (parseFloat(editForm.total) || 0) - (parseFloat(editForm.advancePaid) || 0);
-                      
+
                       // Allow empty input
                       if (inputValue === '') {
                         setAdditionalAdvance('');
                         setShowAdvanceExceedWarning(false);
                         return;
                       }
-                      
+
                       const value = parseFloat(inputValue) || 0;
-                      
+
                       // Block if value exceeds remaining due amount
                       if (value > remaining) {
                         // Show warning and don't update the value
@@ -914,16 +912,15 @@ const ViewOrders = () => {
                         setTimeout(() => setShowAdvanceExceedWarning(false), 10000);
                         return; // Block the input
                       }
-                      
+
                       // Value is valid, update it
                       setShowAdvanceExceedWarning(false);
                       setAdditionalAdvance(inputValue);
                     }}
-                    className={`w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base bg-white border rounded-lg sm:rounded-xl text-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all ${
-                      showAdvanceExceedWarning 
-                        ? 'border-red-500 ring-2 ring-red-300' 
+                    className={`w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base bg-white border rounded-lg sm:rounded-xl text-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all ${showAdvanceExceedWarning
+                        ? 'border-red-500 ring-2 ring-red-300'
                         : 'border-gray-300'
-                    }`}
+                      }`}
                     placeholder="Enter additional amount"
                   />
                   {showAdvanceExceedWarning && (
@@ -934,9 +931,9 @@ const ViewOrders = () => {
                   )}
                   <p className="text-xs text-gray-600 mt-1">Total Advance: ₹{((parseFloat(editForm.advancePaid) || 0) + (parseFloat(additionalAdvance) || 0)).toFixed(2)}</p>
                   <p className="text-xs text-red-600 mt-1 font-semibold">Remaining Due: ₹{Math.max(0, ((parseFloat(editForm.total) || 0) - ((parseFloat(editForm.advancePaid) || 0) + (parseFloat(additionalAdvance) || 0)))).toFixed(2)}</p>
-                 
+
                 </div>
-                
+
                 {/* Current Order Items */}
                 <div>
                   <label className="block text-xs sm:text-sm font-semibold text-yellow-600 mb-2">Current Order Items</label>
@@ -958,8 +955,8 @@ const ViewOrders = () => {
                                 onClick={() => {
                                   const newItems = [...editOrderItems];
                                   const isInGrams = item.weightUnit === 'grams';
-                                  const minQty = item.unit === 'kg' ? (isInGrams ? 1 : 0.01) : 1;
-                                  const decrementBy = item.unit === 'kg' ? (isInGrams ? 100 : 0.5) : 1;
+                                  const minQty = item.unit === 'Kg' ? (isInGrams ? 1 : 0.01) : 1;
+                                  const decrementBy = item.unit === 'Kg' ? (isInGrams ? 100 : 0.5) : 1;
                                   if (newItems[index].quantity > minQty) {
                                     newItems[index].quantity = Math.max(minQty, (parseFloat(newItems[index].quantity) - decrementBy));
                                     setEditOrderItems(newItems);
@@ -979,7 +976,7 @@ const ViewOrders = () => {
                                 value={item.quantity}
                                 onChange={(e) => {
                                   const inputValue = e.target.value;
-                                  
+
                                   // Allow temporary empty value during editing
                                   if (inputValue === '') {
                                     const newItems = [...editOrderItems];
@@ -987,18 +984,18 @@ const ViewOrders = () => {
                                     setEditOrderItems(newItems);
                                     return;
                                   }
-                                  
+
                                   // Allow only numbers and decimals
                                   if (!/^\d*\.?\d*$/.test(inputValue)) {
                                     return;
                                   }
-                                  
+
                                   const value = parseFloat(inputValue);
-                                  
+
                                   if (!isNaN(value) && value > 0) {
                                     const newItems = [...editOrderItems];
                                     const isInGrams = item.weightUnit === 'grams';
-                                    newItems[index].quantity = item.unit === 'kg' && !isInGrams ? value : (isInGrams ? Math.round(value) : value);
+                                    newItems[index].quantity = item.unit === 'Kg' && !isInGrams ? value : (isInGrams ? Math.round(value) : value);
                                     setEditOrderItems(newItems);
                                     const newTotal = newItems.reduce((sum, it) => {
                                       const qty = it.quantity === '' ? 0 : it.quantity;
@@ -1022,7 +1019,7 @@ const ViewOrders = () => {
                                         return orig.sweetName === item.sweetName;
                                       }
                                     );
-                                    
+
                                     let restoredQty;
                                     if (originalItem) {
                                       // Restore to original quantity
@@ -1030,14 +1027,14 @@ const ViewOrders = () => {
                                     } else {
                                       // If not found in original (newly added item), use minimum value
                                       const isInGrams = item.weightUnit === 'grams';
-                                      restoredQty = item.unit === 'kg' ? (isInGrams ? 100 : 0.5) : 1;
+                                      restoredQty = item.unit === 'Kg' ? (isInGrams ? 100 : 0.5) : 1;
                                     }
-                                    
+
                                     // Create new array with new item objects to trigger re-render
-                                    const newItems = editOrderItems.map((it, i) => 
+                                    const newItems = editOrderItems.map((it, i) =>
                                       i === index ? { ...it, quantity: restoredQty } : { ...it }
                                     );
-                                    
+
                                     setEditOrderItems(newItems);
                                     // Recalculate total
                                     const newTotal = newItems.reduce((sum, it) => {
@@ -1055,7 +1052,7 @@ const ViewOrders = () => {
                                 onClick={() => {
                                   const newItems = [...editOrderItems];
                                   const isInGrams = item.weightUnit === 'grams';
-                                  const incrementBy = item.unit === 'kg' ? (isInGrams ? 100 : 0.5) : 1;
+                                  const incrementBy = item.unit === 'Kg' ? (isInGrams ? 100 : 0.5) : 1;
                                   newItems[index].quantity = parseFloat(newItems[index].quantity) + incrementBy;
                                   setEditOrderItems(newItems);
                                   const newTotal = newItems.reduce((sum, it) => {
@@ -1068,22 +1065,22 @@ const ViewOrders = () => {
                               >
                                 +
                               </button>
-                              {item.unit === 'kg' && (
+                              {item.unit === 'Kg' && (
                                 <select
-                                  value={item.weightUnit || 'kg'}
+                                  value={item.weightUnit || 'Kg'}
                                   onChange={(e) => {
                                     const newItems = [...editOrderItems];
-                                    const oldUnit = newItems[index].weightUnit || 'kg';
+                                    const oldUnit = newItems[index].weightUnit || 'Kg';
                                     const newUnit = e.target.value;
                                     newItems[index].weightUnit = newUnit;
-                                    
+
                                     // Convert quantity when switching units
-                                    if (oldUnit === 'kg' && newUnit === 'grams') {
+                                    if (oldUnit === 'Kg' && newUnit === 'grams') {
                                       newItems[index].quantity = parseFloat(newItems[index].quantity) * 1000;
-                                    } else if (oldUnit === 'grams' && newUnit === 'kg') {
+                                    } else if (oldUnit === 'grams' && newUnit === 'Kg') {
                                       newItems[index].quantity = parseFloat(newItems[index].quantity) / 1000;
                                     }
-                                    
+
                                     setEditOrderItems(newItems);
                                     const newTotal = newItems.reduce((sum, it) => {
                                       const qtyInKg = (it.weightUnit === 'grams') ? it.quantity / 1000 : it.quantity;
@@ -1093,11 +1090,11 @@ const ViewOrders = () => {
                                   }}
                                   className="text-xs text-gray-600 ml-1 px-1 py-0.5 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-500"
                                 >
-                                  <option value="kg">kg</option>
+                                  <option value="Kg">Kg</option>
                                   <option value="grams">grams</option>
                                 </select>
                               )}
-                              {item.unit !== 'kg' && (
+                              {item.unit !== 'Kg' && (
                                 <span className="text-xs text-gray-600 ml-1">{item.unit || 'pcs'}</span>
                               )}
                             </div>
@@ -1130,7 +1127,7 @@ const ViewOrders = () => {
                     {showAddItems ? '− Hide Add Items' : '+ Add More Items'}
                   </button>
                 </div>
-                
+
                 {/* Add Items Section */}
                 {showAddItems && (
                   <div className="bg-blue-50 border border-blue-200 rounded-lg p-2 sm:p-3">
@@ -1169,8 +1166,8 @@ const ViewOrders = () => {
                           if (sweet) {
                             setSweetSearch(sweet.name);
                           }
-                          // Reset weight unit to kg when changing sweet
-                          setSelectedWeightUnit('kg');
+                          // Reset weight unit to Kg when changing sweet
+                          setSelectedWeightUnit('Kg');
                           setSelectedQuantity(1);
                         }}
                         className="w-full px-2 sm:px-3 py-2 text-xs sm:text-sm bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -1206,13 +1203,13 @@ const ViewOrders = () => {
                         />
                         {(() => {
                           const sweet = availableSweets.find(s => s._id === selectedSweet);
-                          return sweet && sweet.unit === 'kg' ? (
+                          return sweet && sweet.unit === 'Kg' ? (
                             <select
                               value={selectedWeightUnit}
                               onChange={(e) => setSelectedWeightUnit(e.target.value)}
                               className="px-2 py-2 text-xs sm:text-sm bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                             >
-                              <option value="kg">kg</option>
+                              <option value="Kg">Kg</option>
                               <option value="grams">grams</option>
                             </select>
                           ) : null;
@@ -1231,7 +1228,7 @@ const ViewOrders = () => {
                               const existingItemIndex = editOrderItems.findIndex(
                                 item => item.sweetId === sweet._id || item.sweetName === sweet.name
                               );
-                              
+
                               let newItems;
                               if (existingItemIndex !== -1) {
                                 // Sweet exists, update quantity
@@ -1240,15 +1237,15 @@ const ViewOrders = () => {
                                 const existingUnit = existingItem.weightUnit;
                                 const newQty = parseFloat(selectedQuantity);
                                 const newUnit = selectedWeightUnit;
-                                
+
                                 // Convert to same unit and add
                                 let combinedQty;
-                                if (sweet.unit === 'kg') {
-                                  // Convert both to kg for comparison
+                                if (sweet.unit === 'Kg') {
+                                  // Convert both to Kg for comparison
                                   const existingInKg = existingUnit === 'grams' ? existingQty / 1000 : existingQty;
                                   const newInKg = newUnit === 'grams' ? newQty / 1000 : newQty;
                                   const totalKg = existingInKg + newInKg;
-                                  
+
                                   // Keep in the same unit as existing item
                                   if (existingUnit === 'grams') {
                                     combinedQty = totalKg * 1000;
@@ -1259,7 +1256,7 @@ const ViewOrders = () => {
                                   // For pieces, just add
                                   combinedQty = existingQty + newQty;
                                 }
-                                
+
                                 newItems = [...editOrderItems];
                                 newItems[existingItemIndex] = {
                                   ...existingItem,
@@ -1274,12 +1271,12 @@ const ViewOrders = () => {
                                   quantity: selectedQuantity,
                                   price: sweet.rate,
                                   unit: sweet.unit,
-                                  weightUnit: sweet.unit === 'kg' ? selectedWeightUnit : undefined
+                                  weightUnit: sweet.unit === 'Kg' ? selectedWeightUnit : undefined
                                 };
                                 newItems = [...editOrderItems, newItem];
                                 setToast({ message: 'Item added!', type: 'success' });
                               }
-                              
+
                               setEditOrderItems(newItems);
                               setEditOrderItems(newItems);
                               const newTotal = newItems.reduce((sum, item) => {
@@ -1290,7 +1287,7 @@ const ViewOrders = () => {
                               setEditForm(f => ({ ...f, total: newTotal }));
                               setSelectedSweet('');
                               setSelectedQuantity(1);
-                              setSelectedWeightUnit('kg');
+                              setSelectedWeightUnit('Kg');
                               setSweetSearch('');
                               setShowAddItems(false); // Hide the Add Items section after adding
                               setTimeout(() => setToast(null), 2000);
@@ -1304,7 +1301,7 @@ const ViewOrders = () => {
                     </div>
                   </div>
                 )}
-                
+
                 <div>
                   <label className="block text-xs sm:text-sm font-semibold text-yellow-600 mb-1.5 sm:mb-2">Status</label>
                   <select
@@ -1378,7 +1375,7 @@ const ViewOrders = () => {
                 <p className="text-gray-600 mb-4 text-sm">
                   Select the date range for the orders statement:
                 </p>
-                
+
                 <div className="space-y-4">
                   {/* Start Date */}
                   <div>
@@ -1482,11 +1479,10 @@ const ViewOrders = () => {
                   <button
                     onClick={viewStatement}
                     disabled={!downloadStartDate || !downloadEndDate || downloadStartDate > downloadEndDate}
-                    className={`flex-1 px-4 py-2.5 rounded-lg font-semibold flex items-center justify-center gap-2 transition-all touch-manipulation min-h-[44px] ${
-                      !downloadStartDate || !downloadEndDate || downloadStartDate > downloadEndDate
+                    className={`flex-1 px-4 py-2.5 rounded-lg font-semibold flex items-center justify-center gap-2 transition-all touch-manipulation min-h-[44px] ${!downloadStartDate || !downloadEndDate || downloadStartDate > downloadEndDate
                         ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
                         : 'bg-gradient-to-r from-blue-500 to-purple-500 text-white hover:shadow-lg'
-                    }`}
+                      }`}
                   >
                     <Eye className="h-4 w-4" />
                     View PDF
@@ -1494,11 +1490,10 @@ const ViewOrders = () => {
                   <button
                     onClick={downloadStatement}
                     disabled={!downloadStartDate || !downloadEndDate || downloadStartDate > downloadEndDate}
-                    className={`flex-1 px-4 py-2.5 rounded-lg font-semibold flex items-center justify-center gap-2 transition-all touch-manipulation min-h-[44px] ${
-                      !downloadStartDate || !downloadEndDate || downloadStartDate > downloadEndDate
+                    className={`flex-1 px-4 py-2.5 rounded-lg font-semibold flex items-center justify-center gap-2 transition-all touch-manipulation min-h-[44px] ${!downloadStartDate || !downloadEndDate || downloadStartDate > downloadEndDate
                         ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
                         : 'bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:shadow-lg'
-                    }`}
+                      }`}
                   >
                     <Download className="h-4 w-4" />
                     View Range

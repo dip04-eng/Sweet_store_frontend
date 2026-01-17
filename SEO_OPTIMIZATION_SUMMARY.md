@@ -30,7 +30,7 @@ Comprehensive SEO optimization implemented without changing any application logi
 - og:url = https://sweet-store-frontend-ten.vercel.app/
 - og:title = Brand + location optimized
 - og:description = Social media friendly description
-- og:image = Background.png (hero image)
+- og:image = BacKground.png (hero image)
 - og:site_name = Mansoor Hotel & Sweets
 - og:locale = en_IN (English - India)
 
@@ -201,7 +201,7 @@ Crawl-delay: 1
 ## 6. Performance Considerations
 - Vite build optimization (automatic code splitting)
 - Lazy loading for routes (React Router)
-- Optimized images (Background.png)
+- Optimized images (BacKground.png)
 - Minimal external dependencies
 
 ---

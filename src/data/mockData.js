@@ -3,7 +3,7 @@ export const mockSweets = [
     id: 1,
     name: "Gulab Jamun",
     price: 100,
-    unit: "kg",
+    unit: "Kg",
     image: "https://images.pexels.com/photos/1099680/pexels-photo-1099680.jpeg",
     stock: 50,
     description: "Soft, spongy milk dumplings in rose-scented syrup"
@@ -12,7 +12,7 @@ export const mockSweets = [
     id: 2,
     name: "Rasgulla",
     price: 380,
-    unit: "kg",
+    unit: "Kg",
     image: "https://images.pexels.com/photos/7625056/pexels-photo-7625056.jpeg",
     stock: 30,
     description: "Spongy cottage cheese balls in light sugar syrup"
@@ -21,7 +21,7 @@ export const mockSweets = [
     id: 3,
     name: "Kaju Katli",
     price: 800,
-    unit: "kg",
+    unit: "Kg",
     image: "https://images.pexels.com/photos/6659564/pexels-photo-6659564.jpeg",
     stock: 25,
     description: "Diamond-shaped cashew fudge with silver leaf"
@@ -30,7 +30,7 @@ export const mockSweets = [
     id: 4,
     name: "Jalebi",
     price: 320,
-    unit: "kg",
+    unit: "Kg",
     image: "https://images.pexels.com/photos/5560763/pexels-photo-5560763.jpeg",
     stock: 40,
     description: "Crispy spiral-shaped sweets soaked in sugar syrup"
@@ -48,7 +48,7 @@ export const mockSweets = [
     id: 6,
     name: "Barfi",
     price: 500,
-    unit: "kg",
+    unit: "Kg",
     image: "https://images.pexels.com/photos/6659568/pexels-photo-6659568.jpeg",
     stock: 20,
     description: "Rich milk-based sweet with nuts and cardamom"

@@ -6,18 +6,18 @@ const FestivalCard = ({ sweet, onAddToCart }) => {
   const [isAdding, setIsAdding] = useState(false);
   const [selectedWeight, setSelectedWeight] = useState(null);
   const [quantity, setQuantity] = useState(1);
-  
-  const isKgItem = sweet.unit === 'kg';
-  
+
+  const isKgItem = sweet.unit === 'Kg';
+
   // Generate weight options based on the item
-  const weightOptions = isKgItem 
-    ? ['200g', '400g', '800g'] 
+  const weightOptions = isKgItem
+    ? ['200g', '400g', '800g']
     : null;
 
   const getWeightInKg = (weightStr) => {
-    if (!weightStr) return 1; // Default 1kg
+    if (!weightStr) return 1; // Default 1Kg
     const numValue = parseInt(weightStr);
-    return weightStr.includes('kg') ? numValue : numValue / 1000;
+    return weightStr.includes('Kg') ? numValue : numValue / 1000;
   };
 
   const calculatePrice = () => {
@@ -33,11 +33,11 @@ const FestivalCard = ({ sweet, onAddToCart }) => {
       setSelectedWeight(weightOptions[0]);
       return;
     }
-    
+
     setIsAdding(true);
     const finalQuantity = isKgItem ? getWeightInKg(selectedWeight) : quantity;
     onAddToCart(sweet, finalQuantity);
-    
+
     setTimeout(() => {
       setIsAdding(false);
       setSelectedWeight(null);
@@ -59,10 +59,10 @@ const FestivalCard = ({ sweet, onAddToCart }) => {
         <div className="absolute top-0 right-0 w-16 h-16 border-t-4 border-r-4 border-[#C9A227] rounded-tr-lg z-10"></div>
         <div className="absolute bottom-0 left-0 w-16 h-16 border-b-4 border-l-4 border-[#C9A227] rounded-bl-lg z-10"></div>
         <div className="absolute bottom-0 right-0 w-16 h-16 border-b-4 border-r-4 border-[#C9A227] rounded-br-lg z-10"></div>
-        
+
         {/* Inner decorative line */}
         <div className="absolute inset-3 border-2 border-[#C9A227]/30 rounded-lg pointer-events-none"></div>
-        
+
         {/* Content Container */}
         <div className="p-3 xs:p-4 sm:p-4 pt-4 xs:pt-5 spacing-responsive">
           {/* Image Container */}
@@ -78,27 +78,26 @@ const FestivalCard = ({ sweet, onAddToCart }) => {
               }}
             />
           </div>
-          
+
           {/* Title */}
           <h3 className="text-lg sm:text-xl font-bold text-[#333] text-center mb-3 font-['Playfair_Display'] truncate px-2">
             {sweet.name}
           </h3>
-          
+
           {/* Weight/Quantity Options */}
           <div className="flex flex-wrap justify-center gap-2 mb-4">
             {isKgItem ? (
-              // Weight options for kg items
+              // Weight options for Kg items
               weightOptions.map((weight) => (
                 <motion.button
                   key={weight}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={() => setSelectedWeight(weight)}
-                  className={`px-4 py-1.5 rounded-full text-sm font-semibold border-2 transition-all ${
-                    selectedWeight === weight
+                  className={`px-4 py-1.5 rounded-full text-sm font-semibold border-2 transition-all ${selectedWeight === weight
                       ? 'bg-[#333] text-white border-[#333]'
                       : 'bg-transparent text-[#333] border-[#333] hover:bg-[#333]/10'
-                  }`}
+                    }`}
                 >
                   {weight}
                 </motion.button>
@@ -122,7 +121,7 @@ const FestivalCard = ({ sweet, onAddToCart }) => {
               </div>
             )}
           </div>
-          
+
           {/* Price Display */}
           {(selectedWeight || !isKgItem) && (
             <motion.div
@@ -133,18 +132,17 @@ const FestivalCard = ({ sweet, onAddToCart }) => {
               <span className="text-lg font-bold text-[#C41E3A]">₹{calculatePrice()}</span>
             </motion.div>
           )}
-          
+
           {/* Add to Cart Button */}
           <motion.button
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             onClick={handleAddToCart}
             disabled={isAdding}
-            className={`w-full py-2.5 rounded-full font-semibold text-sm transition-all flex items-center justify-center gap-2 ${
-              isAdding
+            className={`w-full py-2.5 rounded-full font-semibold text-sm transition-all flex items-center justify-center gap-2 ${isAdding
                 ? 'bg-green-500 text-white'
                 : 'bg-[#333] text-white hover:bg-[#444]'
-            }`}
+              }`}
           >
             {isAdding ? (
               <>

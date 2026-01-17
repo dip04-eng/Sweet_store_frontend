@@ -40,14 +40,14 @@ const TotalSold = () => {
         throw new Error('Failed to fetch orders');
       }
       const data = await response.json();
-      
+
       // Filter orders by delivery date AND exclude cancelled orders
       const filteredOrders = data.filter(order => {
         const deliveryDate = order.deliveryDate ? order.deliveryDate.split('T')[0] : '';
         const isCancelled = order.status === 'Cancelled';
         return deliveryDate === selectedDate && !isCancelled;
       });
-      
+
       setOrders(filteredOrders);
       calculateSalesData(filteredOrders);
     } catch (err) {
@@ -64,7 +64,7 @@ const TotalSold = () => {
 
     filteredOrders.forEach(order => {
       totalRevenue += order.total || 0;
-      
+
       order.items.forEach(item => {
         const sweetName = item.sweetName;
         const quantity = item.quantity || 0;
@@ -79,7 +79,7 @@ const TotalSold = () => {
             quantity: quantity,
             price: price,
             total: itemTotal,
-            unit: item.unit || 'kg'
+            unit: item.unit || 'Kg'
           };
         }
       });
@@ -101,14 +101,14 @@ const TotalSold = () => {
 
     try {
       setIsDownloading(true);
-      
+
       // Transform sweetsSold object to sweets_breakdown array for PDF
       const sweetsBreakdown = Object.entries(salesData.sweetsSold || {}).map(([name, data]) => ({
         name: name,
         quantity: data.quantity,
         rate: data.price,
         total: data.total,
-        unit: data.unit || 'kg'
+        unit: data.unit || 'Kg'
       }));
 
       // Calculate average order value
@@ -122,11 +122,11 @@ const TotalSold = () => {
         avg_order_value: avgOrderValue,
         sweets_breakdown: sweetsBreakdown
       };
-      
+
       const response = await fetch(`${API_BASE_URL}${API_ENDPOINTS.DOWNLOAD_SALES_REPORT}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
+        body: JSON.stringify({
           date: selectedDate,
           sales_data: pdfSalesData,
           orders: orders
@@ -144,7 +144,7 @@ const TotalSold = () => {
       a.download = `sales_report_${selectedDate}.pdf`;
       a.click();
       window.URL.revokeObjectURL(url);
-      
+
     } catch (error) {
       console.error('Error downloading sales report:', error);
       alert('Failed to download sales report. Please try again.');
@@ -155,7 +155,7 @@ const TotalSold = () => {
 
   return (
     <div>
-      <motion.div 
+      <motion.div
         className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 gap-4"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -175,7 +175,7 @@ const TotalSold = () => {
               placeholder="Select date"
             />
           </div>
-          
+
           {salesData && orders.length > 0 && (
             <motion.button
               onClick={downloadSalesReport}
@@ -220,7 +220,7 @@ const TotalSold = () => {
         <div>
           {/* Summary Cards */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-            <motion.div 
+            <motion.div
               className="bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl p-6 text-white shadow-lg"
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -232,7 +232,7 @@ const TotalSold = () => {
               <p className="text-3xl font-bold">₹{salesData.totalRevenue.toFixed(2)}</p>
             </motion.div>
 
-            <motion.div 
+            <motion.div
               className="bg-gradient-to-br from-blue-500 to-cyan-500 rounded-xl p-6 text-white shadow-lg"
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -243,7 +243,7 @@ const TotalSold = () => {
               <p className="text-3xl font-bold">{salesData.totalOrders}</p>
             </motion.div>
 
-            <motion.div 
+            <motion.div
               className="bg-gradient-to-br from-green-500 to-emerald-500 rounded-xl p-6 text-white shadow-lg"
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -254,7 +254,7 @@ const TotalSold = () => {
               <p className="text-3xl font-bold">{salesData.totalItems}</p>
             </motion.div>
 
-            <motion.div 
+            <motion.div
               className="bg-gradient-to-br from-orange-500 to-red-500 rounded-xl p-6 text-white shadow-lg"
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -269,7 +269,7 @@ const TotalSold = () => {
           </div>
 
           {/* Sweets Sold Details */}
-          <motion.div 
+          <motion.div
             className="bg-white rounded-2xl shadow-lg overflow-hidden"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -278,7 +278,7 @@ const TotalSold = () => {
             <div className="bg-gradient-to-r from-purple-500 to-pink-500 px-6 py-4">
               <h3 className="text-xl font-bold text-white">Sweets Sold Breakdown</h3>
             </div>
-            
+
             {Object.keys(salesData.sweetsSold).length === 0 ? (
               <div className="text-center py-12">
                 <Package className="h-16 w-16 text-gray-300 mx-auto mb-4" />
@@ -299,7 +299,7 @@ const TotalSold = () => {
                     {Object.entries(salesData.sweetsSold)
                       .sort((a, b) => b[1].total - a[1].total)
                       .map(([sweetName, data], index) => (
-                        <motion.tr 
+                        <motion.tr
                           key={sweetName}
                           className="hover:bg-purple-50 transition-colors"
                           initial={{ opacity: 0, x: -20 }}
