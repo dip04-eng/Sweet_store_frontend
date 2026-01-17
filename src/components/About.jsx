@@ -62,10 +62,10 @@ const About = () => {
 
       {/* Hero Section */}
       <section className="relative h-[50vh] xs:h-[60vh] sm:h-[70vh] flex items-center justify-center overflow-hidden mt-16 xs:mt-16 sm:mt-20 min-h-[400px]">
-        {/* BacKground Image */}
+        {/* Background Image */}
         <div className="absolute inset-0">
           <img
-            src="/BacKground.png"
+            src="/Background.png"
             alt="Mansoor Hotel & Sweets Heritage"
             className="w-full h-full object-cover opacity-30"
           />
