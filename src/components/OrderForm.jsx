@@ -14,7 +14,7 @@ const OrderForm = ({ cart, totalAmount, onClose, onSuccess }) => {
       return new Date().toISOString().split('T')[0];
     }
   };
-  
+
   const [formData, setFormData] = useState({
     name: '',
     mobile: '',
@@ -31,10 +31,13 @@ const OrderForm = ({ cart, totalAmount, onClose, onSuccess }) => {
     const fetchDate = async () => {
       const date = await getTodayDate();
       setServerDate(date);
-      // Auto-fill delivery date with server date
+      // Auto-fill delivery date with tomorrow's date (default)
+      const tomorrow = new Date(date);
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      const tomorrowStr = tomorrow.toISOString().split('T')[0];
       setFormData(prev => ({
         ...prev,
-        deliveryDate: date
+        deliveryDate: tomorrowStr
       }));
     };
     fetchDate();
@@ -42,7 +45,7 @@ const OrderForm = ({ cart, totalAmount, onClose, onSuccess }) => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    
+
     // Restrict mobile number to 10 digits and numbers only
     if (name === 'mobile') {
       const numericValue = value.replace(/\D/g, '').slice(0, 10);
@@ -236,11 +239,10 @@ const OrderForm = ({ cart, totalAmount, onClose, onSuccess }) => {
             <button
               type="submit"
               disabled={isSubmitting}
-              className={`w-full py-2.5 sm:py-3 px-4 sm:px-6 rounded-lg sm:rounded-xl font-semibold transition-all duration-300 transform text-sm sm:text-base ${
-                isSubmitting
+              className={`w-full py-2.5 sm:py-3 px-4 sm:px-6 rounded-lg sm:rounded-xl font-semibold transition-all duration-300 transform text-sm sm:text-base ${isSubmitting
                   ? 'bg-gray-400 cursor-not-allowed'
                   : 'bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 hover:scale-105 shadow-lg'
-              } text-white`}
+                } text-white`}
             >
               {isSubmitting ? (
                 <div className="flex items-center justify-center">

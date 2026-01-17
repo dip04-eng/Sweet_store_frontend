@@ -34,7 +34,7 @@
 body {
   margin: 0;
   padding: 0;
-  bacKground-color: var(--rich-black);
+  background-color: var(--rich-black);
   color: var(--off-white);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -95,16 +95,16 @@ input[type=number] {
 }
 
 ::-webkit-scrollbar-track {
-  bacKground: var(--rich-black);
+  background: var(--rich-black);
 }
 
 ::-webkit-scrollbar-thumb {
-  bacKground: linear-gradient(180deg, var(--gold), var(--caramel));
+  background: linear-gradient(180deg, var(--gold), var(--caramel));
   border-radius: 5px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  bacKground: var(--gold);
+  background: var(--gold);
 }
 
 /* Premium Animations */
@@ -141,10 +141,10 @@ input[type=number] {
 
 @keyframes shimmer {
   0% {
-    bacKground-position: -1000px 0;
+    background-position: -1000px 0;
   }
   100% {
-    bacKground-position: 1000px 0;
+    background-position: 1000px 0;
   }
 }
 
@@ -190,8 +190,8 @@ input[type=number] {
 }
 
 .animate-shimmer {
-  bacKground: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.2), transparent);
-  bacKground-size: 1000px 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.2), transparent);
+  background-size: 1000px 100%;
   animation: shimmer 2s infinite;
 }
 
@@ -216,14 +216,14 @@ input[type=number] {
 
 /* Premium Gold Gradient */
 .gold-gradient {
-  bacKground: linear-gradient(135deg, #C41E3A 0%, #8B0000 50%, #FFD700 100%);
-  bacKground-size: 200% 200%;
+  background: linear-gradient(135deg, #C41E3A 0%, #8B0000 50%, #FFD700 100%);
+  background-size: 200% 200%;
   animation: shimmer 3s ease infinite;
 }
 
 /* Glass Effect - Cream for Navbar */
 .glass-effect {
-  bacKground: #FFFAE6;
+  background: #FFFAE6;
   backdrop-filter: blur(10px);
   border-bottom: 2px solid rgba(196, 30, 58, 0.2);
   box-shadow: 0 2px 12px rgba(196, 30, 58, 0.1), 0 1px 4px rgba(255, 215, 0, 0.08);
@@ -231,7 +231,7 @@ input[type=number] {
 
 /* Glass Effect - Dark for Admin Login */
 .glass-effect-dark {
-  bacKground: rgba(13, 13, 13, 0.95);
+  background: rgba(13, 13, 13, 0.95);
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 215, 0, 0.1);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
@@ -249,10 +249,10 @@ input[type=number] {
 
 /* Text Gradient */
 .text-gold-gradient {
-  bacKground: linear-gradient(135deg, #C41E3A 0%, #FFD700 100%);
-  -webkit-bacKground-clip: text;
+  background: linear-gradient(135deg, #C41E3A 0%, #FFD700 100%);
+  -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  bacKground-clip: text;
+  background-clip: text;
 }
 
 /* Button Premium Styles */
@@ -269,7 +269,7 @@ input[type=number] {
   left: -100%;
   width: 100%;
   height: 100%;
-  bacKground: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
   transition: left 0.5s ease;
 }
 
@@ -279,7 +279,7 @@ input[type=number] {
 
 /* Card Premium Styles */
 .card-premium {
-  bacKground: linear-gradient(135deg, #FFFBF5 0%, #FFFAE6 100%);
+  background: linear-gradient(135deg, #FFFBF5 0%, #FFFAE6 100%);
   border: 2px solid rgba(196, 30, 58, 0.15);
   border-radius: 20px;
   box-shadow: 0 8px 32px rgba(196, 30, 58, 0.12), 0 4px 16px rgba(0, 0, 0, 0.08);
@@ -343,7 +343,7 @@ input[type=number] {
   left: -50%;
   width: 200%;
   height: 200%;
-  bacKground: linear-gradient(
+  background: linear-gradient(
     to right,
     transparent 0%,
     rgba(255, 255, 255, 0.1) 45%,
@@ -393,12 +393,12 @@ input[type=number] {
   animation: glowPulse 3s ease-in-out infinite;
 }
 
-/* Responsive Hero BacKground */
+/* Responsive Hero background */
 @media (max-width: 768px) {
   .hero-responsive {
     min-height: 100vh;
-    bacKground-size: cover;
-    bacKground-position: center;
+    background-size: cover;
+    background-position: center;
   }
   
   /* Larger text for better mobile readability */
@@ -617,15 +617,15 @@ input[type=number] {
   }
 }
 
-/* Premium Navbar BacKground Utilities */
+/* Premium Navbar background Utilities */
 .bg-size-200 {
-  bacKground-size: 200% 100%;
+  background-size: 200% 100%;
 }
 
 .bg-pos-0 {
-  bacKground-position: 0% 0%;
+  background-position: 0% 0%;
 }
 
 .hover\:bg-pos-100:hover {
-  bacKground-position: 100% 0%;
+  background-position: 100% 0%;
 }

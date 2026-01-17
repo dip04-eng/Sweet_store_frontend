@@ -521,8 +521,8 @@ const ViewOrders = () => {
             onClick={openDownloadModal}
             disabled={isDownloading}
             className={`flex items-center gap-2 px-4 py-2 rounded-lg font-semibold text-sm transition-all shadow-sm ${isDownloading
-                ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                : 'bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:shadow-md hover:scale-105'
+              ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
+              : 'bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:shadow-md hover:scale-105'
               }`}
             title="Download statement as PDF"
           >
@@ -534,7 +534,7 @@ const ViewOrders = () => {
             ) : (
               <>
                 <Download className="h-4 w-4" />
-                <span>View Range</span>
+                <span>Download</span>
               </>
             )}
           </button>
@@ -918,8 +918,8 @@ const ViewOrders = () => {
                       setAdditionalAdvance(inputValue);
                     }}
                     className={`w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base bg-white border rounded-lg sm:rounded-xl text-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all ${showAdvanceExceedWarning
-                        ? 'border-red-500 ring-2 ring-red-300'
-                        : 'border-gray-300'
+                      ? 'border-red-500 ring-2 ring-red-300'
+                      : 'border-gray-300'
                       }`}
                     placeholder="Enter additional amount"
                   />
@@ -1480,8 +1480,8 @@ const ViewOrders = () => {
                     onClick={viewStatement}
                     disabled={!downloadStartDate || !downloadEndDate || downloadStartDate > downloadEndDate}
                     className={`flex-1 px-4 py-2.5 rounded-lg font-semibold flex items-center justify-center gap-2 transition-all touch-manipulation min-h-[44px] ${!downloadStartDate || !downloadEndDate || downloadStartDate > downloadEndDate
-                        ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                        : 'bg-gradient-to-r from-blue-500 to-purple-500 text-white hover:shadow-lg'
+                      ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                      : 'bg-gradient-to-r from-blue-500 to-purple-500 text-white hover:shadow-lg'
                       }`}
                   >
                     <Eye className="h-4 w-4" />
@@ -1491,12 +1491,12 @@ const ViewOrders = () => {
                     onClick={downloadStatement}
                     disabled={!downloadStartDate || !downloadEndDate || downloadStartDate > downloadEndDate}
                     className={`flex-1 px-4 py-2.5 rounded-lg font-semibold flex items-center justify-center gap-2 transition-all touch-manipulation min-h-[44px] ${!downloadStartDate || !downloadEndDate || downloadStartDate > downloadEndDate
-                        ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                        : 'bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:shadow-lg'
+                      ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                      : 'bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:shadow-lg'
                       }`}
                   >
                     <Download className="h-4 w-4" />
-                    View Range
+                    Download
                   </button>
                 </div>
 
