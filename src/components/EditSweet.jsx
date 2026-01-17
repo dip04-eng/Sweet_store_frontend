@@ -130,7 +130,7 @@ const EditSweet = () => {
         <div className="flex items-center justify-between">
           <h2 className="text-2xl font-bold text-gray-900 flex items-center">
             <Edit3 className="h-6 w-6 mr-2 text-blue-600" />
-            Edit Sweet: {selectedSweet.name}
+            Update Items: {selectedSweet.name}
           </h2>
           <button
             onClick={cancelEdit}
@@ -144,7 +144,7 @@ const EditSweet = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Sweet Name
+                Item Name
               </label>
               <input
                 type="text"
@@ -209,7 +209,7 @@ const EditSweet = () => {
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Sweet Image
+              Item Image
             </label>
             <input
               type="file"
@@ -270,13 +270,13 @@ const EditSweet = () => {
     >
       <div className="flex items-center">
         <Edit3 className="h-6 w-6 mr-2 text-blue-600" />
-        <h2 className="text-2xl font-bold text-gray-900">Edit Sweet</h2>
+        <h2 className="text-2xl font-bold text-gray-900">Update Items</h2>
       </div>
 
       <div className="bg-white rounded-lg shadow-md p-6">
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            Search Sweets
+            Search Items
           </label>
           <div className="relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
@@ -314,7 +314,7 @@ const EditSweet = () => {
                 <h3 className="font-semibold text-gray-900 mb-2">{sweet.name}</h3>
                 <div className="space-y-1">
                   <p className="text-lg font-bold text-blue-600">
-                    Current Price: ₹{sweet.price !== undefined && sweet.price !== null ? sweet.price : 'Not Set'}/{sweet.unit || 'Kg'}
+                    Price: ₹{sweet.price !== undefined && sweet.price !== null ? sweet.price : 'Not Set'}/{sweet.unit || 'Kg'}
                   </p>
                   <p className="text-sm text-gray-500 capitalize">Category: {sweet.category || 'normal'}</p>
                   <p className="text-xs text-gray-400">Click to edit</p>

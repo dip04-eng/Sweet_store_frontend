@@ -1133,31 +1133,45 @@ const ViewOrders = () => {
                   <div className="bg-blue-50 border border-blue-200 rounded-lg p-2 sm:p-3">
                     <label className="block text-xs sm:text-sm font-semibold text-blue-600 mb-2">Add New Item</label>
                     <div className="space-y-2">
-                      {/* Search box with autocomplete */}
-                      <input
-                        type="text"
-                        value={sweetSearch}
-                        onChange={(e) => {
-                          setSweetSearch(e.target.value);
-                          // Auto-select if exact match found
-                          const match = availableSweets.find(
-                            sweet => sweet.name.toLowerCase() === e.target.value.toLowerCase()
-                          );
-                          if (match) {
-                            setSelectedSweet(match._id);
-                          }
-                        }}
-                        list="sweets-datalist"
-                        placeholder="Search sweets..."
-                        className="w-full px-2 sm:px-3 py-2 text-xs sm:text-sm bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      />
-                      <datalist id="sweets-datalist">
-                        {availableSweets.map((sweet) => (
-                          <option key={sweet._id} value={sweet.name}>
-                            {sweet.name} - ₹{sweet.rate}/{sweet.unit}
-                          </option>
-                        ))}
-                      </datalist>
+                      {/* Search box with custom dropdown */}
+                      <div className="relative">
+                        <input
+                          type="text"
+                          value={sweetSearch}
+                          onChange={(e) => {
+                            setSweetSearch(e.target.value);
+                          }}
+                          placeholder="Search Items..."
+                          className="w-full px-2 sm:px-3 py-2 text-xs sm:text-sm bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                          autoComplete="off"
+                        />
+                        {/* Custom dropdown that opens downward */}
+                        {sweetSearch.length > 0 && (
+                          <div className="absolute z-50 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-48 overflow-y-auto">
+                            {availableSweets
+                              .filter(sweet => sweet.name.toLowerCase().includes(sweetSearch.toLowerCase()))
+                              .map((sweet) => (
+                                <div
+                                  key={sweet._id}
+                                  onClick={() => {
+                                    setSelectedSweet(sweet._id);
+                                    setSweetSearch(sweet.name);
+                                  }}
+                                  className={`px-3 py-2 text-xs sm:text-sm cursor-pointer hover:bg-blue-50 border-b border-gray-100 last:border-b-0 ${selectedSweet === sweet._id ? 'bg-blue-100 text-blue-700' : 'text-gray-700'}`}
+                                >
+                                  <span className="font-medium">{sweet.name}</span>
+                                  <span className="text-gray-500 ml-2">- ₹{sweet.rate}/{sweet.unit}</span>
+                                </div>
+                              ))}
+                            {availableSweets.filter(sweet => sweet.name.toLowerCase().includes(sweetSearch.toLowerCase())).length === 0 && (
+                              <div className="px-3 py-2 text-xs sm:text-sm text-gray-500 italic">
+                                No items found
+                              </div>
+                            )}
+                          </div>
+                        )}
+                      </div>
+                      {/* Traditional select dropdown - always visible */}
                       <select
                         value={selectedSweet}
                         onChange={(e) => {
