@@ -16,7 +16,7 @@ const Cart = () => {
   useEffect(() => {
     // Scroll to top when cart page loads
     window.scrollTo(0, 0);
-    
+
     const savedCart = sessionStorage.getItem('sweetCart');
     if (savedCart) {
       setCart(JSON.parse(savedCart));
@@ -60,7 +60,7 @@ const Cart = () => {
     setOrderPlaced(true);
     setCart([]);
     sessionStorage.removeItem('sweetCart');
-    
+
     setTimeout(() => {
       setOrderPlaced(false);
     }, 3000);
@@ -95,7 +95,7 @@ const Cart = () => {
   return (
     <div className="min-h-screen bg-[#FFFBF5]">
       <Navbar cart={cart} />
-      
+
       <div className="pt-20 xs:pt-24 sm:pt-24 md:pt-28 pb-16 px-3 xs:px-4 sm:px-6 safe-area-insets">
         <div className="max-w-6xl mx-auto">
           {/* Header */}
@@ -106,7 +106,7 @@ const Cart = () => {
           >
             {/* Gradient Background */}
             <div className="absolute inset-0 bg-gradient-to-r from-purple-500/10 via-pink-500/10 to-red-500/10 rounded-3xl blur-xl"></div>
-            
+
             <div className="relative bg-white/80 backdrop-blur-sm border-2 border-purple-200/50 rounded-2xl p-6 sm:p-8 shadow-xl">
               <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
                 <Link
@@ -124,11 +124,11 @@ const Cart = () => {
                 <div className="hidden sm:block h-8 w-px bg-gradient-to-b from-purple-300 via-pink-300 to-red-300"></div>
                 <div className="flex items-center gap-3">
                   <motion.div
-                    animate={{ 
+                    animate={{
                       rotate: [0, 10, -10, 0],
                       scale: [1, 1.1, 1]
                     }}
-                    transition={{ 
+                    transition={{
                       duration: 2,
                       repeat: Infinity,
                       repeatDelay: 3
@@ -152,18 +152,18 @@ const Cart = () => {
             >
               {/* Animated gradient background */}
               <div className="absolute inset-0 bg-gradient-to-br from-purple-400/20 via-pink-400/20 to-red-400/20 rounded-3xl blur-2xl animate-pulse"></div>
-              
+
               <div className="relative bg-white/90 backdrop-blur-md border-2 border-purple-200 rounded-3xl shadow-2xl p-12 sm:p-16 text-center overflow-hidden">
                 {/* Decorative elements */}
                 <div className="absolute top-0 left-0 w-32 h-32 bg-gradient-to-br from-yellow-300/30 to-orange-300/30 rounded-full blur-3xl"></div>
                 <div className="absolute bottom-0 right-0 w-40 h-40 bg-gradient-to-tl from-pink-300/30 to-purple-300/30 rounded-full blur-3xl"></div>
-                
+
                 <motion.div
-                  animate={{ 
+                  animate={{
                     y: [0, -10, 0],
                     rotate: [0, 5, -5, 0]
                   }}
-                  transition={{ 
+                  transition={{
                     duration: 3,
                     repeat: Infinity,
                     ease: "easeInOut"
@@ -172,7 +172,7 @@ const Cart = () => {
                 >
                   <ShoppingBag className="h-24 w-24 text-[#C41E3A]/70 mx-auto mb-6 drop-shadow-lg" />
                 </motion.div>
-                
+
                 <h2 className="relative z-10 text-3xl sm:text-4xl font-bold bg-gradient-to-r from-[#C41E3A] to-[#FF1744] bg-clip-text text-transparent mb-4 font-['Playfair_Display']">
                   Your cart is empty
                 </h2>
@@ -214,7 +214,7 @@ const Cart = () => {
                             className="relative w-20 h-20 sm:w-24 sm:h-24 object-cover rounded-xl border-2 border-purple-200 shadow-md group-hover:shadow-lg group-hover:scale-105 transition-all duration-300"
                           />
                         </div>
-                        
+
                         <div className="flex-1 min-w-0">
                           <h3 className="text-lg sm:text-xl font-bold text-[#C41E3A] truncate font-['Playfair_Display']">
                             {item.name}
@@ -222,13 +222,13 @@ const Cart = () => {
                           <p className="text-gray-600 text-sm">
                             ₹{item.rate} per {item.unit || 'piece'}
                           </p>
-                          
-                          {/* Quantity/Weight Controls with Price */}
+
+                          {/* Quantity/Weight Controls with Price and Delete */}
                           {item.unit === 'kg' ? (
-                            // Weight input with unit selector and price for kg items
-                            <div className="mt-3 flex items-center gap-4 flex-wrap">
-                              <div className="flex items-center gap-2 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-full px-4 py-2 w-fit">
-                                <span className="text-white text-sm font-semibold">Weight:</span>
+                            // Weight input with unit selector, price, and delete for kg items - all in one row
+                            <div className="mt-3 flex items-center gap-2 sm:gap-4 flex-wrap">
+                              <div className="flex items-center gap-1 sm:gap-2 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-full px-2 sm:px-4 py-1.5 sm:py-2">
+                                <span className="text-white text-xs sm:text-sm font-semibold">Weight:</span>
                                 <input
                                   type="text"
                                   value={weightInputs[index] !== undefined ? weightInputs[index] : (item.quantity > 0 ? ((item.weightUnit || 'kg') === 'kg' ? item.quantity : Math.round(item.quantity * 1000)) : '0')}
@@ -236,7 +236,7 @@ const Cart = () => {
                                   onChange={(e) => {
                                     const inputValue = e.target.value;
                                     setWeightInputs({ ...weightInputs, [index]: inputValue });
-                                    
+
                                     if (inputValue === '' || inputValue === '0') {
                                       // Set quantity to 0 when input is empty or 0
                                       const updatedCart = [...cart];
@@ -259,7 +259,7 @@ const Cart = () => {
                                       setWeightInputs({ ...weightInputs, [index]: undefined });
                                     }
                                   }}
-                                  className="w-16 px-2 py-1 text-center bg-white text-gray-900 font-bold rounded border-0 focus:outline-none focus:ring-2 focus:ring-white"
+                                  className="w-12 sm:w-16 px-1 sm:px-2 py-1 text-center bg-white text-gray-900 font-bold rounded border-0 focus:outline-none focus:ring-2 focus:ring-white text-sm"
                                 />
                                 <select
                                   value={item.weightUnit || 'kg'}
@@ -271,90 +271,73 @@ const Cart = () => {
                                     sessionStorage.setItem('sweetCart', JSON.stringify(updatedCart));
                                     setWeightInputs({ ...weightInputs, [index]: undefined });
                                   }}
-                                  className="bg-red-700 text-white px-2 py-1 rounded font-semibold text-sm border-0 focus:outline-none focus:ring-2 focus:ring-white cursor-pointer"
+                                  className="bg-red-700 text-white px-1 sm:px-2 py-1 rounded font-semibold text-xs sm:text-sm border-0 focus:outline-none focus:ring-2 focus:ring-white cursor-pointer"
                                 >
                                   <option value="kg">kg</option>
                                   <option value="grams">grams</option>
                                 </select>
                               </div>
-                              
-                              {/* Price aligned with weight for all screens */}
-                              <div className="text-xl font-bold text-[#C41E3A]">
-                                ₹{(item.rate * (item.quantity ?? 0)).toFixed(2)}
+
+                              {/* Price with left margin and Delete button immediately to its right */}
+                              <div className="flex items-center gap-2 ml-auto sm:ml-2">
+                                <div className="text-lg sm:text-xl font-bold text-[#C41E3A]">
+                                  ₹{(item.rate * (item.quantity ?? 0)).toFixed(2)}
+                                </div>
+                                <motion.button
+                                  whileHover={{ scale: 1.1 }}
+                                  whileTap={{ scale: 0.9 }}
+                                  onClick={() => removeFromCart(index)}
+                                  className="p-1.5 sm:p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                                >
+                                  <Trash2 className="h-4 w-4 sm:h-5 sm:w-5" />
+                                </motion.button>
                               </div>
                             </div>
                           ) : (
-                            // Quantity controls for piece items
-                            <div className="flex items-center gap-2 mt-3">
-                              <motion.button
-                                whileHover={{ scale: 1.1 }}
-                                whileTap={{ scale: 0.9 }}
-                                onClick={() => updateQuantity(index, (item.quantity || 1) - 1)}
-                                disabled={(item.quantity || 1) <= 1}
-                                className={`p-2 rounded-lg transition-all ${
-                                  (item.quantity || 1) <= 1
+                            // Quantity controls with price and delete for piece items - all in one row
+                            <div className="flex items-center gap-2 sm:gap-3 mt-3 flex-wrap">
+                              <div className="flex items-center gap-1 sm:gap-2">
+                                <motion.button
+                                  whileHover={{ scale: 1.1 }}
+                                  whileTap={{ scale: 0.9 }}
+                                  onClick={() => updateQuantity(index, (item.quantity || 1) - 1)}
+                                  disabled={(item.quantity || 1) <= 1}
+                                  className={`p-1.5 sm:p-2 rounded-lg transition-all ${(item.quantity || 1) <= 1
                                     ? 'bg-gray-100 text-gray-300 cursor-not-allowed'
                                     : 'bg-[#C41E3A]/10 text-[#C41E3A] hover:bg-[#C41E3A]/20'
-                                }`}
-                              >
-                                <Minus className="h-4 w-4" />
-                              </motion.button>
-                              <div className="px-4 py-2 bg-gray-50 rounded-lg text-[#C41E3A] font-bold text-base min-w-[60px] text-center border-2 border-gray-200">
-                                {item.quantity || 1}
+                                    }`}
+                                >
+                                  <Minus className="h-3 w-3 sm:h-4 sm:w-4" />
+                                </motion.button>
+                                <div className="px-3 sm:px-4 py-1.5 sm:py-2 bg-gray-50 rounded-lg text-[#C41E3A] font-bold text-sm sm:text-base min-w-[50px] sm:min-w-[60px] text-center border-2 border-gray-200">
+                                  {item.quantity || 1}
+                                </div>
+                                <motion.button
+                                  whileHover={{ scale: 1.1 }}
+                                  whileTap={{ scale: 0.9 }}
+                                  onClick={() => updateQuantity(index, (item.quantity || 1) + 1)}
+                                  className="p-1.5 sm:p-2 rounded-lg bg-[#C41E3A]/10 text-[#C41E3A] hover:bg-[#C41E3A]/20 transition-all"
+                                >
+                                  <Plus className="h-3 w-3 sm:h-4 sm:w-4" />
+                                </motion.button>
                               </div>
-                              <motion.button
-                                whileHover={{ scale: 1.1 }}
-                                whileTap={{ scale: 0.9 }}
-                                onClick={() => updateQuantity(index, (item.quantity || 1) + 1)}
-                                className="p-2 rounded-lg bg-[#C41E3A]/10 text-[#C41E3A] hover:bg-[#C41E3A]/20 transition-all"
-                              >
-                                <Plus className="h-4 w-4" />
-                              </motion.button>
-                            </div>
-                          )}
-                          
-                          {/* Mobile Delete Button - Only for piece items since kg items show price inline */}
-                          {item.unit !== 'kg' && (
-                            <div className="flex items-center justify-between mt-3 sm:hidden">
-                              <div className="text-lg font-bold text-[#C41E3A]">
-                                ₹{(item.rate * (item.quantity ?? 0)).toFixed(2)}
+
+                              {/* Price with left margin and Delete button immediately to its right */}
+                              <div className="flex items-center gap-2 ml-auto sm:ml-2">
+                                <div className="text-lg sm:text-xl font-bold text-[#C41E3A]">
+                                  ₹{(item.rate * (item.quantity ?? 0)).toFixed(2)}
+                                </div>
+                                <motion.button
+                                  whileHover={{ scale: 1.1 }}
+                                  whileTap={{ scale: 0.9 }}
+                                  onClick={() => removeFromCart(index)}
+                                  className="p-1.5 sm:p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                                >
+                                  <Trash2 className="h-4 w-4 sm:h-5 sm:w-5" />
+                                </motion.button>
                               </div>
-                              <motion.button
-                                whileHover={{ scale: 1.1 }}
-                                whileTap={{ scale: 0.9 }}
-                                onClick={() => removeFromCart(index)}
-                                className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
-                              >
-                                <Trash2 className="h-4 w-4" />
-                              </motion.button>
                             </div>
                           )}
-                          
-                          {/* Mobile Delete Button for kg items - separate since price is shown inline */}
-                          {item.unit === 'kg' && (
-                            <div className="flex justify-end mt-3 sm:hidden">
-                              <motion.button
-                                whileHover={{ scale: 1.1 }}
-                                whileTap={{ scale: 0.9 }}
-                                onClick={() => removeFromCart(index)}
-                                className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
-                              >
-                                <Trash2 className="h-4 w-4" />
-                              </motion.button>
-                            </div>
-                          )}
-                        </div>
-                        
-                        {/* Desktop Delete Button - Price is now inline with weight/quantity */}
-                        <div className="hidden sm:flex items-center">
-                          <motion.button
-                            whileHover={{ scale: 1.1 }}
-                            whileTap={{ scale: 0.9 }}
-                            onClick={() => removeFromCart(index)}
-                            className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
-                          >
-                            <Trash2 className="h-5 w-5" />
-                          </motion.button>
                         </div>
                       </div>
                     </motion.div>
@@ -372,7 +355,7 @@ const Cart = () => {
                   {/* Decorative gradient background */}
                   <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-purple-300/20 to-pink-300/20 rounded-full blur-3xl"></div>
                   <div className="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-yellow-300/20 to-orange-300/20 rounded-full blur-2xl"></div>
-                  
+
                   <div className="relative z-10">
                     <div className="flex items-center gap-3 mb-6">
                       <div className="p-2 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl">
@@ -382,7 +365,7 @@ const Cart = () => {
                         Order Summary
                       </h3>
                     </div>
-                    
+
                     <div className="bg-gradient-to-br from-purple-50/50 to-pink-50/50 rounded-xl p-4 mb-6 border border-purple-100">
                       <div className="flex justify-between text-gray-700 mb-3">
                         <span className="flex items-center gap-2">
@@ -397,7 +380,7 @@ const Cart = () => {
                         <span className="bg-gradient-to-r from-[#C41E3A] to-[#FF1744] bg-clip-text text-transparent">₹{getTotalAmount().toFixed(2)}</span>
                       </div>
                     </div>
-                    
+
                     <motion.button
                       whileHover={{ scale: 1.05, y: -2 }}
                       whileTap={{ scale: 0.95 }}

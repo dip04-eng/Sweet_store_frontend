@@ -1,12 +1,16 @@
 {
   "name": "Mansoor Hotel & Sweets - Traditional Indian Sweets",
   "short_name": "Mansoor Sweets",
-  "description": "Order traditional Indian sweets online from Mansoor Hotel & Sweets, Baisi, Bihar. Family-owned since 1976. 100+ varieties of handcrafted sweets made with pure ghee and finest ingredients.",
+  "description": "Order traditional Indian sweets online from Mansoor Hotel & Sweets, Baisi, Bihar. Family-owned since 1968. 100+ varieties of handcrafted sweets made with pure ghee and finest ingredients.",
   "start_url": "/",
   "id": "/",
   "scope": "/",
   "display": "standalone",
-  "display_override": ["window-controls-overlay", "standalone", "browser"],
+  "display_override": [
+    "window-controls-overlay",
+    "standalone",
+    "browser"
+  ],
   "background_color": "#FFFBF5",
   "theme_color": "#C41E3A",
   "orientation": "portrait-primary",
@@ -24,7 +28,12 @@
       "purpose": "maskable"
     }
   ],
-  "categories": ["food", "shopping", "business", "lifestyle"],
+  "categories": [
+    "food",
+    "shopping",
+    "business",
+    "lifestyle"
+  ],
   "lang": "en-IN",
   "dir": "ltr",
   "prefer_related_applications": false,
@@ -34,21 +43,36 @@
       "short_name": "Order",
       "description": "Browse and order our sweet collection",
       "url": "/#sweets-collection",
-      "icons": [{ "src": "/Hotel_Logo.png", "sizes": "96x96" }]
+      "icons": [
+        {
+          "src": "/Hotel_Logo.png",
+          "sizes": "96x96"
+        }
+      ]
     },
     {
       "name": "Contact Us",
       "short_name": "Contact",
       "description": "Get in touch with Mansoor Hotel & Sweets",
       "url": "/contact",
-      "icons": [{ "src": "/Hotel_Logo.png", "sizes": "96x96" }]
+      "icons": [
+        {
+          "src": "/Hotel_Logo.png",
+          "sizes": "96x96"
+        }
+      ]
     },
     {
       "name": "About Us",
       "short_name": "About",
       "description": "Learn about our 50+ year legacy",
       "url": "/about",
-      "icons": [{ "src": "/vite.svg", "sizes": "96x96" }]
+      "icons": [
+        {
+          "src": "/vite.svg",
+          "sizes": "96x96"
+        }
+      ]
     }
   ],
   "screenshots": [

@@ -101,13 +101,13 @@ Comprehensive SEO optimization implemented without changing any application logi
 {
   "@type": "Organization",
   "name": "Mansoor & Sons",
-  "foundingDate": "1976"
+  "foundingDate": "1968"
 }
 ```
 
 **Includes**:
 - Legal business name
-- Founding year (1976) - establishes credibility
+- Founding year (1968) - establishes credibility
 - Contact points with available languages
 - Social media profiles (Facebook, Instagram placeholders)
 - Complete business address
@@ -115,7 +115,7 @@ Comprehensive SEO optimization implemented without changing any application logi
 **Benefits**:
 - Brand entity recognition by Google
 - Knowledge graph eligibility
-- Trust signals (established since 1976)
+- Trust signals (established since 1968)
 - Social proof through social links
 
 ---

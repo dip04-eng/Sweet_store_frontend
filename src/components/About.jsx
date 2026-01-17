@@ -7,7 +7,7 @@ import SEO from './SEO';
 
 const About = () => {
   const milestones = [
-    { year: '1976', title: 'The Beginning', description: 'Mansoor & Sons started with a dream to serve authentic sweets' },
+    { year: '1968', title: 'The Beginning', description: 'Mansoor & Sons started with a dream to serve authentic sweets' },
     { year: '1990', title: 'Expansion', description: 'Opened our iconic Madrasa Road location in Baisi' },
     { year: '2010', title: 'Recognition', description: 'Became Bihar\'s most trusted sweet shop' },
     { year: '2026', title: 'Digital Era', description: 'Launched online ordering to serve customers nationwide' },
@@ -50,9 +50,9 @@ const About = () => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#0D0D0D] via-[#1A0F0A] to-[#0D0D0D]">
       {/* SEO Component */}
-      <SEO 
-        title="About Us - Mansoor Hotel & Sweets | Family-Owned Since 1976"
-        description="Learn about Mansoor Hotel & Sweets' 50+ year journey in Baisi, Bihar. Family-owned since 1976, serving authentic Indian sweets with traditional recipes and pure ingredients."
+      <SEO
+        title="About Us - Mansoor Hotel & Sweets | Family-Owned Since 1968"
+        description="Learn about Mansoor Hotel & Sweets' 50+ year journey in Baisi, Bihar. Family-owned since 1968, serving authentic Indian sweets with traditional recipes and pure ingredients."
         keywords="About Mansoor Hotel, Mansoor & Sons history, traditional sweet shop, Baisi Bihar sweets heritage, family-owned business"
         url="/about"
       />
@@ -64,9 +64,9 @@ const About = () => {
       <section className="relative h-[50vh] xs:h-[60vh] sm:h-[70vh] flex items-center justify-center overflow-hidden mt-16 xs:mt-16 sm:mt-20 min-h-[400px]">
         {/* Background Image */}
         <div className="absolute inset-0">
-          <img 
-            src="/Background.png" 
-            alt="Mansoor Hotel & Sweets Heritage" 
+          <img
+            src="/Background.png"
+            alt="Mansoor Hotel & Sweets Heritage"
             className="w-full h-full object-cover opacity-30"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-[#0D0D0D]/80 via-[#C41E3A]/20 to-[#0D0D0D]"></div>
@@ -100,7 +100,7 @@ const About = () => {
               transition={{ delay: 0.6 }}
               className="text-lg sm:text-xl md:text-2xl text-[#F5F5DC]/80 max-w-3xl mx-auto leading-relaxed"
             >
-              Crafting happiness in every bite since <span className="text-[#FFD700] font-bold">1976</span>
+              Crafting happiness in every bite since <span className="text-[#FFD700] font-bold">1968</span>
             </motion.p>
           </motion.div>
         </div>
@@ -137,7 +137,7 @@ const About = () => {
               >
                 <div className="bg-gradient-to-br from-[#C41E3A]/10 to-[#8B0000]/10 backdrop-blur-xl rounded-2xl p-6 sm:p-8 border border-[#FFD700]/20 hover:border-[#FFD700]/50 transition-all duration-500 hover:transform hover:scale-105">
                   <div className="absolute inset-0 bg-gradient-to-br from-[#FFD700]/0 to-[#FFD700]/10 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                  
+
                   <div className="relative z-10">
                     <stat.icon className="h-10 w-10 sm:h-12 sm:w-12 text-[#FFD700] mb-4 mx-auto" />
                     <div className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-2 font-['Playfair_Display']">
@@ -176,21 +176,21 @@ const About = () => {
                   The MANSOOR Legacy
                 </h2>
               </div>
-              
+
               <div className="space-y-5 text-[#F5F5DC]/80 leading-relaxed text-base sm:text-lg">
                 <p className="bg-gradient-to-r from-[#C41E3A]/5 to-transparent p-4 rounded-lg border-l-4 border-[#FFD700]">
-                  In <span className="text-[#FFD700] font-semibold">1976</span>, in the historic town of <span className="text-[#FFD700] font-semibold">Baisi, Bihar</span>, a sweet dream was born. 
+                  In <span className="text-[#FFD700] font-semibold">1968</span>, in the historic town of <span className="text-[#FFD700] font-semibold">Baisi, Bihar</span>, a sweet dream was born.
                   <span className="text-[#FFD700] font-semibold"> Mansoor & Sons</span> started with a simple vision: to share the authentic taste of traditional Indian sweets made with love, care, and the finest ingredients.
                 </p>
-                
+
                 <p>
-                  What began as a modest sweet shop on <span className="text-[#FFD700] font-semibold">Madrasa Road</span> has grown into a beloved institution, 
+                  What began as a modest sweet shop on <span className="text-[#FFD700] font-semibold">Madrasa Road</span> has grown into a beloved institution,
                   serving generations of families with the same dedication to quality and authenticity that our founders instilled from day one.
                 </p>
-                
+
                 <p>
-                  For over <span className="text-[#FFD700] font-semibold">50 years</span>, <span className="text-[#FFD700] font-semibold">Mansoor Hotel & Sweets</span> has been 
-                  the heartbeat of celebrations, festivals, and everyday joys in Bihar and beyond. From weddings to Eid,Diwali, from simple family gatherings to grand 
+                  For over <span className="text-[#FFD700] font-semibold">50 years</span>, <span className="text-[#FFD700] font-semibold">Mansoor Hotel & Sweets</span> has been
+                  the heartbeat of celebrations, festivals, and everyday joys in Bihar and beyond. From weddings to Eid,Diwali, from simple family gatherings to grand
                   celebrations, our sweets have been part of countless precious memories.
                 </p>
 
@@ -218,19 +218,19 @@ const About = () => {
               className="relative"
             >
               <div className="relative rounded-2xl overflow-hidden shadow-2xl">
-                <img 
-                  src="/Background.png" 
-                  alt="Mansoor Hotel & Sweets - Traditional Sweet Making" 
+                <img
+                  src="/Background.png"
+                  alt="Mansoor Hotel & Sweets - Traditional Sweet Making"
                   className="w-full h-[400px] sm:h-[500px] object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#0D0D0D] via-transparent to-transparent"></div>
-                
+
                 {/* Overlay Badge */}
                 <div className="absolute bottom-6 left-6 bg-white/95 backdrop-blur-sm rounded-xl p-4 shadow-xl">
                   <div className="flex items-center gap-3">
                     <Award className="h-10 w-10 text-[#FFD700]" />
                     <div>
-                      <div className="text-2xl font-bold text-[#C41E3A] font-['Playfair_Display']">Since 1976</div>
+                      <div className="text-2xl font-bold text-[#C41E3A] font-['Playfair_Display']">Since 1968</div>
                       <div className="text-sm text-gray-600">Trusted by Thousands</div>
                     </div>
                   </div>
@@ -276,18 +276,18 @@ const About = () => {
                 <div className="relative bg-gradient-to-br from-white/5 to-white/[0.02] backdrop-blur-xl rounded-2xl p-8 border border-[#FFD700]/10 hover:border-[#FFD700]/40 transition-all duration-500 h-full">
                   {/* Glow Effect */}
                   <div className="absolute inset-0 bg-gradient-to-br from-[#FFD700]/0 to-[#C41E3A]/0 group-hover:from-[#FFD700]/10 group-hover:to-[#C41E3A]/10 rounded-2xl transition-all duration-500"></div>
-                  
+
                   <div className="relative z-10">
                     <div className="mb-6">
                       <div className="inline-block p-4 bg-gradient-to-br from-[#C41E3A]/20 to-[#8B0000]/20 rounded-xl group-hover:scale-110 transition-transform duration-300">
                         <value.icon className="h-10 w-10" style={{ color: value.color }} />
                       </div>
                     </div>
-                    
+
                     <h3 className="text-xl sm:text-2xl font-bold text-white mb-3 font-['Playfair_Display']">
                       {value.title}
                     </h3>
-                    
+
                     <p className="text-[#F5F5DC]/70 leading-relaxed">
                       {value.description}
                     </p>

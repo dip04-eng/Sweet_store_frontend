@@ -1,6 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 
-const SEO = ({ 
+const SEO = ({
   title,
   description,
   keywords,
@@ -13,9 +13,9 @@ const SEO = ({
   const siteUrl = 'https://mansoorhotel.in';
   const fullUrl = url ? `${siteUrl}${url}` : siteUrl;
   const siteName = 'Mansoor Hotel & Sweets';
-  
-  const defaultTitle = 'Mansoor Hotel & Sweets - Best Traditional Sweets Shop in Baisi, Bihar | Since 1976';
-  const defaultDescription = 'Order authentic Indian sweets online from Mansoor Hotel & Sweets, Baisi, Bihar. Family-owned since 1976. 100+ varieties of handcrafted sweets made with pure ghee & finest ingredients.';
+
+  const defaultTitle = 'Mansoor Hotel & Sweets - Best Traditional Sweets Shop in Baisi, Bihar | Since 1968';
+  const defaultDescription = 'Order authentic Indian sweets online from Mansoor Hotel & Sweets, Baisi, Bihar. Family-owned since 1968. 100+ varieties of handcrafted sweets made with pure ghee & finest ingredients.';
   const defaultKeywords = 'Mansoor Hotel, Mansoor Sweets, Baisi Sweets, Bihar Sweets, Traditional Indian Sweets, Sweet Shop Baisi, Online Sweet Order';
 
   const finalTitle = title ? `${title} | ${siteName}` : defaultTitle;
@@ -30,10 +30,10 @@ const SEO = ({
       <meta name="description" content={finalDescription} />
       <meta name="keywords" content={finalKeywords} />
       {noindex && <meta name="robots" content="noindex, nofollow" />}
-      
+
       {/* Canonical URL */}
       <link rel="canonical" href={fullUrl} />
-      
+
       {/* Open Graph / Facebook */}
       <meta property="og:type" content={type} />
       <meta property="og:url" content={fullUrl} />
@@ -44,25 +44,25 @@ const SEO = ({
       <meta property="og:image:height" content="630" />
       <meta property="og:site_name" content={siteName} />
       <meta property="og:locale" content="en_IN" />
-      
+
       {/* Twitter */}
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:url" content={fullUrl} />
       <meta name="twitter:title" content={finalTitle} />
       <meta name="twitter:description" content={finalDescription} />
       <meta name="twitter:image" content={image} />
-      
+
       {/* Structured Data - supports both single schema and array of schemas */}
       {structuredData && (
-        Array.isArray(structuredData) 
+        Array.isArray(structuredData)
           ? structuredData.map((schema, index) => (
-              <script key={index} type="application/ld+json">
-                {JSON.stringify(schema)}
-              </script>
-            ))
-          : <script type="application/ld+json">
-              {JSON.stringify(structuredData)}
+            <script key={index} type="application/ld+json">
+              {JSON.stringify(schema)}
             </script>
+          ))
+          : <script type="application/ld+json">
+            {JSON.stringify(structuredData)}
+          </script>
       )}
     </Helmet>
   );

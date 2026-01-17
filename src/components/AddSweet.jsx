@@ -244,12 +244,11 @@ const AddSweet = ({ sweetType = 'normal' }) => {
               >
                 <option value="" disabled>Select a category</option>
                 <option value="Sweet">Sweet</option>
+                <option value="Dry-Fruits">Dry-Fruits</option>
+                <option value="Snacks">Snacks</option>
                 <option value="Breakfast">Breakfast</option>
                 <option value="Lunch">Lunch</option>
                 <option value="Dinner">Dinner</option>
-                <option value="Snacks">Snacks</option>
-                <option value="Beverage">Beverage</option>
-                <option value="Dessert">Dessert</option>
                 <option value="Other">Other</option>
               </select>
             </div>

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Loader2, RefreshCw, Sparkles, Filter, PartyPopper } from 'lucide-react';
+import { Loader2, RefreshCw, Sparkles, Filter, PartyPopper, Search, X } from 'lucide-react';
 import SweetCard from './SweetCard';
 import FestivalCard from './FestivalCard';
 import Hero from './Hero';
@@ -16,9 +16,10 @@ const UserPanel = () => {
   const [cart, setCart] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [selectedCategory, setSelectedCategory] = useState('All');
+  const [selectedCategory, setSelectedCategory] = useState('Sweet');
+  const [searchQuery, setSearchQuery] = useState('');
 
-  const categories = ['All', 'Sweet', 'Breakfast', 'Lunch', 'Dinner', 'Snacks', 'Beverage', 'Dessert', 'Other'];
+  const categories = ['Sweet', 'Dry-Fruits', 'Snacks', 'Breakfast', 'Lunch', 'Dinner', 'Other'];
 
   useEffect(() => {
     fetchSweets();
@@ -43,17 +44,17 @@ const UserPanel = () => {
     try {
       setLoading(true);
       setError(null);
-      
+
       // Add timeout for better user experience
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
-      
+
       const response = await fetch(`${API_BASE_URL}${API_ENDPOINTS.GET_SWEETS}`, {
         signal: controller.signal
       });
-      
+
       clearTimeout(timeoutId);
-      
+
       if (!response.ok) {
         throw new Error(`Server responded with ${response.status}: ${response.statusText}`);
       }
@@ -72,7 +73,7 @@ const UserPanel = () => {
         setError(err.message);
       }
       console.error('Error fetching sweets:', err);
-      
+
       // Optionally set some demo data for development
       setSweets([]);
     } finally {
@@ -83,7 +84,7 @@ const UserPanel = () => {
   const addToCart = (sweet, quantity = 1) => {
     // Check if item already exists in cart
     const existingItemIndex = cart.findIndex(item => item._id === sweet._id);
-    
+
     let updatedCart;
     if (existingItemIndex !== -1) {
       // Item exists, update quantity
@@ -97,15 +98,30 @@ const UserPanel = () => {
       }
       updatedCart = [...cart, newItem];
     }
-    
+
     setCart(updatedCart);
     sessionStorage.setItem('sweetCart', JSON.stringify(updatedCart));
   };
 
-  // Filter sweets by selected category
-  const filteredSweets = selectedCategory === 'All' 
-    ? sweets.filter(sweet => !sweet.isFestival) // Exclude festival sweets from main collection
-    : sweets.filter(sweet => sweet.category === selectedCategory && !sweet.isFestival);
+  // Filter sweets by selected category and search query
+  const filteredSweets = sweets.filter(sweet => {
+    // Exclude festival sweets from main collection
+    if (sweet.isFestival) return false;
+
+    // Filter by search query (case-insensitive) - searches across ALL categories
+    const matchesSearch = !searchQuery ||
+      sweet.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      sweet.description?.toLowerCase().includes(searchQuery.toLowerCase());
+
+    // If there's a search query, ignore category filter and search all items
+    if (searchQuery) {
+      return matchesSearch;
+    }
+
+    // Filter by category when no search is active
+    const matchesCategory = selectedCategory === 'All' || sweet.category === selectedCategory;
+    return matchesCategory;
+  });
 
   // Get festival sweets separately
   const festivalSweets = sweets.filter(sweet => sweet.isFestival);
@@ -116,7 +132,7 @@ const UserPanel = () => {
     if (sweets.length === 0) return null;
 
     const allSweets = [...filteredSweets, ...festivalSweets];
-    
+
     // Return array of standalone Product schemas (not wrapped in ItemList)
     // Limit to 10 products to avoid excessive markup
     return allSweets.slice(0, 10).map((sweet) => {
@@ -125,7 +141,7 @@ const UserPanel = () => {
       const productPrice = sweet.rate || sweet.price || 50; // Default price fallback
       const productStock = sweet.stock !== undefined ? sweet.stock : 10; // Default stock
       const productUnit = sweet.unit || 'piece';
-      
+
       return {
         "@context": "https://schema.org",
         "@type": "Product",
@@ -148,7 +164,7 @@ const UserPanel = () => {
             "@type": "PostalAddress",
             "streetAddress": "Madrasa Road",
             "addressLocality": "Baisi",
-            "addressRegion": "Bihar", 
+            "addressRegion": "Bihar",
             "postalCode": "854315",
             "addressCountry": "IN"
           }
@@ -174,7 +190,7 @@ const UserPanel = () => {
           }
         },
         "aggregateRating": {
-          "@type": "AggregateRating", 
+          "@type": "AggregateRating",
           "ratingValue": "4.8",
           "reviewCount": "150",
           "bestRating": "5",
@@ -202,12 +218,12 @@ const UserPanel = () => {
   return (
     <div className="min-h-screen bg-[#0D0D0D]">
       {/* SEO with Product Structured Data */}
-      <SEO 
+      <SEO
         title="Sweet Collection"
         description="Order authentic Indian sweets online from Mansoor Hotel & Sweets, Baisi, Bihar. Browse our complete collection of traditional sweets."
         structuredData={generateProductSchema()}
       />
-      
+
       {/* Navbar */}
       <Navbar cart={cart} />
 
@@ -243,6 +259,35 @@ const UserPanel = () => {
             <div className="w-24 h-1 bg-white/50 mx-auto mt-4 rounded-full"></div>
           </motion.div>
 
+          {/* Search Bar */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="mb-6 sm:mb-8 max-w-xl mx-auto px-4"
+          >
+            <div className="relative">
+              <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                <Search className="h-5 w-5 text-[#C41E3A]" />
+              </div>
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search for sweets, snacks, dry fruits..."
+                className="w-full pl-12 pr-12 py-3 sm:py-4 rounded-full border-2 border-[#C41E3A]/30 bg-white/95 backdrop-blur-sm text-gray-800 placeholder-gray-500 focus:outline-none focus:border-[#C41E3A] focus:ring-2 focus:ring-[#C41E3A]/20 transition-all shadow-lg text-sm sm:text-base"
+              />
+              {searchQuery && (
+                <button
+                  onClick={() => setSearchQuery('')}
+                  className="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-[#C41E3A] transition-colors"
+                >
+                  <X className="h-5 w-5" />
+                </button>
+              )}
+            </div>
+          </motion.div>
+
           {/* Category Filter */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -261,18 +306,17 @@ const UserPanel = () => {
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={() => setSelectedCategory(category)}
-                  className={`px-3 sm:px-4 md:px-6 py-2 sm:py-2.5 rounded-full font-semibold transition-all shadow-md text-xs sm:text-sm md:text-base touch-manipulation min-h-[44px] ${
-                    selectedCategory === category
-                      ? 'bg-white text-[#C41E3A] shadow-lg'
-                      : 'bg-white/20 text-white hover:bg-white/30 backdrop-blur-sm'
-                  }`}
+                  className={`px-3 sm:px-4 md:px-6 py-2 sm:py-2.5 rounded-full font-semibold transition-all shadow-md text-xs sm:text-sm md:text-base touch-manipulation min-h-[44px] ${selectedCategory === category
+                    ? 'bg-white text-[#C41E3A] shadow-lg'
+                    : 'bg-white/20 text-white hover:bg-white/30 backdrop-blur-sm'
+                    }`}
                 >
                   {category}
                 </motion.button>
               ))}
             </div>
           </motion.div>
-          
+
           {/* Loading State */}
           {loading ? (
             <div className="text-center py-20">
@@ -288,7 +332,7 @@ const UserPanel = () => {
           ) : error ? (
             /* Enhanced Error State */
             <div className="text-center py-20">
-              <ErrorMessage 
+              <ErrorMessage
                 error={error}
                 onRetry={fetchSweets}
                 type="api"
@@ -308,7 +352,7 @@ const UserPanel = () => {
                   No items in this category
                 </h3>
                 <p className="text-[#F5F5DC]/70 mb-6">Try selecting a different category</p>
-                <motion.button 
+                <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={() => setSelectedCategory('All')}
@@ -320,10 +364,7 @@ const UserPanel = () => {
             </motion.div>
           ) : (
             /* Responsive Sweets Grid */
-            <div className="grid grid-cols-1 xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5 md:gap-6 lg:gap-8"
-                 style={{
-                   gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))'
-                 }}>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5 md:gap-6 lg:gap-8 justify-items-center">
               {filteredSweets.map((sweet, index) => (
                 <motion.div
                   key={`${sweet.id || sweet._id || sweet.name}-${index}`}
@@ -331,6 +372,7 @@ const UserPanel = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.1 }}
+                  className="w-full max-w-[320px]"
                 >
                   <SweetCard
                     sweet={sweet}
@@ -371,10 +413,7 @@ const UserPanel = () => {
 
             {/* Festival Sweets Grid or Empty State */}
             {festivalSweets.length > 0 ? (
-              <div className="grid grid-cols-1 xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5 md:gap-6 lg:gap-8"
-                   style={{
-                     gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))'
-                   }}>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5 md:gap-6 lg:gap-8 justify-items-center">
                 {festivalSweets.map((sweet, index) => (
                   <motion.div
                     key={`festival-${sweet.id || sweet._id || sweet.name}-${index}`}
@@ -382,6 +421,7 @@ const UserPanel = () => {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ delay: index * 0.1 }}
+                    className="w-full max-w-[320px]"
                   >
                     <FestivalCard
                       sweet={sweet}
