@@ -133,8 +133,8 @@ const OrderForm = ({ cart, totalAmount, onClose, onSuccess }) => {
             <div className="space-y-1 text-xs sm:text-sm">
               {cart.map((item, index) => (
                 <div key={`${item.id}-${index}`} className="flex justify-between items-center">
-                  <span className="truncate mr-2">{item.name} <span className="text-purple-600 font-semibold">×{item.quantity || 1}</span></span>
-                  <span className="flex-shrink-0">₹{item.rate * (item.quantity || 1)}</span>
+                  <span className="truncate mr-2">{item.name} <span className="text-purple-600 font-semibold">×{Number(item.quantity || 1).toFixed(2).replace(/\.?0+$/, '')}</span></span>
+                  <span className="flex-shrink-0">₹{(item.rate * (item.quantity || 1)).toFixed(2)}</span>
                 </div>
               ))}
             </div>

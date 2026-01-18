@@ -7,7 +7,7 @@ const SweetCard = ({ sweet, onAddToCart }) => {
   const [quantity, setQuantity] = useState(1);
   const [weight, setWeight] = useState('1'); // Weight as string for better input handling
   const [weightUnit, setWeightUnit] = useState('Kg'); // 'Kg' or 'grams'
-  const isKgItem = sweet.unit === 'Kg';
+  const isKgItem = sweet.unit && sweet.unit.toLowerCase() === 'kg';
 
   const handleQuantityChange = (change) => {
     const newQuantity = quantity + change;
@@ -26,10 +26,16 @@ const SweetCard = ({ sweet, onAddToCart }) => {
 
   const handleWeightChange = (e) => {
     const value = e.target.value;
-    // Allow empty input and numeric values only
-    if (value === '' || /^\d*\.?\d*$/.test(value)) {
+    // Allow empty input and numeric values with up to 2 decimal places
+    if (value === '' || /^\d*\.?\d{0,2}$/.test(value)) {
       setWeight(value);
     }
+  };
+
+  const handleWeightIncrement = (step) => {
+    const currentWeight = parseFloat(weight) || 0;
+    const newWeight = Math.max(0, currentWeight + step);
+    setWeight(newWeight.toFixed(1));
   };
 
   const handleWeightUnitChange = (e) => {
@@ -117,32 +123,70 @@ const SweetCard = ({ sweet, onAddToCart }) => {
         {/* Quantity/Weight Selector */}
         <div className="flex items-center justify-center mb-4 -mx-4">
           {isKgItem ? (
-            // Weight input for Kg items
-            <div className="flex items-center gap-2 bg-gradient-to-r from-[#C41E3A] to-[#8B0000] rounded-full px-8 py-3 justify-center min-w-full whitespace-nowrap overflow-hidden border-2 border-[#FFD700]/50">
-              <label className="text-xs text-white/90 font-semibold">Weight:</label>
+            // Weight input for Kg items with dropdown first
+            <div className="flex flex-col gap-2 bg-gradient-to-r from-[#C41E3A] to-[#8B0000] rounded-2xl px-4 py-3 min-w-full border-2 border-[#FFD700]/50">
+              {/* Unit selector - First */}
+              <div className="flex items-center justify-center gap-2">
+                <label className="text-xs text-white/90 font-semibold">Select Unit:</label>
+                <select
+                  value={weightUnit}
+                  onChange={handleWeightUnitChange}
+                  className="flex-1 bg-[#FFD700] text-[#C41E3A] rounded-lg px-3 py-2 font-bold focus:outline-none focus:ring-2 focus:ring-white text-sm cursor-pointer"
+                >
+                  <option value="Kg" className="text-[#C41E3A]">Kilogram (Kg)</option>
+                  <option value="grams" className="text-[#C41E3A]">Grams (g)</option>
+                </select>
+              </div>
 
-              {/* Weight input field */}
-              <input
-                type="text"
-                value={weight}
-                onChange={handleWeightChange}
-                placeholder="0"
-                className="w-16 bg-white/20 text-[#FFD700] text-center rounded px-2 py-1 text-sm font-bold focus:outline-none focus:ring-2 focus:ring-[#FFD700] backdrop-blur-sm"
-              />
+              {/* Weight input with +/- buttons - Second */}
+              <div className="flex items-center justify-center gap-2">
+                <label className="text-xs text-white/90 font-semibold">Enter Value:</label>
+                
+                {/* Minus Button */}
+                <motion.button
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
+                  onClick={() => handleWeightIncrement(weightUnit === 'Kg' ? -0.1 : -100)}
+                  disabled={(parseFloat(weight) || 0) <= 0}
+                  className={`p-2 rounded-full transition-all ${(parseFloat(weight) || 0) <= 0
+                      ? 'bg-white/20 text-white/30 cursor-not-allowed'
+                      : 'bg-[#FFD700] text-[#C41E3A] hover:bg-[#FFC107]'
+                    }`}
+                >
+                  <Minus className="h-4 w-4" />
+                </motion.button>
 
-              {/* Unit selector */}
-              <select
-                value={weightUnit}
-                onChange={handleWeightUnitChange}
-                className="bg-white/20 text-[#FFD700] rounded px-2 py-1 font-bold focus:outline-none focus:ring-2 focus:ring-[#FFD700] text-xs backdrop-blur-sm"
-              >
-                <option value="grams" className="text-[#C41E3A]">grams</option>
-                <option value="Kg" className="text-[#C41E3A]">Kg</option>
-              </select>
+                {/* Weight input field */}
+                <input
+                  type="text"
+                  value={weight}
+                  onChange={handleWeightChange}
+                  placeholder="0.0"
+                  className="w-20 bg-white text-[#C41E3A] text-center rounded-lg px-2 py-2 text-base font-bold focus:outline-none focus:ring-2 focus:ring-[#FFD700]"
+                />
 
-              <span className="text-xs text-white/80 font-semibold">
-                ≈ ₹{weight === '' ? '0.00' : (sweet.rate * getWeightInKg()).toFixed(2)}
-              </span>
+                {/* Plus Button */}
+                <motion.button
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
+                  onClick={() => handleWeightIncrement(weightUnit === 'Kg' ? 0.1 : 100)}
+                  className="p-2 rounded-full bg-[#FFD700] text-[#C41E3A] hover:bg-[#FFC107] transition-all"
+                >
+                  <Plus className="h-4 w-4" />
+                </motion.button>
+
+                <span className="text-xs text-white/90 font-semibold ml-1">
+                  {weightUnit}
+                </span>
+              </div>
+
+              {/* Price display */}
+              <div className="text-center border-t border-white/20 pt-2">
+                <span className="text-xs text-white/70">Total Price: </span>
+                <span className="text-lg text-[#FFD700] font-bold">
+                  ₹{weight === '' ? '0.00' : (sweet.rate * getWeightInKg()).toFixed(2)}
+                </span>
+              </div>
             </div>
           ) : (
             // Quantity selector for piece items

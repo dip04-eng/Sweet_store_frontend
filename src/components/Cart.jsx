@@ -231,23 +231,26 @@ const Cart = () => {
                                 <span className="text-white text-xs sm:text-sm font-semibold">Weight:</span>
                                 <input
                                   type="text"
-                                  value={weightInputs[index] !== undefined ? weightInputs[index] : (item.quantity > 0 ? ((item.weightUnit || 'Kg') === 'Kg' ? item.quantity : Math.round(item.quantity * 1000)) : '0')}
+                                  value={weightInputs[index] !== undefined ? weightInputs[index] : (item.quantity > 0 ? ((item.weightUnit || 'Kg') === 'Kg' ? Number(item.quantity).toFixed(2).replace(/\.?0+$/, '') : Math.round(item.quantity * 1000)) : '0')}
                                   onFocus={(e) => e.target.select()}
                                   onChange={(e) => {
                                     const inputValue = e.target.value;
-                                    setWeightInputs({ ...weightInputs, [index]: inputValue });
+                                    // Allow decimal input with up to 2 decimal places
+                                    if (inputValue === '' || /^\d*\.?\d{0,2}$/.test(inputValue)) {
+                                      setWeightInputs({ ...weightInputs, [index]: inputValue });
 
-                                    if (inputValue === '' || inputValue === '0') {
-                                      // Set quantity to 0 when input is empty or 0
-                                      const updatedCart = [...cart];
-                                      updatedCart[index].quantity = 0;
-                                      setCart(updatedCart);
-                                      sessionStorage.setItem('sweetCart', JSON.stringify(updatedCart));
-                                    } else {
-                                      const value = parseFloat(inputValue);
-                                      if (!isNaN(value) && value > 0) {
-                                        const weightInKg = item.weightUnit === 'Kg' ? value : value / 1000;
-                                        updateQuantity(index, weightInKg);
+                                      if (inputValue === '' || inputValue === '0') {
+                                        // Set quantity to 0 when input is empty or 0
+                                        const updatedCart = [...cart];
+                                        updatedCart[index].quantity = 0;
+                                        setCart(updatedCart);
+                                        sessionStorage.setItem('sweetCart', JSON.stringify(updatedCart));
+                                      } else {
+                                        const value = parseFloat(inputValue);
+                                        if (!isNaN(value) && value > 0) {
+                                          const weightInKg = item.weightUnit === 'Kg' ? value : value / 1000;
+                                          updateQuantity(index, weightInKg);
+                                        }
                                       }
                                     }
                                   }}

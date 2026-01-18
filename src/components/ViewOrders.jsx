@@ -762,13 +762,13 @@ const ViewOrders = () => {
                       <div className="flex-1">
                         <div className="font-semibold text-yellow-600 text-xs sm:text-sm md:text-base">{item.sweetName}</div>
                         <div className="text-xs sm:text-sm text-gray-500">
-                          ₹{item.price} × {item.quantity || 1} {item.unit === 'Kg' ? 'Kg' : item.unit || 'piece'}
+                          ₹{item.price} × {Number(item.quantity || 1).toFixed(2).replace(/\.?0+$/, '')} {item.unit === 'Kg' ? 'Kg' : item.unit || 'piece'}
                         </div>
                       </div>
                       <div className="text-right">
-                        <div className="font-bold text-purple-600 text-sm sm:text-base">₹{item.price * (item.quantity || 1)}</div>
+                        <div className="font-bold text-purple-600 text-sm sm:text-base">₹{(item.price * (item.quantity || 1)).toFixed(2)}</div>
                         <div className="text-xs text-gray-500">
-                          Qty: {item.quantity || 1} {item.unit === 'Kg' ? 'Kg' : item.unit || 'piece'}
+                          Qty: {Number(item.quantity || 1).toFixed(2).replace(/\.?0+$/, '')} {item.unit === 'Kg' ? 'Kg' : item.unit || 'piece'}
                         </div>
                       </div>
                     </div>
