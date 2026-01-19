@@ -379,8 +379,6 @@ const ViewOrders = () => {
   const submitEdit = async (e) => {
     e.preventDefault();
     if (!editOrder) return;
-
-    // Validate that additional advance doesn't exceed remaining amount
     const currentTotal = Number(editForm.total || 0);
     const currentAdvance = Number(editForm.advancePaid || 0);
     const additionalAmount = Number(additionalAdvance || 0);
@@ -404,7 +402,7 @@ const ViewOrders = () => {
           advancePaid: newAdvancePaid,
           deliveryDate: editForm.deliveryDate,
           status: editForm.status,
-          items: editOrderItems // Include updated items
+          items: editOrderItems
         })
       });
       if (!res.ok) throw new Error('Failed to update order');
@@ -521,8 +519,8 @@ const ViewOrders = () => {
             onClick={openDownloadModal}
             disabled={isDownloading}
             className={`flex items-center gap-2 px-4 py-2 rounded-lg font-semibold text-sm transition-all shadow-sm ${isDownloading
-                ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                : 'bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:shadow-md hover:scale-105'
+              ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
+              : 'bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:shadow-md hover:scale-105'
               }`}
             title="Download statement as PDF"
           >
@@ -918,8 +916,8 @@ const ViewOrders = () => {
                       setAdditionalAdvance(inputValue);
                     }}
                     className={`w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base bg-white border rounded-lg sm:rounded-xl text-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all ${showAdvanceExceedWarning
-                        ? 'border-red-500 ring-2 ring-red-300'
-                        : 'border-gray-300'
+                      ? 'border-red-500 ring-2 ring-red-300'
+                      : 'border-gray-300'
                       }`}
                     placeholder="Enter additional amount"
                   />
@@ -972,7 +970,8 @@ const ViewOrders = () => {
                                 −
                               </button>
                               <input
-                                type="text"
+                                type="number"
+                                step={item.unit === 'Kg' ? "any" : "1"}
                                 value={item.quantity}
                                 onChange={(e) => {
                                   const inputValue = e.target.value;
@@ -985,20 +984,16 @@ const ViewOrders = () => {
                                     return;
                                   }
 
-                                  // Allow only numbers and decimals
-                                  if (!/^\d*\.?\d*$/.test(inputValue)) {
-                                    return;
-                                  }
-
                                   const value = parseFloat(inputValue);
-
-                                  if (!isNaN(value) && value > 0) {
+                                  if (!isNaN(value)) {
                                     const newItems = [...editOrderItems];
-                                    const isInGrams = item.weightUnit === 'grams';
-                                    newItems[index].quantity = item.unit === 'Kg' && !isInGrams ? value : (isInGrams ? Math.round(value) : value);
+                                    const isKgItem = item.unit === 'Kg';
+                                    // Store value directly for kg items, round for piece items
+                                    newItems[index].quantity = isKgItem ? value : Math.floor(value);
                                     setEditOrderItems(newItems);
+                                    // Recalculate total
                                     const newTotal = newItems.reduce((sum, it) => {
-                                      const qty = it.quantity === '' ? 0 : it.quantity;
+                                      const qty = it.quantity === '' ? 0 : parseFloat(it.quantity) || 0;
                                       const qtyInKg = (it.weightUnit === 'grams') ? qty / 1000 : qty;
                                       return sum + (it.price * qtyInKg);
                                     }, 0);
@@ -1133,31 +1128,45 @@ const ViewOrders = () => {
                   <div className="bg-blue-50 border border-blue-200 rounded-lg p-2 sm:p-3">
                     <label className="block text-xs sm:text-sm font-semibold text-blue-600 mb-2">Add New Item</label>
                     <div className="space-y-2">
-                      {/* Search box with autocomplete */}
-                      <input
-                        type="text"
-                        value={sweetSearch}
-                        onChange={(e) => {
-                          setSweetSearch(e.target.value);
-                          // Auto-select if exact match found
-                          const match = availableSweets.find(
-                            sweet => sweet.name.toLowerCase() === e.target.value.toLowerCase()
-                          );
-                          if (match) {
-                            setSelectedSweet(match._id);
-                          }
-                        }}
-                        list="sweets-datalist"
-                        placeholder="Search sweets..."
-                        className="w-full px-2 sm:px-3 py-2 text-xs sm:text-sm bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      />
-                      <datalist id="sweets-datalist">
-                        {availableSweets.map((sweet) => (
-                          <option key={sweet._id} value={sweet.name}>
-                            {sweet.name} - ₹{sweet.rate}/{sweet.unit}
-                          </option>
-                        ))}
-                      </datalist>
+                      {/* Search box with custom dropdown */}
+                      <div className="relative">
+                        <input
+                          type="text"
+                          value={sweetSearch}
+                          onChange={(e) => {
+                            setSweetSearch(e.target.value);
+                          }}
+                          placeholder="Search Items..."
+                          className="w-full px-2 sm:px-3 py-2 text-xs sm:text-sm bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                          autoComplete="off"
+                        />
+                        {/* Custom dropdown that opens downward */}
+                        {sweetSearch.length > 0 && (
+                          <div className="absolute z-50 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-48 overflow-y-auto">
+                            {availableSweets
+                              .filter(sweet => sweet.name.toLowerCase().includes(sweetSearch.toLowerCase()))
+                              .map((sweet) => (
+                                <div
+                                  key={sweet._id}
+                                  onClick={() => {
+                                    setSelectedSweet(sweet._id);
+                                    setSweetSearch(sweet.name);
+                                  }}
+                                  className={`px-3 py-2 text-xs sm:text-sm cursor-pointer hover:bg-blue-50 border-b border-gray-100 last:border-b-0 ${selectedSweet === sweet._id ? 'bg-blue-100 text-blue-700' : 'text-gray-700'}`}
+                                >
+                                  <span className="font-medium">{sweet.name}</span>
+                                  <span className="text-gray-500 ml-2">- ₹{sweet.rate}/{sweet.unit}</span>
+                                </div>
+                              ))}
+                            {availableSweets.filter(sweet => sweet.name.toLowerCase().includes(sweetSearch.toLowerCase())).length === 0 && (
+                              <div className="px-3 py-2 text-xs sm:text-sm text-gray-500 italic">
+                                No items found
+                              </div>
+                            )}
+                          </div>
+                        )}
+                      </div>
+                      {/* Traditional select dropdown - always visible */}
                       <select
                         value={selectedSweet}
                         onChange={(e) => {
@@ -1182,37 +1191,49 @@ const ViewOrders = () => {
                           ))}
                       </select>
                       <div className="flex gap-2">
-                        <input
-                          type="text"
-                          value={selectedQuantity}
-                          onChange={(e) => {
-                            const value = e.target.value;
-                            // Allow empty string, numbers, and decimals
-                            if (value === '' || /^\d*\.?\d*$/.test(value)) {
-                              setSelectedQuantity(value === '' ? '' : value);
-                            }
-                          }}
-                          onBlur={(e) => {
-                            // Set to 1 if empty when losing focus
-                            if (e.target.value === '' || parseFloat(e.target.value) <= 0) {
-                              setSelectedQuantity(1);
-                            }
-                          }}
-                          className="w-20 sm:w-24 px-2 sm:px-3 py-2 text-xs sm:text-sm bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                          placeholder="Qty"
-                        />
                         {(() => {
                           const sweet = availableSweets.find(s => s._id === selectedSweet);
-                          return sweet && sweet.unit === 'Kg' ? (
-                            <select
-                              value={selectedWeightUnit}
-                              onChange={(e) => setSelectedWeightUnit(e.target.value)}
-                              className="px-2 py-2 text-xs sm:text-sm bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            >
-                              <option value="Kg">Kg</option>
-                              <option value="grams">grams</option>
-                            </select>
-                          ) : null;
+                          const isKgItem = sweet?.unit === 'Kg';
+                          return (
+                            <>
+                              <input
+                                type="text"
+                                value={selectedQuantity}
+                                onChange={(e) => {
+                                  const value = e.target.value;
+                                  if (isKgItem) {
+                                    // Allow decimals for Kg items
+                                    if (value === '' || /^\d*\.?\d*$/.test(value)) {
+                                      setSelectedQuantity(value === '' ? '' : value);
+                                    }
+                                  } else {
+                                    // Only allow whole numbers for piece items
+                                    if (value === '' || /^\d+$/.test(value)) {
+                                      setSelectedQuantity(value === '' ? '' : parseInt(value));
+                                    }
+                                  }
+                                }}
+                                onBlur={(e) => {
+                                  // Set to 1 if empty when losing focus
+                                  if (e.target.value === '' || parseFloat(e.target.value) <= 0) {
+                                    setSelectedQuantity(1);
+                                  }
+                                }}
+                                className="w-20 sm:w-24 px-2 sm:px-3 py-2 text-xs sm:text-sm bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                placeholder={isKgItem ? "Qty" : "Pcs"}
+                              />
+                              {isKgItem && (
+                                <select
+                                  value={selectedWeightUnit}
+                                  onChange={(e) => setSelectedWeightUnit(e.target.value)}
+                                  className="px-2 py-2 text-xs sm:text-sm bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                >
+                                  <option value="Kg">Kg</option>
+                                  <option value="grams">grams</option>
+                                </select>
+                              )}
+                            </>
+                          );
                         })()}
                         <button
                           type="button"
@@ -1480,8 +1501,8 @@ const ViewOrders = () => {
                     onClick={viewStatement}
                     disabled={!downloadStartDate || !downloadEndDate || downloadStartDate > downloadEndDate}
                     className={`flex-1 px-4 py-2.5 rounded-lg font-semibold flex items-center justify-center gap-2 transition-all touch-manipulation min-h-[44px] ${!downloadStartDate || !downloadEndDate || downloadStartDate > downloadEndDate
-                        ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                        : 'bg-gradient-to-r from-blue-500 to-purple-500 text-white hover:shadow-lg'
+                      ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                      : 'bg-gradient-to-r from-blue-500 to-purple-500 text-white hover:shadow-lg'
                       }`}
                   >
                     <Eye className="h-4 w-4" />
@@ -1491,12 +1512,12 @@ const ViewOrders = () => {
                     onClick={downloadStatement}
                     disabled={!downloadStartDate || !downloadEndDate || downloadStartDate > downloadEndDate}
                     className={`flex-1 px-4 py-2.5 rounded-lg font-semibold flex items-center justify-center gap-2 transition-all touch-manipulation min-h-[44px] ${!downloadStartDate || !downloadEndDate || downloadStartDate > downloadEndDate
-                        ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                        : 'bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:shadow-lg'
+                      ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                      : 'bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:shadow-lg'
                       }`}
                   >
                     <Download className="h-4 w-4" />
-                    View Range
+                    Download
                   </button>
                 </div>
 

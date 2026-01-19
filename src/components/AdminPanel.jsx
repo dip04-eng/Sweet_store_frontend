@@ -12,13 +12,13 @@ import AddOrder from './AddOrder';
 const AdminPanel = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  
+
   // Get state from URL hash
   const getStateFromHash = () => {
     const hash = window.location.hash.replace('#', '');
     const validTabs = ['orders', 'summary', 'totalsold', 'add', 'remove', 'addorder'];
     const validPopups = ['manage-sweets', 'add-options', 'remove-options'];
-    
+
     if (validPopups.includes(hash)) {
       return { tab: 'totalsold', popup: hash };
     } else if (validTabs.includes(hash)) {
@@ -114,7 +114,7 @@ const AdminPanel = () => {
 
   const manageTabs = [
     { id: 'add', label: 'Add Sweet', icon: Plus, component: AddSweet },
-    { id: 'edit', label: 'Edit Sweet', icon: Edit, component: EditSweet },
+    { id: 'edit', label: 'Update Items', icon: Edit, component: EditSweet },
     { id: 'remove', label: 'Remove Sweet', icon: Trash, component: RemoveSweet }
   ];
 
@@ -164,11 +164,10 @@ const AdminPanel = () => {
                 <button
                   key={tab.id}
                   onClick={() => changeTab(tab.id)}
-                  className={`flex items-center px-3 sm:px-4 md:px-6 py-2 sm:py-3 rounded-lg sm:rounded-xl font-semibold transition-all duration-300 text-xs sm:text-sm md:text-base whitespace-nowrap ${
-                    activeTab === tab.id
+                  className={`flex items-center px-3 sm:px-4 md:px-6 py-2 sm:py-3 rounded-lg sm:rounded-xl font-semibold transition-all duration-300 text-xs sm:text-sm md:text-base whitespace-nowrap ${activeTab === tab.id
                       ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg transform scale-105'
                       : 'text-gray-600 hover:bg-gray-100 hover:text-purple-600'
-                  }`}
+                    }`}
                 >
                   <Icon className="h-4 w-4 sm:h-5 sm:w-5 mr-1 sm:mr-2" />
                   <span className="hidden sm:inline">{tab.label}</span>
@@ -176,15 +175,14 @@ const AdminPanel = () => {
                 </button>
               );
             })}
-            
+
             {/* Manage Sweets Button */}
             <button
               onClick={openManageSweets}
-              className={`flex items-center px-3 sm:px-4 md:px-6 py-2 sm:py-3 rounded-lg sm:rounded-xl font-semibold transition-all duration-300 text-xs sm:text-sm md:text-base whitespace-nowrap ${
-                manageTabs.some(tab => tab.id === activeTab)
+              className={`flex items-center px-3 sm:px-4 md:px-6 py-2 sm:py-3 rounded-lg sm:rounded-xl font-semibold transition-all duration-300 text-xs sm:text-sm md:text-base whitespace-nowrap ${manageTabs.some(tab => tab.id === activeTab)
                   ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg transform scale-105'
                   : 'text-gray-600 hover:bg-gray-100 hover:text-purple-600'
-              }`}
+                }`}
             >
               <Settings className="h-4 w-4 sm:h-5 sm:w-5 mr-1 sm:mr-2" />
               <span className="hidden sm:inline">Manage Sweets</span>
@@ -197,11 +195,11 @@ const AdminPanel = () => {
         {showManageSweets && (
           <>
             {/* Backdrop */}
-            <div 
+            <div
               className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40"
               onClick={closeManageSweets}
             />
-            
+
             {/* Popup Content */}
             <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 w-[90%] max-w-md">
               <div className="bg-white rounded-2xl shadow-2xl p-6">
@@ -242,11 +240,11 @@ const AdminPanel = () => {
         {showAddSweetOptions && (
           <>
             {/* Backdrop */}
-            <div 
+            <div
               className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40"
               onClick={closeAddSweetOptions}
             />
-            
+
             {/* Popup Content */}
             <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 w-[90%] max-w-md">
               <div className="bg-white rounded-2xl shadow-2xl p-6">
@@ -294,11 +292,11 @@ const AdminPanel = () => {
         {showRemoveSweetOptions && (
           <>
             {/* Backdrop */}
-            <div 
+            <div
               className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40"
               onClick={closeRemoveSweetOptions}
             />
-            
+
             {/* Popup Content */}
             <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 w-[90%] max-w-md">
               <div className="bg-white rounded-2xl shadow-2xl p-6">
