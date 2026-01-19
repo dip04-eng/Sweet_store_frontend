@@ -971,8 +971,9 @@ const ViewOrders = () => {
                               </button>
                               <input
                                 type="number"
-                                step={item.unit === 'Kg' ? "any" : "1"}
-                                value={item.quantity}
+                                min={item.unit === 'Kg' ? (item.weightUnit === 'grams' ? '1' : '0.01') : '1'}
+                                step={item.unit === 'Kg' ? (item.weightUnit === 'grams' ? '1' : '0.01') : '1'}
+                                value={item.quantity === '' ? '' : item.quantity}
                                 onChange={(e) => {
                                   const inputValue = e.target.value;
 
