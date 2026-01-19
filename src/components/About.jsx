@@ -299,65 +299,6 @@ const About = () => {
         </div>
       </section>
 
-      {/* Timeline Section */}
-      <section className="py-16 sm:py-20 px-4">
-        <div className="max-w-5xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-4 font-['Playfair_Display']">
-              Our <span className="text-[#FFD700]">Journey</span>
-            </h2>
-            <p className="text-[#F5F5DC]/70 text-lg">
-              Milestones that shaped our legacy
-            </p>
-          </motion.div>
-
-          <div className="space-y-8">
-            {milestones.map((milestone, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.2 }}
-                className="relative"
-              >
-                <div className="flex items-center gap-6">
-                  {/* Year Badge */}
-                  <motion.div
-                    whileHover={{ scale: 1.1, rotate: 5 }}
-                    className="flex-shrink-0 w-24 h-24 sm:w-28 sm:h-28 bg-gradient-to-br from-[#C41E3A] to-[#8B0000] rounded-full flex items-center justify-center shadow-2xl border-4 border-[#FFD700]"
-                  >
-                    <span className="text-xl sm:text-2xl font-bold text-white font-['Playfair_Display']">
-                      {milestone.year}
-                    </span>
-                  </motion.div>
-
-                  {/* Content */}
-                  <div className="flex-1 bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl rounded-2xl p-6 border border-[#FFD700]/20 hover:border-[#FFD700]/50 transition-all duration-300">
-                    <h3 className="text-xl sm:text-2xl font-bold text-[#FFD700] mb-2 font-['Playfair_Display']">
-                      {milestone.title}
-                    </h3>
-                    <p className="text-[#F5F5DC]/70 text-base sm:text-lg">
-                      {milestone.description}
-                    </p>
-                  </div>
-                </div>
-
-                {/* Connector Line */}
-                {index < milestones.length - 1 && (
-                  <div className="absolute left-12 sm:left-14 top-24 sm:top-28 w-0.5 h-8 bg-gradient-to-b from-[#FFD700] to-transparent"></div>
-                )}
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* Location Section */}
       <section className="py-16 sm:py-20 px-4 bg-gradient-to-b from-[#1A0F0A] to-[#0D0D0D]">
         <div className="max-w-7xl mx-auto">

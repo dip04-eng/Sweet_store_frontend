@@ -138,24 +138,10 @@ const SweetCard = ({ sweet, onAddToCart }) => {
                 </select>
               </div>
 
-              {/* Weight input with +/- buttons - Second */}
+              {/* Weight input - Second */}
               <div className="flex items-center justify-center gap-2">
                 <label className="text-xs text-white/90 font-semibold">Enter Value:</label>
                 
-                {/* Minus Button */}
-                <motion.button
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.9 }}
-                  onClick={() => handleWeightIncrement(weightUnit === 'Kg' ? -0.1 : -100)}
-                  disabled={(parseFloat(weight) || 0) <= 0}
-                  className={`p-2 rounded-full transition-all ${(parseFloat(weight) || 0) <= 0
-                      ? 'bg-white/20 text-white/30 cursor-not-allowed'
-                      : 'bg-[#FFD700] text-[#C41E3A] hover:bg-[#FFC107]'
-                    }`}
-                >
-                  <Minus className="h-4 w-4" />
-                </motion.button>
-
                 {/* Weight input field */}
                 <input
                   type="text"
@@ -164,16 +150,6 @@ const SweetCard = ({ sweet, onAddToCart }) => {
                   placeholder="0.0"
                   className="w-20 bg-white text-[#C41E3A] text-center rounded-lg px-2 py-2 text-base font-bold focus:outline-none focus:ring-2 focus:ring-[#FFD700]"
                 />
-
-                {/* Plus Button */}
-                <motion.button
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.9 }}
-                  onClick={() => handleWeightIncrement(weightUnit === 'Kg' ? 0.1 : 100)}
-                  className="p-2 rounded-full bg-[#FFD700] text-[#C41E3A] hover:bg-[#FFC107] transition-all"
-                >
-                  <Plus className="h-4 w-4" />
-                </motion.button>
 
                 <span className="text-xs text-white/90 font-semibold ml-1">
                   {weightUnit}

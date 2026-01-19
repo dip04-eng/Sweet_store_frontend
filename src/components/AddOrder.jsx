@@ -370,13 +370,15 @@ const AddOrder = () => {
                         <p className="text-xs text-gray-600">₹{item.rate} per {item.unit || 'piece'}</p>
                       </div>
                       <div className="flex items-center gap-2">
-                        <button
-                          type="button"
-                          onClick={() => updateQuantity(index, item.quantity - 1)}
-                          className="p-1 bg-red-100 text-red-600 rounded hover:bg-red-200"
-                        >
-                          <Minus className="h-4 w-4" />
-                        </button>
+                        {item.unit !== 'Kg' && (
+                          <button
+                            type="button"
+                            onClick={() => updateQuantity(index, item.quantity - 1)}
+                            className="p-1 bg-red-100 text-red-600 rounded hover:bg-red-200"
+                          >
+                            <Minus className="h-4 w-4" />
+                          </button>
+                        )}
                         <input
                           type="number"
                           min={item.unit === 'Kg' ? (item.weightUnit === 'grams' ? '1' : '0.01') : '1'}
@@ -412,18 +414,20 @@ const AddOrder = () => {
                           }}
                           className="w-16 text-center font-semibold text-sm border border-gray-300 rounded px-1 py-1 focus:outline-none focus:ring-2 focus:ring-purple-500"
                         />
-                        <button
-                          type="button"
-                          onClick={() => updateQuantity(index, item.quantity + 1)}
-                          className="p-1 bg-green-100 text-green-600 rounded hover:bg-green-200"
-                        >
-                          <Plus className="h-4 w-4" />
-                        </button>
+                        {item.unit !== 'Kg' && (
+                          <button
+                            type="button"
+                            onClick={() => updateQuantity(index, item.quantity + 1)}
+                            className="p-1 bg-green-100 text-green-600 rounded hover:bg-green-200"
+                          >
+                            <Plus className="h-4 w-4" />
+                          </button>
+                        )}
                         {item.unit === 'Kg' && (
                           <select
                             value={item.weightUnit || 'Kg'}
                             onChange={(e) => updateWeightUnit(index, e.target.value)}
-                            className="text-xs px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-500"
+                            className="text-xs px-3 py-1.5 border-2 border-purple-300 bg-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 cursor-pointer font-semibold text-gray-700 hover:border-purple-400 transition-colors"
                           >
                             <option value="Kg">Kg</option>
                             <option value="grams">grams</option>
