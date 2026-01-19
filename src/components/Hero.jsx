@@ -18,7 +18,7 @@ const Hero = () => {
           alt="Mansoor Hotel & Sweets - Traditional Indian Sweet Shop in Baisi, Bihar featuring our signature sweets and warm hospitality since 1968"
           className="w-full h-full object-cover object-center"
           loading="eager"
-          fetchpriority="high"
+          fetchPriority="high"
           style={{
             objectPosition: 'center center',
           }}

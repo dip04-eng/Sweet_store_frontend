@@ -86,7 +86,7 @@ const AddOrder = () => {
       updatedCart[existingIndex].quantity += 1;
       setCart(updatedCart);
     } else {
-      setCart([...cart, { ...sweet, quantity: 1, weightUnit: sweet.unit === 'Kg' ? 'Kg' : undefined }]);
+      setCart([...cart, { ...sweet, quantity: 1, weightUnit: (sweet.unit === 'Kg' || sweet.unit === 'kg') ? 'Kg' : undefined }]);
     }
   };
 
@@ -370,7 +370,7 @@ const AddOrder = () => {
                         <p className="text-xs text-gray-600">₹{item.rate} per {item.unit || 'piece'}</p>
                       </div>
                       <div className="flex items-center gap-2">
-                        {item.unit !== 'Kg' && (
+                        {(item.unit !== 'Kg' && item.unit !== 'kg') && (
                           <button
                             type="button"
                             onClick={() => updateQuantity(index, item.quantity - 1)}
@@ -381,8 +381,8 @@ const AddOrder = () => {
                         )}
                         <input
                           type="number"
-                          min={item.unit === 'Kg' ? (item.weightUnit === 'grams' ? '1' : '0.01') : '1'}
-                          step={item.unit === 'Kg' ? (item.weightUnit === 'grams' ? '1' : '0.01') : '1'}
+                          min={(item.unit === 'Kg' || item.unit === 'kg') ? (item.weightUnit === 'grams' ? '1' : '0.01') : '1'}
+                          step={(item.unit === 'Kg' || item.unit === 'kg') ? (item.weightUnit === 'grams' ? '1' : '0.01') : '1'}
                           value={item.quantity === '' ? '' : item.quantity}
                           onChange={(e) => {
                             const inputValue = e.target.value;
@@ -406,7 +406,7 @@ const AddOrder = () => {
                             const value = parseFloat(e.target.value);
                             if (e.target.value === '' || isNaN(value) || value <= 0) {
                               const isInGrams = item.weightUnit === 'grams';
-                              const minValue = item.unit === 'Kg' ? (isInGrams ? 1 : 0.01) : 1;
+                              const minValue = (item.unit === 'Kg' || item.unit === 'kg') ? (isInGrams ? 1 : 0.01) : 1;
                               const updatedCart = [...cart];
                               updatedCart[index].quantity = minValue;
                               setCart(updatedCart);
@@ -414,7 +414,7 @@ const AddOrder = () => {
                           }}
                           className="w-16 text-center font-semibold text-sm border border-gray-300 rounded px-1 py-1 focus:outline-none focus:ring-2 focus:ring-purple-500"
                         />
-                        {item.unit !== 'Kg' && (
+                        {(item.unit !== 'Kg' && item.unit !== 'kg') && (
                           <button
                             type="button"
                             onClick={() => updateQuantity(index, item.quantity + 1)}
@@ -423,7 +423,7 @@ const AddOrder = () => {
                             <Plus className="h-4 w-4" />
                           </button>
                         )}
-                        {item.unit === 'Kg' && (
+                        {(item.unit === 'Kg' || item.unit === 'kg') && (
                           <select
                             value={item.weightUnit || 'Kg'}
                             onChange={(e) => updateWeightUnit(index, e.target.value)}
@@ -433,7 +433,7 @@ const AddOrder = () => {
                             <option value="grams">grams</option>
                           </select>
                         )}
-                        {item.unit !== 'Kg' && (
+                        {(item.unit !== 'Kg' && item.unit !== 'kg') && (
                           <span className="text-xs text-gray-600 px-1">{item.unit || 'pcs'}</span>
                         )}
                         <button

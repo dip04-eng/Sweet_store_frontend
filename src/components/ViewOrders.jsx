@@ -760,13 +760,13 @@ const ViewOrders = () => {
                       <div className="flex-1">
                         <div className="font-semibold text-yellow-600 text-xs sm:text-sm md:text-base">{item.sweetName}</div>
                         <div className="text-xs sm:text-sm text-gray-500">
-                          ₹{item.price} × {Number(item.quantity || 1).toFixed(2).replace(/\.?0+$/, '')} {item.unit === 'Kg' ? 'Kg' : item.unit || 'piece'}
+                          ₹{item.price} × {Number(item.quantity || 1).toFixed(2).replace(/\.?0+$/, '')} {(item.unit === 'Kg' || item.unit === 'kg') ? 'Kg' : item.unit || 'piece'}
                         </div>
                       </div>
                       <div className="text-right">
                         <div className="font-bold text-purple-600 text-sm sm:text-base">₹{(item.price * (item.quantity || 1)).toFixed(2)}</div>
                         <div className="text-xs text-gray-500">
-                          Qty: {Number(item.quantity || 1).toFixed(2).replace(/\.?0+$/, '')} {item.unit === 'Kg' ? 'Kg' : item.unit || 'piece'}
+                          Qty: {Number(item.quantity || 1).toFixed(2).replace(/\.?0+$/, '')} {(item.unit === 'Kg' || item.unit === 'kg') ? 'Kg' : item.unit || 'piece'}
                         </div>
                       </div>
                     </div>
@@ -947,7 +947,7 @@ const ViewOrders = () => {
                           </div>
                           <div className="flex items-center gap-2 w-full sm:w-auto justify-between sm:justify-end flex-wrap">
                             {/* Quantity Controls */}
-                            {item.unit !== 'Kg' && (
+                            {(item.unit !== 'Kg' && item.unit !== 'kg') && (
                               <button
                                 type="button"
                                 onClick={() => {
@@ -1044,13 +1044,13 @@ const ViewOrders = () => {
                               }}
                               className="w-16 text-center font-semibold text-sm border border-gray-300 rounded px-1 py-1 focus:outline-none focus:ring-2 focus:ring-purple-500"
                             />
-                            {item.unit !== 'Kg' && (
+                            {(item.unit !== 'Kg' && item.unit !== 'kg') && (
                               <button
                                 type="button"
                                 onClick={() => {
                                   const newItems = [...editOrderItems];
                                   const isInGrams = item.weightUnit === 'grams';
-                                  const incrementBy = item.unit === 'Kg' ? (isInGrams ? 100 : 0.5) : 1;
+                                  const incrementBy = (item.unit === 'Kg' || item.unit === 'kg') ? (isInGrams ? 100 : 0.5) : 1;
                                   newItems[index].quantity = parseFloat(newItems[index].quantity) + incrementBy;
                                   setEditOrderItems(newItems);
                                   const newTotal = newItems.reduce((sum, it) => {
@@ -1064,7 +1064,7 @@ const ViewOrders = () => {
                                 <Plus className="h-4 w-4" />
                               </button>
                             )}
-                            {item.unit === 'Kg' && (
+                            {(item.unit === 'Kg' || item.unit === 'kg') && (
                               <select
                                 value={item.weightUnit || 'Kg'}
                                 onChange={(e) => {
@@ -1093,7 +1093,7 @@ const ViewOrders = () => {
                                 <option value="grams">grams</option>
                               </select>
                             )}
-                            {item.unit !== 'Kg' && (
+                            {(item.unit !== 'Kg' && item.unit !== 'kg') && (
                               <span className="text-xs text-gray-600 px-1">{item.unit || 'pcs'}</span>
                             )}
                             <span className="text-xs sm:text-sm font-semibold text-purple-600">₹{((item.weightUnit === 'grams' ? item.quantity / 1000 : item.quantity) * item.price).toFixed(2)}</span>
@@ -1196,7 +1196,7 @@ const ViewOrders = () => {
                       <div className="flex gap-2">
                         {(() => {
                           const sweet = availableSweets.find(s => s._id === selectedSweet);
-                          const isKgItem = sweet?.unit === 'Kg';
+                          const isKgItem = sweet?.unit === 'Kg' || sweet?.unit === 'kg';
                           return (
                             <>
                               <input
@@ -1264,7 +1264,7 @@ const ViewOrders = () => {
 
                                 // Convert to same unit and add
                                 let combinedQty;
-                                if (sweet.unit === 'Kg') {
+                                if (sweet.unit === 'Kg' || sweet.unit === 'kg') {
                                   // Convert both to Kg for comparison
                                   const existingInKg = existingUnit === 'grams' ? existingQty / 1000 : existingQty;
                                   const newInKg = newUnit === 'grams' ? newQty / 1000 : newQty;
@@ -1295,7 +1295,7 @@ const ViewOrders = () => {
                                   quantity: selectedQuantity,
                                   price: sweet.rate,
                                   unit: sweet.unit,
-                                  weightUnit: sweet.unit === 'Kg' ? selectedWeightUnit : undefined
+                                  weightUnit: (sweet.unit === 'Kg' || sweet.unit === 'kg') ? selectedWeightUnit : undefined
                                 };
                                 newItems = [...editOrderItems, newItem];
                                 setToast({ message: 'Item added!', type: 'success' });

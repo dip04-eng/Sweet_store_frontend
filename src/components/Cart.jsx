@@ -224,7 +224,7 @@ const Cart = () => {
                           </p>
 
                           {/* Quantity/Weight Controls with Price and Delete */}
-                          {item.unit === 'Kg' ? (
+                          {(item.unit === 'Kg' || item.unit === 'kg') ? (
                             // Weight input with unit selector, price, and delete for Kg items - all in one row
                             <div className="mt-3 flex items-center gap-2 sm:gap-4 flex-wrap">
                               <div className="flex items-center gap-1 sm:gap-2 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-full px-2 sm:px-4 py-1.5 sm:py-2">
@@ -274,10 +274,10 @@ const Cart = () => {
                                     sessionStorage.setItem('sweetCart', JSON.stringify(updatedCart));
                                     setWeightInputs({ ...weightInputs, [index]: undefined });
                                   }}
-                                  className="bg-gradient-to-r from-purple-600 to-purple-700 text-white px-2 sm:px-3 py-1.5 rounded-lg font-bold text-xs sm:text-sm border-2 border-purple-300 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-purple-500 hover:from-purple-700 hover:to-purple-800 cursor-pointer shadow-md transition-all duration-200"
+                                  className="bg-purple-600 text-white px-3 sm:px-4 py-1.5 rounded-lg font-bold text-sm border-2 border-white focus:outline-none focus:ring-2 focus:ring-white cursor-pointer shadow-md min-w-[70px]"
                                 >
-                                  <option value="Kg">Kg</option>
-                                  <option value="grams">grams</option>
+                                  <option value="Kg" className="bg-white text-gray-900 font-semibold">Kg</option>
+                                  <option value="grams" className="bg-white text-gray-900 font-semibold">grams</option>
                                 </select>
                               </div>
 

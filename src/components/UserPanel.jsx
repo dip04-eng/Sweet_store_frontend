@@ -93,7 +93,7 @@ const UserPanel = () => {
     } else {
       // Item doesn't exist, add new item with weightUnit for Kg items
       const newItem = { ...sweet, quantity };
-      if (sweet.unit === 'Kg') {
+      if (sweet.unit === 'Kg' || sweet.unit === 'kg') {
         newItem.weightUnit = 'Kg';
       }
       updatedCart = [...cart, newItem];
