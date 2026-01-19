@@ -274,7 +274,7 @@ const Cart = () => {
                                     sessionStorage.setItem('sweetCart', JSON.stringify(updatedCart));
                                     setWeightInputs({ ...weightInputs, [index]: undefined });
                                   }}
-                                  className="bg-red-700 text-white px-1 sm:px-2 py-1 rounded font-semibold text-xs sm:text-sm border-0 focus:outline-none focus:ring-2 focus:ring-white cursor-pointer"
+                                  className="bg-gradient-to-r from-purple-600 to-purple-700 text-white px-2 sm:px-3 py-1.5 rounded-lg font-bold text-xs sm:text-sm border-2 border-purple-300 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-purple-500 hover:from-purple-700 hover:to-purple-800 cursor-pointer shadow-md transition-all duration-200"
                                 >
                                   <option value="Kg">Kg</option>
                                   <option value="grams">grams</option>
