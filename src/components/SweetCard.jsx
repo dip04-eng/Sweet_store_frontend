@@ -65,7 +65,7 @@ const SweetCard = ({ sweet, onAddToCart }) => {
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      className="card-premium overflow-hidden group"
+      className="card-premium overflow-hidden group w-full"
     >
       {/* Image Container */}
       <div className="relative overflow-hidden border-b-2 border-[#C41E3A]/20 bg-white">

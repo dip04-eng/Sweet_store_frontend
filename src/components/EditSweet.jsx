@@ -125,23 +125,23 @@ const EditSweet = () => {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="space-y-6"
+        className="space-y-4 sm:space-y-6"
       >
-        <div className="flex items-center justify-between">
-          <h2 className="text-2xl font-bold text-gray-900 flex items-center">
-            <Edit3 className="h-6 w-6 mr-2 text-blue-600" />
-            Update Items: {selectedSweet.name}
+        <div className="flex items-center justify-between flex-wrap gap-2">
+          <h2 className="text-lg sm:text-2xl font-bold text-gray-900 flex items-center">
+            <Edit3 className="h-5 w-5 sm:h-6 sm:w-6 mr-2 text-blue-600" />
+            <span className="truncate max-w-[200px] sm:max-w-none">Update: {selectedSweet.name}</span>
           </h2>
           <button
             onClick={cancelEdit}
-            className="p-2 text-gray-400 hover:text-gray-600 transition-colors"
+            className="p-2 text-gray-400 hover:text-gray-600 transition-colors touch-manipulation"
           >
             <X className="h-5 w-5" />
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow-md p-6 space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow-md p-4 sm:p-6 space-y-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Item Name
@@ -266,14 +266,14 @@ const EditSweet = () => {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="space-y-6"
+      className="space-y-4 sm:space-y-6"
     >
       <div className="flex items-center">
-        <Edit3 className="h-6 w-6 mr-2 text-blue-600" />
-        <h2 className="text-2xl font-bold text-gray-900">Update Items</h2>
+        <Edit3 className="h-5 w-5 sm:h-6 sm:w-6 mr-2 text-blue-600" />
+        <h2 className="text-xl sm:text-2xl font-bold text-gray-900">Update Items</h2>
       </div>
 
-      <div className="bg-white rounded-lg shadow-md p-6">
+      <div className="bg-white rounded-lg shadow-md p-4 sm:p-6">
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700 mb-2">
             Search Items
@@ -285,7 +285,7 @@ const EditSweet = () => {
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               placeholder="Search for sweet to edit..."
-              className="w-full pl-10 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full pl-10 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-base"
             />
           </div>
         </div>
@@ -296,28 +296,28 @@ const EditSweet = () => {
             <p className="mt-2 text-gray-600">Loading sweets...</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 max-h-[70vh] overflow-y-auto">
+          <div className="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4 max-h-[60vh] sm:max-h-[70vh] overflow-y-auto">
             {filteredSweets.map((sweet) => (
               <motion.div
                 key={sweet._id}
                 whileHover={{ scale: 1.02 }}
-                className="border border-gray-200 rounded-lg p-4 cursor-pointer hover:shadow-lg hover:border-blue-300 transition-all"
+                className="border border-gray-200 rounded-lg p-3 sm:p-4 cursor-pointer hover:shadow-lg hover:border-blue-300 transition-all touch-manipulation"
                 onClick={() => handleSweetSelect(sweet)}
               >
                 {sweet.image && (
                   <img
                     src={sweet.image}
                     alt={sweet.name}
-                    className="w-full h-40 object-cover rounded-lg mb-3"
+                    className="w-full h-28 sm:h-40 object-cover rounded-lg mb-2 sm:mb-3"
                   />
                 )}
-                <h3 className="font-semibold text-gray-900 mb-2">{sweet.name}</h3>
-                <div className="space-y-1">
-                  <p className="text-lg font-bold text-blue-600">
+                <h3 className="font-semibold text-gray-900 mb-1 sm:mb-2 text-sm sm:text-base truncate">{sweet.name}</h3>
+                <div className="space-y-0.5 sm:space-y-1">
+                  <p className="text-base sm:text-lg font-bold text-blue-600">
                     Price: ₹{sweet.price !== undefined && sweet.price !== null ? sweet.price : 'Not Set'}/{sweet.unit || 'Kg'}
                   </p>
-                  <p className="text-sm text-gray-500 capitalize">Category: {sweet.category || 'normal'}</p>
-                  <p className="text-xs text-gray-400">Click to edit</p>
+                  <p className="text-xs sm:text-sm text-gray-500 capitalize">Category: {sweet.category || 'normal'}</p>
+                  <p className="text-xs text-gray-400">Tap to edit</p>
                 </div>
               </motion.div>
             ))}

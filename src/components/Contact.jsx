@@ -155,20 +155,20 @@ const Contact = () => {
       </section>
 
       {/* Contact Form & Map Section */}
-      <section className="py-12 px-4">
+      <section className="py-8 sm:py-12 px-3 sm:px-4">
         <div className="max-w-7xl mx-auto">
-          <div className="grid lg:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
             {/* Contact Form */}
             <motion.div
               initial={{ opacity: 0, x: -50 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              className="bg-white rounded-2xl p-8 shadow-xl border border-gray-100"
+              className="bg-white rounded-xl sm:rounded-2xl p-5 sm:p-8 shadow-xl border border-gray-100"
             >
-              <h2 className="text-3xl font-bold text-[#C41E3A] mb-6 font-['Playfair_Display']">
+              <h2 className="text-2xl sm:text-3xl font-bold text-[#C41E3A] mb-4 sm:mb-6 font-['Playfair_Display']">
                 Send Us a Message
               </h2>
-              <form onSubmit={handleSubmit} className="space-y-5">
+              <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-5">
                 <div>
                   <label htmlFor="name" className="block text-gray-800 mb-2 font-semibold text-sm">
                     Your Name *
