@@ -1,6 +1,6 @@
 // API Configuration - v2
-export const API_BASE_URL = 'https://server.uemcseaiml.org/store';
-//export const API_BASE_URL = 'http://127.0.0.1:5000';
+//export const API_BASE_URL = 'https://server.uemcseaiml.org/store';
+export const API_BASE_URL = 'http://127.0.0.1:5000';
 
 // API Endpoints
 export const API_ENDPOINTS = {

@@ -12,6 +12,7 @@ const AddOrder = () => {
   const [success, setSuccess] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [serverDate, setServerDate] = useState(null);
+  const [toast, setToast] = useState({ show: false, message: '' });
 
   const [formData, setFormData] = useState({
     adminName: '',
@@ -88,6 +89,10 @@ const AddOrder = () => {
     } else {
       setCart([...cart, { ...sweet, quantity: 1, weightUnit: (sweet.unit === 'Kg' || sweet.unit === 'kg') ? 'Kg' : undefined }]);
     }
+    
+    // Show toast message
+    setToast({ show: true, message: `${sweet.name} added to cart` });
+    setTimeout(() => setToast({ show: false, message: '' }), 2000);
   };
 
   const updateQuantity = (index, newQuantity) => {
@@ -539,6 +544,21 @@ const AddOrder = () => {
           </button>
         </div>
       </form>
+
+      {/* Toast Notification */}
+      <AnimatePresence>
+        {toast.show && (
+          <motion.div
+            initial={{ opacity: 0, y: 50, scale: 0.9 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 50, scale: 0.9 }}
+            className="fixed bottom-6 right-6 bg-green-600 text-white px-5 py-3 rounded-xl shadow-2xl z-50 flex items-center gap-2"
+          >
+            <ShoppingCart className="h-5 w-5" />
+            <span className="font-semibold">{toast.message}</span>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
