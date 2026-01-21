@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { Edit3, Search, Save, X } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Edit3, Search, Save, X, CheckCircle } from 'lucide-react';
 import { API_BASE_URL, API_ENDPOINTS } from '../config/api';
 
 const EditSweet = () => {
@@ -40,9 +40,13 @@ const EditSweet = () => {
   const handleSweetSelect = (sweet) => {
     console.log('Selected sweet (full object):', JSON.stringify(sweet, null, 2)); // Detailed debug log
     setSelectedSweet(sweet);
+    // Use 'rate' field from backend, fallback to 'price' for compatibility
+    const priceValue = sweet.rate !== undefined && sweet.rate !== null 
+      ? sweet.rate 
+      : (sweet.price !== undefined && sweet.price !== null ? sweet.price : '');
     setEditForm({
       name: sweet.name || '',
-      price: sweet.price !== undefined && sweet.price !== null ? String(sweet.price) : '',
+      price: String(priceValue),
       unit: sweet.unit || 'Kg',
       category: sweet.category || 'normal',
       image: sweet.image || ''
@@ -95,9 +99,13 @@ const EditSweet = () => {
 
       if (response.ok) {
         setSuccess('Sweet updated successfully!');
-        setSelectedSweet(null);
-        setEditForm({ name: '', price: '', unit: 'Kg', category: 'normal', image: '' });
         await fetchSweets();
+        // Show success message for 2 seconds before going back to list
+        setTimeout(() => {
+          setSelectedSweet(null);
+          setEditForm({ name: '', price: '', unit: 'Kg', category: 'normal', image: '' });
+          setSuccess('');
+        }, 2000);
       } else {
         const data = await response.json();
         setError(data.error || 'Failed to update sweet');
@@ -234,11 +242,19 @@ const EditSweet = () => {
             </div>
           )}
 
-          {success && (
-            <div className="bg-green-50 border border-green-200 rounded-lg p-3 text-green-700">
-              {success}
-            </div>
-          )}
+          <AnimatePresence>
+            {success && (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.9 }}
+                className="bg-green-100 border-2 border-green-500 rounded-lg p-4 flex items-center justify-center gap-3"
+              >
+                <CheckCircle className="h-6 w-6 text-green-600" />
+                <span className="text-green-700 font-semibold text-lg">{success}</span>
+              </motion.div>
+            )}
+          </AnimatePresence>
 
           <div className="flex space-x-3">
             <button

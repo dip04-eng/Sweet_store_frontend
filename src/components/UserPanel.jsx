@@ -21,8 +21,11 @@ const UserPanel = () => {
 
   const categories = ['Sweet', 'Dry-Fruits', 'Snacks', 'Breakfast', 'Lunch', 'Dinner', 'Other'];
 
+  // Track if initial load is done
+  const [initialLoadDone, setInitialLoadDone] = useState(false);
+
   useEffect(() => {
-    fetchSweets();
+    fetchSweets().then(() => setInitialLoadDone(true));
     const savedCart = sessionStorage.getItem('sweetCart');
     if (savedCart) {
       setCart(JSON.parse(savedCart));
@@ -40,14 +43,37 @@ const UserPanel = () => {
     }
   }, []);
 
-  const fetchSweets = async () => {
+  // Refetch sweets when user returns to this page (only after initial load)
+  useEffect(() => {
+    if (!initialLoadDone) return;
+    
+    let lastFetchTime = Date.now();
+    const DEBOUNCE_TIME = 3000; // Minimum 3 seconds between fetches
+
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible' && Date.now() - lastFetchTime > DEBOUNCE_TIME) {
+        lastFetchTime = Date.now();
+        fetchSweets();
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+  }, [initialLoadDone]);
+
+  const fetchSweets = async (retryCount = 0) => {
+    const MAX_RETRIES = 2;
+    
     try {
       setLoading(true);
       setError(null);
 
-      // Add timeout for better user experience
+      // Increased timeout to 30 seconds for large image payloads
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+      const timeoutId = setTimeout(() => controller.abort(), 30000);
 
       const response = await fetch(`${API_BASE_URL}${API_ENDPOINTS.GET_SWEETS}`, {
         signal: controller.signal
@@ -59,22 +85,26 @@ const UserPanel = () => {
         throw new Error(`Server responded with ${response.status}: ${response.statusText}`);
       }
       const data = await response.json();
-      console.log('📦 Fetched sweets:', data);
-      console.log('🎉 Festival sweets:', data.filter(s => s.isFestival));
-      console.log('🍬 Regular sweets:', data.filter(s => !s.isFestival));
+      console.log('📦 Fetched sweets:', data.length);
       setSweets(data);
       setError(null);
     } catch (err) {
+      console.error('Error fetching sweets:', err);
+      
+      // Retry logic for timeout errors
+      if ((err.name === 'AbortError' || err.message.includes('Failed to fetch')) && retryCount < MAX_RETRIES) {
+        console.log(`🔄 Retrying... (${retryCount + 1}/${MAX_RETRIES})`);
+        return fetchSweets(retryCount + 1);
+      }
+      
       if (err.name === 'AbortError') {
-        setError('Request timed out. Please check your internet connection and try again.');
+        setError('Request timed out. The server is taking too long to respond. Please try again.');
       } else if (err.message.includes('Failed to fetch')) {
         setError('Cannot connect to server. Please ensure the backend server is running.');
       } else {
         setError(err.message);
       }
-      console.error('Error fetching sweets:', err);
 
-      // Optionally set some demo data for development
       setSweets([]);
     } finally {
       setLoading(false);
