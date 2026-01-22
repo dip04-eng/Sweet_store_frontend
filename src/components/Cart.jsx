@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, Trash2, ShoppingBag, ShoppingCart, Plus, Minus } from 'lucide-react';
 import Navbar from './Navbar';
 import Footer from './Footer';

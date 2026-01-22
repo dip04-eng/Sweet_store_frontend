@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import { Loader2, Sparkles, Filter, PartyPopper, Search, X } from 'lucide-react';
 import SweetCard from './SweetCard';
 import FestivalCard from './FestivalCard';

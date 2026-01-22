@@ -1,4 +1,5 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 import { AlertTriangle, Wifi, RefreshCw, Server } from 'lucide-react';
 
 const ErrorMessage = ({ 

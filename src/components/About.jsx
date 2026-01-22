@@ -1,3 +1,4 @@
+import { motion } from 'framer-motion';
 import { Award, Heart, Users, Clock, Star, ChefHat, Sparkles } from 'lucide-react';
 import { GiCupcake, GiCandyCanes } from 'react-icons/gi';
 import Navbar from './Navbar';

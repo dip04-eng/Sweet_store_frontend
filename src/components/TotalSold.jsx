@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { motion } from 'framer-motion';
 import { Calendar, TrendingUp, Package, Download } from 'lucide-react';
 import { API_BASE_URL, API_ENDPOINTS } from '../config/api';
 

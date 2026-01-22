@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Eye, Calendar, Phone, MapPin, Package, Filter, CheckCircle2, Pencil, XCircle, Search, ArrowUp, ArrowDown, Download, Plus, Minus } from 'lucide-react';
-import { AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { API_BASE_URL, API_ENDPOINTS } from '../config/api';
 
 const ViewOrders = () => {

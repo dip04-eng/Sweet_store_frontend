@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import { Calendar, PartyPopper } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { Calendar, PartyPopper, Upload, Eye } from 'lucide-react';
 import { API_BASE_URL, API_ENDPOINTS } from '../config/api';
 
 const AddSweet = ({ sweetType = 'normal' }) => {
@@ -121,6 +122,7 @@ const AddSweet = ({ sweetType = 'normal' }) => {
         category: formData.category,
         rate: formData.rate,
         unit: formData.unit,
+        isFestival: formData.isFestival,
         imageLength: formData.image.length,
         imageStart: formData.image.substring(0, 50)
       });
@@ -149,7 +151,8 @@ const AddSweet = ({ sweetType = 'normal' }) => {
         rate: '',
         unit: '',
         image: '',
-        description: ''
+        description: '',
+        isFestival: sweetType === 'festival'
       });
       setImagePreview(null);
 

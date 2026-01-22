@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { motion } from 'framer-motion';
 import { ShoppingCart, Sparkles, Plus, Minus } from 'lucide-react';
 
 const SweetCard = ({ sweet, onAddToCart }) => {

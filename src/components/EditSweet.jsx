@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Edit3, Search, Save, X, CheckCircle } from 'lucide-react';
 import { API_BASE_URL, API_ENDPOINTS } from '../config/api';
 
