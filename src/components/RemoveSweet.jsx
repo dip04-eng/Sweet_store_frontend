@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Trash, AlertTriangle, Search, Calendar, PartyPopper } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { AnimatePresence } from 'framer-motion';
 import { API_BASE_URL, API_ENDPOINTS } from '../config/api';
 
 const RemoveSweet = () => {

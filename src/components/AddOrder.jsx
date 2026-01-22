@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { AnimatePresence } from 'framer-motion';
 import { User, Phone, MapPin, Calendar, ShoppingCart, Plus, Minus, Trash2, Save, RefreshCw, Search, UserCog } from 'lucide-react';
 import { API_BASE_URL, API_ENDPOINTS } from '../config/api';
 

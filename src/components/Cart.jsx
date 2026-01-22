@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
+import { AnimatePresence } from 'framer-motion';
 import { ArrowLeft, Trash2, ShoppingBag, ShoppingCart, Plus, Minus } from 'lucide-react';
 import Navbar from './Navbar';
 import Footer from './Footer';
@@ -247,7 +247,6 @@ const Cart = () => {
                                     const pastedText = e.clipboardData.getData('text');
                                     // Clean pasted value to max 3 decimals
                                     if (/^\d*\.?\d{0,3}$/.test(pastedText)) {
-                                      const syntheticEvent = { target: { value: pastedText } };
                                       e.target.dispatchEvent(new Event('change', { bubbles: true }));
                                     }
                                   }}

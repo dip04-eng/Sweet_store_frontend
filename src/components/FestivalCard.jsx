@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { motion } from 'framer-motion';
 import { ShoppingCart } from 'lucide-react';
 
 const FestivalCard = ({ sweet, onAddToCart }) => {

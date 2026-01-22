@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Plus, Trash, Edit, Eye, BarChart3, LogOut, Settings, TrendingUp, Calendar, PartyPopper, ShoppingCart } from 'lucide-react';
 import AddSweet from './AddSweet';
 import EditSweet from './EditSweet';
@@ -10,7 +10,6 @@ import TotalSold from './TotalSold';
 import AddOrder from './AddOrder';
 
 const AdminPanel = () => {
-  const location = useLocation();
   const navigate = useNavigate();
 
   // Get state from URL hash
@@ -83,6 +82,7 @@ const AdminPanel = () => {
   };
 
   // Open Remove Sweet Options popup with history
+  // eslint-disable-next-line no-unused-vars
   const openRemoveSweetOptions = () => {
     window.history.pushState({ popup: 'remove-options' }, '', '#remove-options');
     setShowManageSweets(false);

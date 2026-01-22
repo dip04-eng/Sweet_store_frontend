@@ -1,11 +1,11 @@
-import { motion } from 'framer-motion';
-import { Award, Heart, Users, Clock, Star, TrendingUp, ChefHat, Sparkles } from 'lucide-react';
+import { Award, Heart, Users, Clock, Star, ChefHat, Sparkles } from 'lucide-react';
 import { GiCupcake, GiCandyCanes } from 'react-icons/gi';
 import Navbar from './Navbar';
 import Footer from './Footer';
 import SEO from './SEO';
 
 const About = () => {
+  // eslint-disable-next-line no-unused-vars
   const milestones = [
     { year: '1968', title: 'The Beginning', description: 'Mansoor & Sons started with a dream to serve authentic sweets' },
     { year: '1990', title: 'Expansion', description: 'Opened our iconic Madrasa Road location in Baisi' },

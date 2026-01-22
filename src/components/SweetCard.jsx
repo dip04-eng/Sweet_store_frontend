@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { motion } from 'framer-motion';
 import { ShoppingCart, Sparkles, Plus, Minus } from 'lucide-react';
 
 const SweetCard = ({ sweet, onAddToCart }) => {
@@ -16,26 +15,12 @@ const SweetCard = ({ sweet, onAddToCart }) => {
     }
   };
 
-  const handleQuantityInputChange = (e) => {
-    const value = e.target.value;
-    // Allow empty input and numeric values only
-    if (value === '' || /^\d+$/.test(value)) {
-      setQuantity(value === '' ? '' : parseInt(value));
-    }
-  };
-
   const handleWeightChange = (e) => {
     const value = e.target.value;
     // Allow empty input and numeric values with up to 3 decimal places
     if (value === '' || /^\d*\.?\d{0,3}$/.test(value)) {
       setWeight(value);
     }
-  };
-
-  const handleWeightIncrement = (step) => {
-    const currentWeight = parseFloat(weight) || 0;
-    const newWeight = Math.max(0, currentWeight + step);
-    setWeight(newWeight.toFixed(1));
   };
 
   const handleWeightUnitChange = (e) => {

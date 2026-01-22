@@ -1,6 +1,5 @@
-import { useState, useEffect } from 'react';
-import { Calendar, TrendingUp, Package, IndianRupee, DollarSign, Download } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { useState, useEffect, useCallback } from 'react';
+import { Calendar, TrendingUp, Package, Download } from 'lucide-react';
 import { API_BASE_URL, API_ENDPOINTS } from '../config/api';
 
 // Get tomorrow's date as default (for delivery date)
@@ -26,38 +25,7 @@ const TotalSold = () => {
   const [salesData, setSalesData] = useState(null);
   const [isDownloading, setIsDownloading] = useState(false);
 
-  useEffect(() => {
-    if (selectedDate) {
-      fetchOrdersByDate();
-    }
-  }, [selectedDate]);
-
-  const fetchOrdersByDate = async () => {
-    try {
-      setLoading(true);
-      const response = await fetch(`${API_BASE_URL}${API_ENDPOINTS.GET_ORDERS}`);
-      if (!response.ok) {
-        throw new Error('Failed to fetch orders');
-      }
-      const data = await response.json();
-
-      // Filter orders by delivery date AND exclude cancelled orders
-      const filteredOrders = data.filter(order => {
-        const deliveryDate = order.deliveryDate ? order.deliveryDate.split('T')[0] : '';
-        const isCancelled = order.status === 'Cancelled';
-        return deliveryDate === selectedDate && !isCancelled;
-      });
-
-      setOrders(filteredOrders);
-      calculateSalesData(filteredOrders);
-    } catch (err) {
-      console.error('Error fetching orders:', err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const calculateSalesData = (filteredOrders) => {
+  const calculateSalesData = useCallback((filteredOrders) => {
     const sweetsSold = {};
     let totalRevenue = 0;
     let totalOrders = filteredOrders.length;
@@ -91,7 +59,38 @@ const TotalSold = () => {
       totalOrders,
       totalItems: Object.keys(sweetsSold).length
     });
-  };
+  }, []);
+
+  const fetchOrdersByDate = useCallback(async () => {
+    try {
+      setLoading(true);
+      const response = await fetch(`${API_BASE_URL}${API_ENDPOINTS.GET_ORDERS}`);
+      if (!response.ok) {
+        throw new Error('Failed to fetch orders');
+      }
+      const data = await response.json();
+
+      // Filter orders by delivery date AND exclude cancelled orders
+      const filteredOrders = data.filter(order => {
+        const deliveryDate = order.deliveryDate ? order.deliveryDate.split('T')[0] : '';
+        const isCancelled = order.status === 'Cancelled';
+        return deliveryDate === selectedDate && !isCancelled;
+      });
+
+      setOrders(filteredOrders);
+      calculateSalesData(filteredOrders);
+    } catch (err) {
+      console.error('Error fetching orders:', err);
+    } finally {
+      setLoading(false);
+    }
+  }, [selectedDate, calculateSalesData]);
+
+  useEffect(() => {
+    if (selectedDate) {
+      fetchOrdersByDate();
+    }
+  }, [selectedDate, fetchOrdersByDate]);
 
   const downloadSalesReport = async () => {
     if (!salesData || !orders.length) {

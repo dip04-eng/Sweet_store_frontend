@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { AnimatePresence } from 'framer-motion';
 import { Edit3, Search, Save, X, CheckCircle } from 'lucide-react';
 import { API_BASE_URL, API_ENDPOINTS } from '../config/api';
 
@@ -30,7 +30,7 @@ const EditSweet = () => {
         const data = await response.json();
         setSweets(data);
       }
-    } catch (error) {
+    } catch {
       setError('Failed to fetch sweets');
     } finally {
       setLoading(false);
@@ -110,7 +110,7 @@ const EditSweet = () => {
         const data = await response.json();
         setError(data.error || 'Failed to update sweet');
       }
-    } catch (error) {
+    } catch {
       setError('Network error. Please try again.');
     } finally {
       setLoading(false);

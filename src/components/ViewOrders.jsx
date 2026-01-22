@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Eye, Calendar, Phone, MapPin, Package, Filter, CheckCircle2, Pencil, XCircle, Search, ArrowUp, ArrowDown, Download, Plus, Minus } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { AnimatePresence } from 'framer-motion';
 import { API_BASE_URL, API_ENDPOINTS } from '../config/api';
 
 const ViewOrders = () => {
@@ -985,6 +985,7 @@ const ViewOrders = () => {
                                 }
 
                                 const isKgItem = item.unit === 'Kg';
+                                // eslint-disable-next-line no-unused-vars
                                 const isGrams = item.weightUnit === 'grams';
 
                                 // Validate input based on item type

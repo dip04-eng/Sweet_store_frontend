@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Upload, Eye, Calendar, PartyPopper } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { Calendar, PartyPopper } from 'lucide-react';
 import { API_BASE_URL, API_ENDPOINTS } from '../config/api';
 
 const AddSweet = ({ sweetType = 'normal' }) => {
@@ -17,8 +16,6 @@ const AddSweet = ({ sweetType = 'normal' }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
-  const [selectedSweetId, setSelectedSweetId] = useState(null);
-  const [selectedCategory, setSelectedCategory] = useState('');
 
   // Update isFestival when sweetType prop changes
   useEffect(() => {
@@ -27,24 +24,6 @@ const AddSweet = ({ sweetType = 'normal' }) => {
       isFestival: sweetType === 'festival'
     }));
   }, [sweetType]);
-
-  // All products organized by category
-  const allProducts = {
-    'Sweet': ['Gulab Jamun', 'Rasgulla', 'Jalebi', 'Ladoo', 'Barfi', 'Kaju Katli', 'Rasmalai', 'Sandesh'],
-    'Breakfast': ['Idli', 'Dosa', 'Paratha', 'Poha', 'Upma', 'Uttapam'],
-    'Lunch': ['Dal Tadka', 'Paneer Butter Masala', 'Chole Bhature', 'Biryani', 'Rajma Chawal'],
-    'Dinner': ['Roti', 'Naan', 'Dal Makhani', 'Kadai Paneer'],
-    'Snacks': ['Samosa', 'Pakora', 'Vada Pav', 'Kachori', 'Dhokla'],
-    'Beverage': ['Masala Chai', 'Lassi', 'Coffee', 'Buttermilk'],
-    'Dessert': ['Kheer', 'Halwa', 'Kulfi', 'Phirni'],
-    'Other': ['Papad', 'Pickle', 'Chutney']
-  };
-
-  // Get products for selected category
-  const getProductsForCategory = () => {
-    if (!selectedCategory) return [];
-    return allProducts[selectedCategory] || [];
-  };
 
   const compressImage = (file, maxWidth = 800, quality = 0.7) => {
     return new Promise((resolve, reject) => {
@@ -113,10 +92,6 @@ const AddSweet = ({ sweetType = 'normal' }) => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    if (name === 'name') {
-      // If user types a custom name, clear existing product selection
-      setSelectedSweetId(null);
-    }
     setFormData(prev => ({
       ...prev,
       [name]: value
@@ -176,8 +151,6 @@ const AddSweet = ({ sweetType = 'normal' }) => {
         image: '',
         description: ''
       });
-      setSelectedSweetId(null);
-      setSelectedCategory('');
       setImagePreview(null);
 
       setTimeout(() => {
@@ -236,7 +209,6 @@ const AddSweet = ({ sweetType = 'normal' }) => {
                 value={formData.category}
                 onChange={(e) => {
                   const value = e.target.value;
-                  setSelectedCategory(value);
                   setFormData(prev => ({ ...prev, category: value }));
                 }}
                 className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base bg-white border border-gray-300 rounded-lg sm:rounded-xl text-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"

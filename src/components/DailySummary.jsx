@@ -1,19 +1,14 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { BarChart3, Calendar, TrendingUp, Package } from 'lucide-react';
-import { motion } from 'framer-motion';
 import { API_BASE_URL, API_ENDPOINTS } from '../config/api';
 
 const DailySummary = () => {
   const [summaryData, setSummaryData] = useState(null);
-  const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
+  const [selectedDate] = useState(new Date().toISOString().split('T')[0]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    fetchDailySummary();
-  }, [selectedDate]);
-
-  const fetchDailySummary = async () => {
+  const fetchDailySummary = useCallback(async () => {
     try {
       setLoading(true);
       const url = `${API_BASE_URL}${API_ENDPOINTS.GET_DAILY_SUMMARY}`;
@@ -39,7 +34,11 @@ const DailySummary = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    fetchDailySummary();
+  }, [selectedDate, fetchDailySummary]);
 
   // Extract summary data from API response
   const totalOrders = summaryData?.total_orders || 0;
@@ -49,15 +48,6 @@ const DailySummary = () => {
   const totalPiecesSold = summaryData?.total_pieces_sold || 0;
   const popularSweets = summaryData?.popular_sweets || [];
   const ordersList = summaryData?.orders || [];
-
-  const getStatusColor = (status) => {
-    switch (status) {
-      case 'pending': return 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30';
-      case 'processing': return 'bg-blue-500/20 text-blue-400 border-blue-500/30';
-      case 'delivered': return 'bg-green-500/20 text-green-400 border-green-500/30';
-      default: return 'bg-gray-500/20 text-gray-400 border-gray-500/30';
-    }
-  };
 
   return (
     <div>

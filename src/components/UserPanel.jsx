@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { Loader2, RefreshCw, Sparkles, Filter, PartyPopper, Search, X } from 'lucide-react';
+import { Loader2, Sparkles, Filter, PartyPopper, Search, X } from 'lucide-react';
 import SweetCard from './SweetCard';
 import FestivalCard from './FestivalCard';
 import Hero from './Hero';
@@ -41,6 +40,7 @@ const UserPanel = () => {
         }
       }, 100);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Refetch sweets when user returns to this page (only after initial load)
@@ -62,6 +62,7 @@ const UserPanel = () => {
     return () => {
       document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initialLoadDone]);
 
   const fetchSweets = async (retryCount = 0) => {
@@ -173,7 +174,6 @@ const UserPanel = () => {
       const productName = sweet.name || sweet.sweetName || 'Traditional Sweet';
       const productPrice = sweet.rate || sweet.price || 50; // Default price fallback
       const productStock = sweet.stock !== undefined ? sweet.stock : 10; // Default stock
-      const productUnit = sweet.unit || 'piece';
 
       return {
         "@context": "https://schema.org",

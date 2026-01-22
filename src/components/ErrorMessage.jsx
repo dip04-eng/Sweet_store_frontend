@@ -1,10 +1,10 @@
 import React from 'react';
-import { motion } from 'framer-motion';
 import { AlertTriangle, Wifi, RefreshCw, Server } from 'lucide-react';
 
 const ErrorMessage = ({ 
   error, 
   onRetry, 
+  // eslint-disable-next-line no-unused-vars
   type = 'api',
   className = ''
 }) => {

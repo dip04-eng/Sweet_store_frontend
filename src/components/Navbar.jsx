@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
+import { AnimatePresence } from 'framer-motion';
 import { ShoppingCart, Menu, X, ShieldCheck } from 'lucide-react';
 import { GiCupcake } from 'react-icons/gi';
 
