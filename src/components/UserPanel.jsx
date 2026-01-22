@@ -112,17 +112,20 @@ const UserPanel = () => {
   };
 
   const addToCart = (sweet, quantity = 1) => {
+    // Round quantity to 3 decimal places
+    const roundedQuantity = Math.round(quantity * 1000) / 1000;
+    
     // Check if item already exists in cart
     const existingItemIndex = cart.findIndex(item => item._id === sweet._id);
 
     let updatedCart;
     if (existingItemIndex !== -1) {
-      // Item exists, update quantity
+      // Item exists, update quantity (round to 3 decimals)
       updatedCart = [...cart];
-      updatedCart[existingItemIndex].quantity += quantity;
+      updatedCart[existingItemIndex].quantity = Math.round((updatedCart[existingItemIndex].quantity + roundedQuantity) * 1000) / 1000;
     } else {
       // Item doesn't exist, add new item with weightUnit for Kg items
-      const newItem = { ...sweet, quantity };
+      const newItem = { ...sweet, quantity: roundedQuantity };
       if (sweet.unit === 'Kg' || sweet.unit === 'kg') {
         newItem.weightUnit = 'Kg';
       }

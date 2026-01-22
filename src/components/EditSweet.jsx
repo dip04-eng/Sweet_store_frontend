@@ -186,17 +186,24 @@ const EditSweet = () => {
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Unit
               </label>
-              <select
-                name="unit"
-                value={editForm.unit}
-                onChange={handleInputChange}
-                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              >
-                <option value="Kg">Kilogram (Kg)</option>
-                <option value="gm">Gram (gm)</option>
-                <option value="piece">Piece</option>
-                <option value="box">Box</option>
-              </select>
+              {(selectedSweet.unit === 'Kg' || selectedSweet.unit === 'kg' || selectedSweet.unit === 'gm' || selectedSweet.unit === 'grams') ? (
+                <select
+                  name="unit"
+                  value={editForm.unit}
+                  onChange={handleInputChange}
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                >
+                  <option value="Kg">Kilogram (Kg)</option>
+                  <option value="gm">Gram (gm)</option>
+                </select>
+              ) : (
+                <input
+                  type="text"
+                  value={editForm.unit === 'piece' ? 'Piece' : editForm.unit === 'box' ? 'Box' : editForm.unit}
+                  readOnly
+                  className="w-full p-3 border border-gray-300 rounded-lg bg-gray-100 text-gray-600 cursor-not-allowed"
+                />
+              )}
             </div>
 
             <div>
@@ -330,7 +337,7 @@ const EditSweet = () => {
                 <h3 className="font-semibold text-gray-900 mb-1 sm:mb-2 text-sm sm:text-base truncate">{sweet.name}</h3>
                 <div className="space-y-0.5 sm:space-y-1">
                   <p className="text-base sm:text-lg font-bold text-blue-600">
-                    Price: ₹{sweet.price !== undefined && sweet.price !== null ? sweet.price : 'Not Set'}/{sweet.unit || 'Kg'}
+                    Price: ₹{sweet.rate !== undefined && sweet.rate !== null ? sweet.rate : (sweet.price !== undefined && sweet.price !== null ? sweet.price : 'Not Set')}/{sweet.unit || 'Kg'}
                   </p>
                   <p className="text-xs sm:text-sm text-gray-500 capitalize">Category: {sweet.category || 'normal'}</p>
                   <p className="text-xs text-gray-400">Tap to edit</p>

@@ -202,9 +202,9 @@ const AdminPanel = () => {
 
             {/* Popup Content */}
             <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 w-[90%] max-w-md">
-              <div className="bg-white rounded-2xl shadow-2xl p-6">
-                <h3 className="text-xl font-bold text-gray-800 mb-4">Manage Sweets</h3>
-                <div className="grid grid-cols-3 gap-3">
+              <div className="bg-white rounded-2xl shadow-2xl p-4 sm:p-6">
+                <h3 className="text-lg sm:text-xl font-bold text-gray-800 mb-4">Manage Sweets</h3>
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-3">
                   {manageTabs.map(tab => {
                     const Icon = tab.icon;
                     return (

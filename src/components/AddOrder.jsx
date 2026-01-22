@@ -221,12 +221,12 @@ const AddOrder = () => {
       <motion.div
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
-        className="flex items-center justify-center min-h-[60vh]"
+        className="flex items-center justify-center min-h-[60vh] px-4"
       >
-        <div className="bg-white rounded-2xl shadow-xl p-12 text-center max-w-md">
-          <div className="text-6xl mb-4">✓</div>
-          <h3 className="text-2xl font-bold text-green-600 mb-2">Order Placed Successfully!</h3>
-          <p className="text-gray-600">The order has been created and customer will be notified.</p>
+        <div className="bg-white rounded-2xl shadow-xl p-6 sm:p-12 text-center w-full max-w-md">
+          <div className="text-4xl sm:text-6xl mb-4">✓</div>
+          <h3 className="text-xl sm:text-2xl font-bold text-green-600 mb-2">Order Placed Successfully!</h3>
+          <p className="text-sm sm:text-base text-gray-600">The order has been created and customer will be notified.</p>
         </div>
       </motion.div>
     );
@@ -362,16 +362,16 @@ const AddOrder = () => {
             </div>
 
             {/* Cart Summary */}
-            <div className="bg-white rounded-xl shadow-md p-6">
-              <h3 className="text-lg font-bold text-gray-800 mb-4">Cart Summary</h3>
+            <div className="bg-white rounded-xl shadow-md p-4 sm:p-6">
+              <h3 className="text-base sm:text-lg font-bold text-gray-800 mb-3 sm:mb-4">Cart Summary</h3>
               {cart.length === 0 ? (
-                <p className="text-gray-500 text-center py-4">No items added yet</p>
+                <p className="text-gray-500 text-center py-4 text-sm sm:text-base">No items added yet</p>
               ) : (
-                <div className="space-y-3">
+                <div className="space-y-2 sm:space-y-3">
                   {cart.map((item, index) => (
-                    <div key={index} className="flex items-center justify-between bg-gray-50 p-3 rounded-lg">
-                      <div className="flex-1">
-                        <p className="font-semibold text-sm">{item.name}</p>
+                    <div key={index} className="flex items-center justify-between bg-gray-50 p-2 sm:p-3 rounded-lg gap-2 flex-wrap">
+                      <div className="flex-1 min-w-0">
+                        <p className="font-semibold text-xs sm:text-sm truncate">{item.name}</p>
                         <p className="text-xs text-gray-600">₹{item.rate} per {item.unit || 'piece'}</p>
                       </div>
                       <div className="flex items-center gap-2">
@@ -385,35 +385,55 @@ const AddOrder = () => {
                           </button>
                         )}
                         <input
-                          type="number"
-                          min={(item.unit === 'Kg' || item.unit === 'kg') ? (item.weightUnit === 'grams' ? '1' : '0.01') : '1'}
-                          step={(item.unit === 'Kg' || item.unit === 'kg') ? (item.weightUnit === 'grams' ? '1' : '0.01') : '1'}
+                          type="text"
                           value={item.quantity === '' ? '' : item.quantity}
                           onChange={(e) => {
                             const inputValue = e.target.value;
                             const updatedCart = [...cart];
 
-                            // Allow empty or any input during editing
+                            // Allow empty input
                             if (inputValue === '') {
                               updatedCart[index].quantity = '';
                               setCart(updatedCart);
                               return;
                             }
 
-                            const value = parseFloat(inputValue);
-                            if (!isNaN(value)) {
-                              updatedCart[index].quantity = value;
+                            const isKgItem = item.unit === 'Kg' || item.unit === 'kg';
+
+                            // Validate input based on item type
+                            if (isKgItem) {
+                              // For Kg items, allow decimals with up to 3 decimal places
+                              if (!/^\d*\.?\d{0,3}$/.test(inputValue)) {
+                                return;
+                              }
+                              // Store as string while typing to preserve decimal point
+                              updatedCart[index].quantity = inputValue;
+                              setCart(updatedCart);
+                            } else {
+                              // For piece items, only allow whole numbers
+                              if (!/^\d+$/.test(inputValue)) {
+                                return;
+                              }
+                              updatedCart[index].quantity = parseInt(inputValue);
                               setCart(updatedCart);
                             }
                           }}
                           onBlur={(e) => {
-                            // If empty or invalid on blur, reset to minimum value
-                            const value = parseFloat(e.target.value);
-                            if (e.target.value === '' || isNaN(value) || value <= 0) {
-                              const isInGrams = item.weightUnit === 'grams';
-                              const minValue = (item.unit === 'Kg' || item.unit === 'kg') ? (isInGrams ? 1 : 0.01) : 1;
+                            // Convert to number on blur and validate
+                            const inputValue = e.target.value;
+                            const value = parseFloat(inputValue);
+                            const isKgItem = item.unit === 'Kg' || item.unit === 'kg';
+                            const isInGrams = item.weightUnit === 'grams';
+                            
+                            if (inputValue === '' || isNaN(value) || value <= 0) {
+                              const minValue = isKgItem ? (isInGrams ? 1 : 0.01) : 1;
                               const updatedCart = [...cart];
                               updatedCart[index].quantity = minValue;
+                              setCart(updatedCart);
+                            } else if (isKgItem) {
+                              // Round to 3 decimal places on blur
+                              const updatedCart = [...cart];
+                              updatedCart[index].quantity = Math.round(value * 1000) / 1000;
                               setCart(updatedCart);
                             }
                           }}

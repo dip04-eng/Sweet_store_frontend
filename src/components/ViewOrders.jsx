@@ -971,9 +971,7 @@ const ViewOrders = () => {
                               </button>
                             )}
                             <input
-                              type="number"
-                              min={item.unit === 'Kg' ? (item.weightUnit === 'grams' ? '1' : '0.01') : '1'}
-                              step={item.unit === 'Kg' ? (item.weightUnit === 'grams' ? '1' : '0.01') : '1'}
+                              type="text"
                               value={item.quantity === '' ? '' : item.quantity}
                               onChange={(e) => {
                                 const inputValue = e.target.value;
@@ -986,10 +984,25 @@ const ViewOrders = () => {
                                   return;
                                 }
 
+                                const isKgItem = item.unit === 'Kg';
+                                const isGrams = item.weightUnit === 'grams';
+
+                                // Validate input based on item type
+                                if (isKgItem) {
+                                  // For Kg items, allow decimals with up to 3 decimal places
+                                  if (!/^\d*\.?\d{0,3}$/.test(inputValue)) {
+                                    return;
+                                  }
+                                } else {
+                                  // For piece items, only allow whole numbers
+                                  if (!/^\d+$/.test(inputValue)) {
+                                    return;
+                                  }
+                                }
+
                                 const value = parseFloat(inputValue);
                                 if (!isNaN(value)) {
                                   const newItems = [...editOrderItems];
-                                  const isKgItem = item.unit === 'Kg';
                                   // Store value directly for kg items, round for piece items
                                   newItems[index].quantity = isKgItem ? value : Math.floor(value);
                                   setEditOrderItems(newItems);
@@ -1205,8 +1218,8 @@ const ViewOrders = () => {
                                 onChange={(e) => {
                                   const value = e.target.value;
                                   if (isKgItem) {
-                                    // Allow decimals for Kg items
-                                    if (value === '' || /^\d*\.?\d*$/.test(value)) {
+                                    // Allow decimals for Kg items with up to 3 decimal places
+                                    if (value === '' || /^\d*\.?\d{0,3}$/.test(value)) {
                                       setSelectedQuantity(value === '' ? '' : value);
                                     }
                                   } else {

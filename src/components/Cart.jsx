@@ -19,7 +19,15 @@ const Cart = () => {
 
     const savedCart = sessionStorage.getItem('sweetCart');
     if (savedCart) {
-      setCart(JSON.parse(savedCart));
+      const parsedCart = JSON.parse(savedCart);
+      // Round all quantities to 3 decimal places when loading from storage
+      const cleanedCart = parsedCart.map(item => ({
+        ...item,
+        quantity: item.quantity ? Math.round(item.quantity * 1000) / 1000 : item.quantity
+      }));
+      setCart(cleanedCart);
+      // Update sessionStorage with cleaned data
+      sessionStorage.setItem('sweetCart', JSON.stringify(cleanedCart));
     }
   }, []);
 
@@ -36,7 +44,8 @@ const Cart = () => {
   const updateQuantity = (index, newQuantity) => {
     if (newQuantity <= 0) return;
     const updatedCart = [...cart];
-    updatedCart[index].quantity = newQuantity;
+    // Round to 3 decimal places to prevent excessive precision
+    updatedCart[index].quantity = Math.round(newQuantity * 1000) / 1000;
     updateCart(updatedCart);
   };
 
@@ -231,12 +240,28 @@ const Cart = () => {
                                 <span className="text-white text-xs sm:text-sm font-semibold">Weight:</span>
                                 <input
                                   type="text"
-                                  value={weightInputs[index] !== undefined ? weightInputs[index] : (item.quantity > 0 ? ((item.weightUnit || 'Kg') === 'Kg' ? Number(item.quantity).toFixed(2).replace(/\.?0+$/, '') : Math.round(item.quantity * 1000)) : '0')}
+                                  value={weightInputs[index] !== undefined ? weightInputs[index] : (item.quantity > 0 ? ((item.weightUnit || 'Kg') === 'Kg' ? Number(item.quantity).toFixed(3).replace(/\.?0+$/, '') : Math.round(item.quantity * 1000)) : '0')}
                                   onFocus={(e) => e.target.select()}
+                                  onPaste={(e) => {
+                                    e.preventDefault();
+                                    const pastedText = e.clipboardData.getData('text');
+                                    // Clean pasted value to max 3 decimals
+                                    if (/^\d*\.?\d{0,3}$/.test(pastedText)) {
+                                      const syntheticEvent = { target: { value: pastedText } };
+                                      e.target.dispatchEvent(new Event('change', { bubbles: true }));
+                                    }
+                                  }}
+                                  onInput={(e) => {
+                                    // Additional safeguard - limit input length
+                                    const value = e.target.value;
+                                    if (!/^\d*\.?\d{0,3}$/.test(value)) {
+                                      e.target.value = weightInputs[index] || '';
+                                    }
+                                  }}
                                   onChange={(e) => {
                                     const inputValue = e.target.value;
-                                    // Allow decimal input with up to 2 decimal places
-                                    if (inputValue === '' || /^\d*\.?\d{0,2}$/.test(inputValue)) {
+                                    // Allow decimal input with up to 3 decimal places
+                                    if (inputValue === '' || /^\d*\.?\d{0,3}$/.test(inputValue)) {
                                       setWeightInputs({ ...weightInputs, [index]: inputValue });
 
                                       if (inputValue === '' || inputValue === '0') {
@@ -248,7 +273,9 @@ const Cart = () => {
                                       } else {
                                         const value = parseFloat(inputValue);
                                         if (!isNaN(value) && value > 0) {
-                                          const weightInKg = item.weightUnit === 'Kg' ? value : value / 1000;
+                                          // Round to 3 decimal places before converting to Kg
+                                          const roundedValue = Math.round(value * 1000) / 1000;
+                                          const weightInKg = item.weightUnit === 'Kg' ? roundedValue : roundedValue / 1000;
                                           updateQuantity(index, weightInKg);
                                         }
                                       }

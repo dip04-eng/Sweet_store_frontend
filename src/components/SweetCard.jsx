@@ -26,8 +26,8 @@ const SweetCard = ({ sweet, onAddToCart }) => {
 
   const handleWeightChange = (e) => {
     const value = e.target.value;
-    // Allow empty input and numeric values with up to 2 decimal places
-    if (value === '' || /^\d*\.?\d{0,2}$/.test(value)) {
+    // Allow empty input and numeric values with up to 3 decimal places
+    if (value === '' || /^\d*\.?\d{0,3}$/.test(value)) {
       setWeight(value);
     }
   };
@@ -45,7 +45,9 @@ const SweetCard = ({ sweet, onAddToCart }) => {
   // Convert weight to Kg for calculation
   const getWeightInKg = () => {
     const numWeight = parseFloat(weight) || 0;
-    return weightUnit === 'Kg' ? numWeight : numWeight / 1000;
+    const weightInKg = weightUnit === 'Kg' ? numWeight : numWeight / 1000;
+    // Round to 3 decimal places
+    return Math.round(weightInKg * 1000) / 1000;
   };
 
   const handleAddToCart = () => {
@@ -134,7 +136,7 @@ const SweetCard = ({ sweet, onAddToCart }) => {
                   className="flex-1 bg-[#FFD700] text-[#C41E3A] rounded-lg px-3 py-2 font-bold focus:outline-none focus:ring-2 focus:ring-white text-sm cursor-pointer"
                 >
                   <option value="Kg" className="text-[#C41E3A]">Kilogram (Kg)</option>
-                  <option value="grams" className="text-[#C41E3A]">Grams (g)</option>
+                  <option value="grams" className="text-[#C41E3A]">Grams (gm)</option>
                 </select>
               </div>
 
