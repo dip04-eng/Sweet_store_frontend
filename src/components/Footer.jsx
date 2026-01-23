@@ -11,9 +11,9 @@ const Footer = () => {
   return (
     <footer className="bg-gray-900 text-white py-8 sm:py-12">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-6">
           {/* Brand Section */}
-          <div className="space-y-4">
+          <div className="space-y-4 sm:col-span-2 lg:col-span-1">
             <div className="flex items-center space-x-3">
               <img 
                 src="/hotel_logo2-removebg-preview.png" 
@@ -151,13 +151,13 @@ const Footer = () => {
               Opening Hours
             </h4>
             <div className="space-y-2">
-              <div className="flex justify-between">
+              <div className="flex flex-col xs:flex-row xs:justify-between gap-1">
                 <span className="text-gray-300 text-sm">Monday - Saturday</span>
-                <span className="text-yellow-400 text-sm">9:00 AM - 9:00 PM</span>
+                <span className="text-yellow-400 text-sm font-medium">9:00 AM - 9:00 PM</span>
               </div>
-              <div className="flex justify-between">
+              <div className="flex flex-col xs:flex-row xs:justify-between gap-1">
                 <span className="text-gray-300 text-sm">Sunday</span>
-                <span className="text-yellow-400 text-sm">10:00 AM - 8:00 PM</span>
+                <span className="text-yellow-400 text-sm font-medium">10:00 AM - 8:00 PM</span>
               </div>
             </div>
           </div>
