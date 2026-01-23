@@ -141,42 +141,57 @@ const FestivalCard = ({ sweet, onAddToCart }) => {
               </div>
             </div>
           ) : (
-            // Quantity selector for piece items
-            <div className="flex items-center justify-center gap-3 bg-gradient-to-r from-[#C41E3A] to-[#8B0000] rounded-full px-6 py-3 w-full border-2 border-[#FFD700]/50">
-              <label className="text-sm text-white/90 font-semibold">Piece:</label>
-
-              {/* Minus Button */}
-              <motion.button
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-                onClick={() => handleQuantityChange(-1)}
-                disabled={quantity <= 1}
-                className={`p-2 rounded-full transition-all ${quantity <= 1
-                    ? 'bg-white/20 text-white/30 cursor-not-allowed'
-                    : 'bg-[#FFD700] text-[#C41E3A] hover:bg-[#FFC107]'
-                  }`}
-              >
-                <Minus className="h-4 w-4" />
-              </motion.button>
-
-              {/* Quantity Display */}
-              <div className="min-w-[60px] text-center">
-                <div className="text-2xl font-bold text-[#FFD700]">{quantity}</div>
+            // Quantity selector for piece items - with yellow pill shape like weight input
+            <div className="flex flex-col gap-2 bg-gradient-to-r from-[#FFD700] to-[#FFC107] rounded-2xl px-4 py-3 min-w-full border-2 border-[#C41E3A]/30">
+              {/* Piece label */}
+              <div className="flex items-center justify-center gap-2">
+                <label className="text-sm text-[#8B0000] font-semibold">Piece:</label>
               </div>
 
-              {/* Plus Button */}
-              <motion.button
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-                onClick={() => handleQuantityChange(1)}
-                className="p-2 rounded-full bg-[#FFD700] text-[#C41E3A] hover:bg-[#FFC107] transition-all"
-              >
-                <Plus className="h-4 w-4" />
-              </motion.button>
+              {/* Increment/Decrement controls */}
+              <div className="flex items-center justify-center gap-4">
+                {/* Minus Button */}
+                <motion.button
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
+                  onClick={() => handleQuantityChange(-1)}
+                  disabled={quantity <= 1}
+                  className={`p-2.5 rounded-lg transition-all shadow-md ${quantity <= 1
+                      ? 'bg-white/50 text-gray-400 cursor-not-allowed'
+                      : 'bg-white text-[#C41E3A] hover:bg-gray-100'
+                    }`}
+                >
+                  <Minus className="h-5 w-5" />
+                </motion.button>
 
-              <span className="text-sm text-white/90 ml-2 font-semibold">
-                ≈ ₹{(sweet.rate * quantity).toFixed(2)}
-              </span>
+                {/* Quantity Display - styled like the weight input */}
+                <div className="bg-white rounded-lg px-6 py-2 shadow-inner min-w-[80px] text-center">
+                  <span className="text-2xl font-bold text-[#C41E3A]">{quantity}</span>
+                </div>
+
+                {/* Plus Button */}
+                <motion.button
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
+                  onClick={() => handleQuantityChange(1)}
+                  className="p-2.5 rounded-lg bg-white text-[#C41E3A] hover:bg-gray-100 transition-all shadow-md"
+                >
+                  <Plus className="h-5 w-5" />
+                </motion.button>
+
+                {/* Unit badge - matching the grams dropdown style */}
+                <div className="bg-[#8B0000] text-white rounded-lg px-3 py-2 font-bold text-sm">
+                  piece
+                </div>
+              </div>
+
+              {/* Price display */}
+              <div className="text-center border-t border-[#C41E3A]/20 pt-2">
+                <span className="text-xs text-[#8B0000]/70">Total Price: </span>
+                <span className="text-lg text-[#C41E3A] font-bold">
+                  ₹{(sweet.rate * quantity).toFixed(2)}
+                </span>
+              </div>
             </div>
           )}
         </div>
