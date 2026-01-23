@@ -323,32 +323,36 @@ const Cart = () => {
                               </div>
                             </div>
                           ) : (
-                            // Quantity controls with price and delete for piece items - all in one row
-                            <div className="flex items-center gap-2 sm:gap-3 mt-3 flex-wrap">
-                              <div className="flex items-center gap-1 sm:gap-2">
+                            // Quantity controls with price and delete for piece items - yellow pill shape like Kg items
+                            <div className="mt-3 flex items-center gap-2 sm:gap-4 flex-wrap">
+                              <div className="flex items-center gap-1 sm:gap-2 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-full px-2 sm:px-4 py-1.5 sm:py-2">
+                                <span className="text-white text-xs sm:text-sm font-semibold">Piece:</span>
                                 <motion.button
                                   whileHover={{ scale: 1.1 }}
                                   whileTap={{ scale: 0.9 }}
                                   onClick={() => updateQuantity(index, (item.quantity || 1) - 1)}
                                   disabled={(item.quantity || 1) <= 1}
-                                  className={`p-1.5 sm:p-2 rounded-lg transition-all ${(item.quantity || 1) <= 1
-                                    ? 'bg-gray-100 text-gray-300 cursor-not-allowed'
-                                    : 'bg-[#C41E3A]/10 text-[#C41E3A] hover:bg-[#C41E3A]/20'
+                                  className={`p-1 sm:p-1.5 rounded-md transition-all ${(item.quantity || 1) <= 1
+                                    ? 'bg-white/50 text-gray-400 cursor-not-allowed'
+                                    : 'bg-white text-[#C41E3A] hover:bg-gray-100'
                                     }`}
                                 >
                                   <Minus className="h-3 w-3 sm:h-4 sm:w-4" />
                                 </motion.button>
-                                <div className="px-3 sm:px-4 py-1.5 sm:py-2 bg-gray-50 rounded-lg text-[#C41E3A] font-bold text-sm sm:text-base min-w-[50px] sm:min-w-[60px] text-center border-2 border-gray-200">
+                                <div className="w-12 sm:w-16 px-1 sm:px-2 py-1 text-center bg-white text-gray-900 font-bold rounded border-0 text-sm min-w-[40px]">
                                   {item.quantity || 1}
                                 </div>
                                 <motion.button
                                   whileHover={{ scale: 1.1 }}
                                   whileTap={{ scale: 0.9 }}
                                   onClick={() => updateQuantity(index, (item.quantity || 1) + 1)}
-                                  className="p-1.5 sm:p-2 rounded-lg bg-[#C41E3A]/10 text-[#C41E3A] hover:bg-[#C41E3A]/20 transition-all"
+                                  className="p-1 sm:p-1.5 rounded-md bg-white text-[#C41E3A] hover:bg-gray-100 transition-all"
                                 >
                                   <Plus className="h-3 w-3 sm:h-4 sm:w-4" />
                                 </motion.button>
+                                <div className="bg-purple-600 text-white px-3 sm:px-4 py-1.5 rounded-lg font-bold text-sm border-2 border-white shadow-md">
+                                  piece
+                                </div>
                               </div>
 
                               {/* Price with left margin and Delete button immediately to its right */}
