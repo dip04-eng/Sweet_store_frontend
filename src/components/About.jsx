@@ -49,7 +49,7 @@ const About = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#0D0D0D] via-[#1A0F0A] to-[#0D0D0D]">
+    <div className="min-h-screen bg-gradient-to-b from-[#0D0D0D] via-[#1A0F0A] to-[#0D0D0D] flex flex-col">
       {/* SEO Component */}
       <SEO
         title="About Us - Mansoor Hotel & Sweets | Family-Owned Since 1968"
@@ -61,8 +61,10 @@ const About = () => {
       {/* Navbar */}
       <Navbar cart={[]} />
 
-      {/* Hero Section */}
-      <section className="relative h-[50vh] xs:h-[60vh] sm:h-[70vh] flex items-center justify-center overflow-hidden mt-16 xs:mt-16 sm:mt-20 min-h-[400px]">
+      {/* Main Content */}
+      <main className="flex-1">
+        {/* Hero Section */}
+        <section className="relative h-[50vh] xs:h-[60vh] sm:h-[70vh] flex items-center justify-center overflow-hidden mt-16 xs:mt-16 sm:mt-20 min-h-[400px]">
         {/* Background Image */}
         <div className="absolute inset-0">
           <img
@@ -415,6 +417,7 @@ const About = () => {
           </div>
         </motion.div>
       </section>
+      </main>
 
       {/* Footer */}
       <Footer />

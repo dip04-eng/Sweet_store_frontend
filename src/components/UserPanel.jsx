@@ -250,7 +250,7 @@ const UserPanel = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#0D0D0D]">
+    <div className="min-h-screen bg-[#0D0D0D] flex flex-col">
       {/* SEO with Product Structured Data */}
       <SEO
         title="Sweet Collection"
@@ -261,11 +261,13 @@ const UserPanel = () => {
       {/* Navbar */}
       <Navbar cart={cart} />
 
-      {/* Hero Section */}
-      <Hero />
+      {/* Main Content */}
+      <main className="flex-1">
+        {/* Hero Section */}
+        <Hero />
 
-      {/* Sweets Catalog Section */}
-      <section id="sweets-collection" className="py-12 sm:py-16 md:py-20 lg:py-24 px-4 relative bg-[#E08B8B]">
+        {/* Sweets Catalog Section */}
+        <section id="sweets-collection" className="py-12 sm:py-16 md:py-20 lg:py-24 px-4 relative bg-[#E08B8B]">
         {/* Decorative BacKground Elements */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div className="absolute top-20 left-10 w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
@@ -484,6 +486,7 @@ const UserPanel = () => {
           </div>
         </section>
       )}
+      </main>
 
       {/* Footer */}
       <Footer />
