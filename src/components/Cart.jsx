@@ -235,7 +235,7 @@ const Cart = () => {
                           {/* Quantity/Weight Controls with Price and Delete */}
                           {(item.unit === 'Kg' || item.unit === 'kg') ? (
                             // Weight input with unit selector, price, and delete for Kg items - all in one row
-                            <div className="mt-3 flex items-center gap-2 sm:gap-4 flex-wrap">
+                            <div className="mt-3 flex items-center gap-2 sm:gap-3 overflow-x-auto">
                               <div className="flex items-center gap-1 sm:gap-2 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-full px-2 sm:px-4 py-1.5 sm:py-2">
                                 <span className="text-white text-xs sm:text-sm font-semibold">Weight:</span>
                                 <input
@@ -307,8 +307,9 @@ const Cart = () => {
                                 </select>
                               </div>
 
-                              {/* Price with left margin and Delete button immediately to its right */}
-                              <div className="flex items-center gap-2 ml-auto sm:ml-2">
+                              {/* Price with equals sign and Delete button */}
+                              <div className="flex items-center gap-2">
+                                <span className="text-gray-500 font-bold text-lg">=</span>
                                 <div className="text-lg sm:text-xl font-bold text-[#C41E3A]">
                                   ₹{(item.rate * (item.quantity ?? 0)).toFixed(2)}
                                 </div>
@@ -324,7 +325,7 @@ const Cart = () => {
                             </div>
                           ) : (
                             // Quantity controls with price and delete for piece items - yellow pill shape like Kg items
-                            <div className="mt-3 flex items-center gap-2 sm:gap-4 flex-wrap">
+                            <div className="mt-3 flex items-center gap-2 sm:gap-3 overflow-x-auto">
                               <div className="flex items-center gap-1 sm:gap-2 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-full px-2 sm:px-4 py-1.5 sm:py-2">
                                 <span className="text-white text-xs sm:text-sm font-semibold">Piece:</span>
                                 <motion.button
@@ -355,8 +356,9 @@ const Cart = () => {
                                 </div>
                               </div>
 
-                              {/* Price with left margin and Delete button immediately to its right */}
-                              <div className="flex items-center gap-2 ml-auto sm:ml-2">
+                              {/* Price with equals sign and Delete button */}
+                              <div className="flex items-center gap-2">
+                                <span className="text-gray-500 font-bold text-lg">=</span>
                                 <div className="text-lg sm:text-xl font-bold text-[#C41E3A]">
                                   ₹{(item.rate * (item.quantity ?? 0)).toFixed(2)}
                                 </div>
