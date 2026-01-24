@@ -288,7 +288,7 @@ const Cart = () => {
                                       setWeightInputs({ ...weightInputs, [index]: undefined });
                                     }
                                   }}
-                                  className="w-12 sm:w-16 px-1 sm:px-2 py-1 text-center bg-white text-gray-900 font-bold rounded border-0 focus:outline-none focus:ring-2 focus:ring-white text-sm"
+                                  className="w-16 sm:w-24 px-1 py-1 text-center bg-white text-gray-900 font-bold rounded border-0 focus:outline-none focus:ring-2 focus:ring-white text-sm"
                                 />
                                 <select
                                   value={item.weightUnit || 'Kg'}
@@ -300,10 +300,10 @@ const Cart = () => {
                                     sessionStorage.setItem('sweetCart', JSON.stringify(updatedCart));
                                     setWeightInputs({ ...weightInputs, [index]: undefined });
                                   }}
-                                  className="bg-purple-600 text-white px-3 sm:px-4 py-1.5 rounded-lg font-bold text-sm border-2 border-white focus:outline-none focus:ring-2 focus:ring-white cursor-pointer shadow-md min-w-[70px]"
+                                  className="bg-purple-600 text-white px-1 py-1 rounded-md font-bold text-xs border-2 border-white focus:outline-none cursor-pointer shadow-md"
                                 >
-                                  <option value="Kg" className="bg-white text-gray-900 font-semibold">Kg</option>
-                                  <option value="grams" className="bg-white text-gray-900 font-semibold">grams</option>
+                                  <option value="Kg" className="bg-white text-gray-900">Kg</option>
+                                  <option value="grams" className="bg-white text-gray-900">g</option>
                                 </select>
                               </div>
 
