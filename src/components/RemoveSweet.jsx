@@ -3,6 +3,53 @@ import { Trash, AlertTriangle, Search, Calendar, PartyPopper } from 'lucide-reac
 import { motion, AnimatePresence } from 'framer-motion';
 import { API_BASE_URL, API_ENDPOINTS } from '../config/api';
 
+// Toast component for flash messages
+const Toast = ({ message, show, onClose }) => (
+  <AnimatePresence>
+    {show && (
+      <motion.div
+        initial={{ opacity: 0, y: 40 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: 40 }}
+        transition={{ duration: 0.3 }}
+        style={{
+          position: 'fixed',
+          bottom: '2rem',
+          right: '2rem',
+          zIndex: 9999,
+          background: 'linear-gradient(90deg, #38ef7d 0%, #11998e 100%)',
+          color: '#fff',
+          padding: '1rem 2rem',
+          borderRadius: '1rem',
+          boxShadow: '0 2px 12px rgba(0,0,0,0.15)',
+          fontWeight: 600,
+          fontSize: '1rem',
+          minWidth: '220px',
+          display: 'flex',
+          alignItems: 'center',
+        }}
+      >
+        <span style={{ flex: 1 }}>{message}</span>
+        <button
+          onClick={onClose}
+          style={{
+            marginLeft: '1rem',
+            background: 'rgba(255,255,255,0.15)',
+            border: 'none',
+            color: '#fff',
+            borderRadius: '0.5rem',
+            padding: '0.3rem 0.8rem',
+            cursor: 'pointer',
+            fontWeight: 500,
+          }}
+        >
+          ×
+        </button>
+      </motion.div>
+    )}
+  </AnimatePresence>
+);
+
 const RemoveSweet = () => {
   const [sweets, setSweets] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
@@ -11,6 +58,9 @@ const RemoveSweet = () => {
   const [error, setError] = useState(null);
   const [isDeleting, setIsDeleting] = useState(false);
   const [selectedType, setSelectedType] = useState('normal'); // Default to 'normal'
+
+  const [toastMsg, setToastMsg] = useState('');
+  const [showToast, setShowToast] = useState(false);
 
   useEffect(() => {
     fetchSweets();
@@ -60,7 +110,7 @@ const RemoveSweet = () => {
     setIsDeleting(true);
     try {
       const response = await fetch(
-        `${API_BASE_URL}${API_ENDPOINTS.REMOVE_SWEET}?name=${encodeURIComponent(sweetToDelete.name)}`,
+        `${API_BASE_URL}${API_ENDPOINTS.REMOVE_SWEET}?id=${sweetToDelete.id}`,
         {
           method: 'DELETE',
         }
@@ -77,9 +127,13 @@ const RemoveSweet = () => {
       // Remove from local state using functional update to avoid stale state
       setSweets(prevSweets => prevSweets.filter(sweet => sweet.id !== deletedSweetId));
       setSweetToDelete(null);
-      alert(`${deletedSweetName} has been removed from inventory.`);
+      setToastMsg(`${deletedSweetName} has been removed from inventory.`);
+      setShowToast(true);
+      setTimeout(() => setShowToast(false), 3000);
     } catch (err) {
-      alert(`Error: ${err.message}`);
+      setToastMsg(`Error: ${err.message}`);
+      setShowToast(true);
+      setTimeout(() => setShowToast(false), 3000);
       console.error('Error removing sweet:', err);
     } finally {
       setIsDeleting(false);
@@ -271,6 +325,7 @@ const RemoveSweet = () => {
           </motion.div>
         )}
       </AnimatePresence>
+      <Toast message={toastMsg} show={showToast} onClose={() => setShowToast(false)} />
     </div>
   );
 };
