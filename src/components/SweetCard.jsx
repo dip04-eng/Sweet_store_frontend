@@ -154,8 +154,8 @@ const SweetCard = ({ sweet, onAddToCart }) => {
             </div>
           ) : (
             // Quantity selector for piece items
-            <div className="flex items-center justify-center gap-3 bg-gradient-to-r from-[#C41E3A] to-[#8B0000] rounded-full px-6 py-3 w-full border-2 border-[#FFD700]/50">
-              <label className="text-sm text-white/90 font-semibold">Piece:</label>
+            <div className="flex items-center justify-between gap-2 bg-gradient-to-r from-[#C41E3A] to-[#8B0000] rounded-full px-3 py-2 w-full border-2 border-[#FFD700]/50">
+              <span className="text-xs text-white font-semibold">Piece:</span>
 
               {/* Minus Button */}
               <motion.button
@@ -163,7 +163,7 @@ const SweetCard = ({ sweet, onAddToCart }) => {
                 whileTap={{ scale: 0.9 }}
                 onClick={() => handleQuantityChange(-1)}
                 disabled={quantity <= 1}
-                className={`p-2 rounded-full transition-all ${quantity <= 1
+                className={`w-7 h-7 flex items-center justify-center rounded-full transition-all ${quantity <= 1
                     ? 'bg-white/20 text-white/30 cursor-not-allowed'
                     : 'bg-[#FFD700] text-[#C41E3A] hover:bg-[#FFC107]'
                   }`}
@@ -172,8 +172,8 @@ const SweetCard = ({ sweet, onAddToCart }) => {
               </motion.button>
 
               {/* Quantity Display */}
-              <div className="min-w-[60px] text-center">
-                <div className="text-2xl font-bold text-[#FFD700]">{quantity}</div>
+              <div className="min-w-[28px] text-center">
+                <span className="text-lg font-bold text-[#FFD700]">{quantity}</span>
               </div>
 
               {/* Plus Button */}
@@ -181,13 +181,13 @@ const SweetCard = ({ sweet, onAddToCart }) => {
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
                 onClick={() => handleQuantityChange(1)}
-                className="p-2 rounded-full bg-[#FFD700] text-[#C41E3A] hover:bg-[#FFC107] transition-all"
+                className="w-7 h-7 flex items-center justify-center rounded-full bg-[#FFD700] text-[#C41E3A] hover:bg-[#FFC107] transition-all"
               >
                 <Plus className="h-4 w-4" />
               </motion.button>
 
-              <span className="text-sm text-white/90 ml-2 font-semibold">
-                ≈ ₹{(sweet.rate * quantity).toFixed(2)}
+              <span className="text-xs text-[#FFD700] font-bold whitespace-nowrap">
+                = ₹{(sweet.rate * quantity).toFixed(0)}
               </span>
             </div>
           )}

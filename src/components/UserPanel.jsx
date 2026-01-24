@@ -303,22 +303,22 @@ const UserPanel = () => {
             className="mb-6 sm:mb-8 max-w-xl mx-auto px-3 xs:px-4"
           >
             <div className="relative">
-              <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                <Search className="h-5 w-5 text-[#C41E3A]" />
+              <div className="absolute inset-y-0 left-0 pl-3 sm:pl-4 flex items-center pointer-events-none z-10">
+                <Search className="h-4 w-4 sm:h-5 sm:w-5 text-[#C41E3A]" />
               </div>
               <input
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search for sweets, snacks, dry fruits..."
-                className="w-full pl-12 pr-12 py-3 sm:py-4 rounded-full border-2 border-[#C41E3A]/30 bg-white/95 backdrop-blur-sm text-gray-800 placeholder-gray-500 focus:outline-none focus:border-[#C41E3A] focus:ring-2 focus:ring-[#C41E3A]/20 transition-all shadow-lg text-sm sm:text-base"
+                placeholder="Search sweets, snacks..."
+                className="w-full pl-10 sm:pl-12 pr-10 sm:pr-12 py-3 sm:py-4 rounded-full border-2 border-[#C41E3A]/30 bg-white/95 backdrop-blur-sm text-gray-800 placeholder-gray-500 focus:outline-none focus:border-[#C41E3A] focus:ring-2 focus:ring-[#C41E3A]/20 transition-all shadow-lg text-sm sm:text-base"
               />
               {searchQuery && (
                 <button
                   onClick={() => setSearchQuery('')}
-                  className="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-[#C41E3A] transition-colors"
+                  className="absolute inset-y-0 right-0 pr-3 sm:pr-4 flex items-center text-gray-400 hover:text-[#C41E3A] transition-colors z-10"
                 >
-                  <X className="h-5 w-5" />
+                  <X className="h-4 w-4 sm:h-5 sm:w-5" />
                 </button>
               )}
             </div>
