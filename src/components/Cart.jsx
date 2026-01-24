@@ -77,11 +77,11 @@ const Cart = () => {
 
   if (orderPlaced) {
     return (
-      <div className="min-h-screen bg-[#FFFBF5] flex items-center justify-center px-4">
+      <div className="min-h-screen bg-[#FFFBF5] flex items-center justify-center px-3 xs:px-4">
         <motion.div
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
-          className="bg-white border-2 border-[#C41E3A]/20 rounded-2xl shadow-xl p-10 sm:p-12 md:p-16 text-center max-w-md w-full"
+          className="bg-white border-2 border-[#C41E3A]/20 rounded-2xl shadow-xl p-6 xs:p-8 sm:p-10 md:p-12 text-center max-w-md w-full"
         >
           <div className="text-6xl sm:text-7xl mb-6">✓</div>
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#C41E3A] mb-4 font-['Playfair_Display']">
@@ -105,18 +105,18 @@ const Cart = () => {
     <div className="min-h-screen bg-[#FFFBF5] flex flex-col">
       <Navbar cart={cart} />
 
-      <div className="flex-1 pt-20 xs:pt-24 sm:pt-24 md:pt-28 pb-16 px-3 xs:px-4 sm:px-6 safe-area-insets">
+      <div className="flex-1 pt-20 xs:pt-22 sm:pt-24 md:pt-28 pb-12 xs:pb-16 px-3 xs:px-4 sm:px-6 safe-area-insets">
         <div className="max-w-6xl mx-auto">
           {/* Header */}
           <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="relative mb-8 sm:mb-12"
+            className="relative mb-6 xs:mb-8 sm:mb-10 md:mb-12"
           >
             {/* Gradient BacKground */}
             <div className="absolute inset-0 bg-gradient-to-r from-purple-500/10 via-pink-500/10 to-red-500/10 rounded-3xl blur-xl"></div>
 
-            <div className="relative bg-white/80 backdrop-blur-sm border-2 border-purple-200/50 rounded-2xl p-6 sm:p-8 shadow-xl">
+            <div className="relative bg-white/80 backdrop-blur-sm border-2 border-purple-200/50 rounded-2xl p-4 xs:p-5 sm:p-6 md:p-8 shadow-xl">
               <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
                 <Link
                   to="/"
@@ -145,7 +145,7 @@ const Cart = () => {
                   >
                     <ShoppingCart className="h-8 w-8 sm:h-10 sm:w-10 text-[#C41E3A] drop-shadow-lg" />
                   </motion.div>
-                  <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-[#C41E3A] via-[#FF1744] to-[#C41E3A] bg-clip-text text-transparent font-['Playfair_Display'] drop-shadow-sm">
+                  <h1 className="text-xl xs:text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-[#C41E3A] via-[#FF1744] to-[#C41E3A] bg-clip-text text-transparent font-['Playfair_Display'] drop-shadow-sm">
                     Your Sweet Cart
                   </h1>
                 </div>
@@ -162,7 +162,7 @@ const Cart = () => {
               {/* Animated gradient bacKground */}
               <div className="absolute inset-0 bg-gradient-to-br from-purple-400/20 via-pink-400/20 to-red-400/20 rounded-3xl blur-2xl animate-pulse"></div>
 
-              <div className="relative bg-white/90 backdrop-blur-md border-2 border-purple-200 rounded-3xl shadow-2xl p-12 sm:p-16 text-center overflow-hidden">
+              <div className="relative bg-white/90 backdrop-blur-md border-2 border-purple-200 rounded-3xl shadow-2xl p-8 xs:p-10 sm:p-12 md:p-16 text-center overflow-hidden">
                 {/* Decorative elements */}
                 <div className="absolute top-0 left-0 w-32 h-32 bg-gradient-to-br from-yellow-300/30 to-orange-300/30 rounded-full blur-3xl"></div>
                 <div className="absolute bottom-0 right-0 w-40 h-40 bg-gradient-to-tl from-pink-300/30 to-purple-300/30 rounded-full blur-3xl"></div>
@@ -182,7 +182,7 @@ const Cart = () => {
                   <ShoppingBag className="h-24 w-24 text-[#C41E3A]/70 mx-auto mb-6 drop-shadow-lg" />
                 </motion.div>
 
-                <h2 className="relative z-10 text-3xl sm:text-4xl font-bold bg-gradient-to-r from-[#C41E3A] to-[#FF1744] bg-clip-text text-transparent mb-4 font-['Playfair_Display']">
+                <h2 className="relative z-10 text-2xl xs:text-3xl sm:text-4xl font-bold bg-gradient-to-r from-[#C41E3A] to-[#FF1744] bg-clip-text text-transparent mb-4 font-['Playfair_Display']">
                   Your cart is empty
                 </h2>
                 <p className="relative z-10 text-gray-600 mb-8 text-lg">

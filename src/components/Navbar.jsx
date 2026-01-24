@@ -64,8 +64,8 @@ const Navbar = ({ cart = [] }) => {
       role="navigation"
       aria-label="Main navigation"
     >
-      <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16 sm:h-18 md:h-20 lg:h-22">
+      <div className="max-w-7xl mx-auto px-3 xs:px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center h-16 sm:h-18 md:h-20">
           {/* Logo & Brand */}
           <Link to="/" onClick={handleLogoClick} className="flex items-center gap-2 sm:gap-3 md:gap-4 group touch-manipulation hover:opacity-90 transition-opacity" aria-label="Mansoor Hotel & Sweets - Home">
             <motion.div

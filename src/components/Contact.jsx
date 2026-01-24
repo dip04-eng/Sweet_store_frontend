@@ -94,7 +94,7 @@ const Contact = () => {
       {/* Main Content */}
       <main className="flex-1">
         {/* Hero Section */}
-        <section className="relative pt-28 xs:pt-32 sm:pt-32 md:pt-36 pb-12 xs:pb-16 px-3 xs:px-4 sm:px-6">
+        <section className="relative pt-24 xs:pt-28 sm:pt-32 md:pt-36 pb-10 xs:pb-12 sm:pb-16 px-3 xs:px-4 sm:px-6">
         <div className="absolute inset-0 bg-gradient-to-br from-[#C41E3A]/5 to-transparent pointer-events-none"></div>
         <div className="max-w-7xl mx-auto relative">
           <motion.div

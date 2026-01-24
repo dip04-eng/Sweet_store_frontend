@@ -267,7 +267,7 @@ const UserPanel = () => {
         <Hero />
 
         {/* Sweets Catalog Section */}
-        <section id="sweets-collection" className="py-12 sm:py-16 md:py-20 lg:py-24 px-4 relative bg-[#E08B8B]">
+        <section id="sweets-collection" className="py-8 xs:py-10 sm:py-12 md:py-16 lg:py-20 px-3 xs:px-4 sm:px-6 relative bg-[#E08B8B]">
         {/* Decorative BacKground Elements */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div className="absolute top-20 left-10 w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
@@ -283,11 +283,11 @@ const UserPanel = () => {
             className="text-center mb-8 sm:mb-12 md:mb-16"
           >
             <div className="flex items-center justify-center mb-4">
-              <Sparkles className="h-5 w-5 sm:h-6 sm:w-6 text-white mr-2" />
-              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white font-['Playfair_Display']">
+              <Sparkles className="h-4 w-4 xs:h-5 xs:w-5 sm:h-6 sm:w-6 text-white mr-2" />
+              <h2 className="text-xl xs:text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white font-['Playfair_Display']">
                 Our Sweet Collection
               </h2>
-              <Sparkles className="h-5 w-5 sm:h-6 sm:w-6 text-white ml-2" />
+              <Sparkles className="h-4 w-4 xs:h-5 xs:w-5 sm:h-6 sm:w-6 text-white ml-2" />
             </div>
             <p className="text-white/80 text-sm sm:text-base md:text-lg max-w-2xl mx-auto px-4">
               Handcrafted with love, tradition, and the finest ingredients
@@ -300,7 +300,7 @@ const UserPanel = () => {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="mb-6 sm:mb-8 max-w-xl mx-auto px-4"
+            className="mb-6 sm:mb-8 max-w-xl mx-auto px-3 xs:px-4"
           >
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
@@ -342,7 +342,7 @@ const UserPanel = () => {
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={() => setSelectedCategory(category)}
-                  className={`px-3 sm:px-4 md:px-6 py-2 sm:py-2.5 rounded-full font-semibold transition-all shadow-md text-xs sm:text-sm md:text-base touch-manipulation min-h-[44px] ${selectedCategory === category
+                  className={`px-4 xs:px-5 sm:px-6 py-2.5 sm:py-3 rounded-full font-semibold transition-all shadow-md text-xs xs:text-sm sm:text-base touch-manipulation min-h-[44px] ${selectedCategory === category
                     ? 'bg-white text-[#C41E3A] shadow-lg'
                     : 'bg-white/20 text-white hover:bg-white/30 backdrop-blur-sm'
                     }`}

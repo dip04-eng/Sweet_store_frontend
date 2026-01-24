@@ -63,7 +63,7 @@ const FestivalCard = ({ sweet, onAddToCart }) => {
           src={sweet.image || 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="300"%3E%3Crect fill="%23FFD700" width="400" height="300"/%3E%3Ctext fill="%230D0D0D" font-size="24" font-weight="bold" x="50%25" y="50%25" text-anchor="middle" dominant-baseline="middle"%3E🍬 Sweet%3C/text%3E%3C/svg%3E'}
           alt={sweet.name}
           loading="lazy"
-          className="w-full h-36 xs:h-40 sm:h-44 md:h-48 object-cover img-responsive"
+          className="w-full h-40 xs:h-44 sm:h-48 md:h-52 lg:h-56 object-cover img-responsive"
           onError={(e) => {
             e.target.src = `data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="300" style="bacKground:%23FFD700"%3E%3Crect fill="%23FFD700" width="400" height="300"/%3E%3Ctext fill="%23C41E3A" font-size="20" font-weight="bold" x="50%25" y="40%25" text-anchor="middle" dominant-baseline="middle"%3E🍬%3C/text%3E%3Ctext fill="%23C41E3A" font-size="16" font-weight="bold" x="50%25" y="60%25" text-anchor="middle" dominant-baseline="middle"%3E${encodeURIComponent(sweet.name || 'Sweet')}%3C/text%3E%3C/svg%3E`;
           }}
@@ -74,9 +74,9 @@ const FestivalCard = ({ sweet, onAddToCart }) => {
       </div>
 
       {/* Content */}
-      <div className="p-3 xs:p-4 sm:p-5 md:p-6 spacing-responsive">
+      <div className="p-4 xs:p-5 sm:p-6 spacing-responsive">
         {/* Title */}
-        <h3 className="text-lg sm:text-xl font-bold text-[#C41E3A] mb-2 truncate font-['Playfair_Display']">
+        <h3 className="text-base xs:text-lg sm:text-xl font-bold text-[#C41E3A] mb-2 truncate font-['Playfair_Display']">
           {sweet.name}
         </h3>
 

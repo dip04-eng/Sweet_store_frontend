@@ -64,7 +64,7 @@ const About = () => {
       {/* Main Content */}
       <main className="flex-1">
         {/* Hero Section */}
-        <section className="relative h-[50vh] xs:h-[60vh] sm:h-[70vh] flex items-center justify-center overflow-hidden mt-16 xs:mt-16 sm:mt-20 min-h-[400px]">
+        <section className="relative h-[45vh] xs:h-[50vh] sm:h-[60vh] md:h-[70vh] flex items-center justify-center overflow-hidden mt-16 xs:mt-18 sm:mt-20 min-h-[350px] xs:min-h-[400px]">
         {/* Background Image */}
         <div className="absolute inset-0">
           <img
@@ -94,7 +94,7 @@ const About = () => {
               </div>
             </motion.div>
 
-            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-4 font-['Playfair_Display']">
+            <h1 className="text-3xl xs:text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-4 font-['Playfair_Display']">
               Our <span className="text-[#FFD700]">Sweet</span> Story
             </h1>
             <motion.p

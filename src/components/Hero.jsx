@@ -10,7 +10,7 @@ const Hero = () => {
   };
 
   return (
-    <div className="relative h-screen w-full overflow-hidden min-h-[600px] hero-responsive" role="banner" aria-label="Welcome to Mansoor Hotel & Sweets">
+    <div className="relative h-screen w-full overflow-hidden min-h-[500px] sm:min-h-[600px] hero-responsive" role="banner" aria-label="Welcome to Mansoor Hotel & Sweets">
       {/* Background Image */}
       <div className="absolute inset-0">
         <img
@@ -34,7 +34,7 @@ const Hero = () => {
       </div>
 
       {/* Hero Content - Mobile First Design */}
-      <div className="relative z-10 h-full flex items-center justify-center px-4 sm:px-6 md:px-8 py-20 sm:py-16">
+      <div className="relative z-10 h-full flex items-center justify-center px-3 xs:px-4 sm:px-6 md:px-8 py-16 sm:py-20">
         <div className="max-w-5xl mx-auto text-center w-full">
           {/* Animated Title */}
           <motion.div
@@ -52,7 +52,7 @@ const Hero = () => {
               Welcome to
             </motion.p>
 
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white leading-tight font-['Playfair_Display'] drop-shadow-2xl px-2">
+            <h1 className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white leading-tight font-['Playfair_Display'] drop-shadow-2xl px-2">
               <motion.span
                 initial={{ opacity: 0, x: -50 }}
                 animate={{ opacity: 1, x: 0 }}
@@ -75,7 +75,7 @@ const Hero = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 1.1 }}
-              className="text-lg sm:text-xl md:text-2xl lg:text-3xl text-[#FFD700] font-['Playfair_Display'] italic mt-2 sm:mt-4 drop-shadow-lg"
+              className="text-base xs:text-lg sm:text-xl md:text-2xl lg:text-3xl text-[#FFD700] font-['Playfair_Display'] italic mt-2 sm:mt-4 drop-shadow-lg"
             >
               MANSOOR & SONS
             </motion.p>
@@ -86,7 +86,7 @@ const Hero = () => {
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 1.3 }}
-            className="text-base sm:text-lg md:text-xl lg:text-2xl text-white mt-4 sm:mt-6 md:mt-8 mb-8 sm:mb-10 md:mb-12 max-w-3xl mx-auto leading-relaxed drop-shadow-lg px-4"
+            className="text-sm xs:text-base sm:text-lg md:text-xl lg:text-2xl text-white mt-3 xs:mt-4 sm:mt-6 md:mt-8 mb-6 xs:mb-8 sm:mb-10 md:mb-12 max-w-3xl mx-auto leading-relaxed drop-shadow-lg px-3 xs:px-4"
           >
             <span className="text-shadow-strong">Taste Happiness in Every Bite</span>
             <span className="block mt-2 text-sm sm:text-base md:text-lg text-[#FFD700] drop-shadow-lg">
