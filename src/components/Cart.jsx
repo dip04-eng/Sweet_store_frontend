@@ -174,17 +174,14 @@ const Cart = () => {
                           </h3>
                           <p className="text-xs sm:text-sm text-gray-500 mt-0.5">
                             {item.unit === 'Kg' || item.unit === 'kg'
-                              ? `${((item.quantity || 0) * 1000).toFixed(0)}g`
+                              ? `${Number(item.quantity || 0).toFixed(3).replace(/\.?0+$/, '')} Kg`
                               : `${item.quantity || 1} piece${(item.quantity || 1) > 1 ? 's' : ''}`}
                           </p>
 
                           {/* Price */}
-                          <div className="mt-2 flex items-baseline gap-2">
+                          <div className="mt-2">
                             <span className="text-base sm:text-lg font-semibold text-gray-900">
                               ₹{(item.rate * (item.quantity || 1)).toFixed(0)}
-                            </span>
-                            <span className="text-xs sm:text-sm text-gray-500 line-through">
-                              ₹{Math.round(item.rate * (item.quantity || 1) * 1.1)}
                             </span>
                           </div>
                         </div>
@@ -240,7 +237,7 @@ const Cart = () => {
                                 className="px-2 py-1.5 bg-white text-gray-700 font-medium text-sm border border-gray-300 rounded focus:outline-none focus:border-[#2874f0] cursor-pointer"
                               >
                                 <option value="Kg">Kg</option>
-                                <option value="grams">g</option>
+                                <option value="grams">gm</option>
                               </select>
                             </div>
                           ) : (
@@ -295,13 +292,13 @@ const Cart = () => {
                         ₹{getTotalAmount().toFixed(0)}
                       </p>
                     </div>
-                    <Link
+                    {/* <Link
                       to="#"
                       onClick={(e) => e.preventDefault()}
                       className="text-[#2874f0] text-xs sm:text-sm hover:underline"
                     >
                       View price details
-                    </Link>
+                    </Link> */}
                   </div>
 
                   {/* Place Order Button */}
