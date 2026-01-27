@@ -1065,7 +1065,7 @@ const ViewOrders = () => {
                                   setEditForm(f => ({ ...f, total: newTotal }));
                                 }
                               }}
-                              className="w-16 text-center font-semibold text-sm border border-gray-300 rounded px-1 py-1 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                              className="w-20 text-center font-semibold text-sm border border-gray-300 rounded px-1 py-1 focus:outline-none focus:ring-2 focus:ring-purple-500"
                             />
                             {(item.unit !== 'Kg' && item.unit !== 'kg') && (
                               <button
