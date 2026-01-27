@@ -225,7 +225,7 @@ const Cart = () => {
                                     setWeightInputs({ ...weightInputs, [index]: undefined });
                                   }
                                 }}
-                                className="w-14 sm:w-16 px-2 py-1.5 text-center bg-white text-gray-900 font-medium rounded border border-gray-300 focus:outline-none focus:border-[#2874f0] text-sm"
+                                className="w-20 sm:w-24 px-2 py-1.5 text-center bg-white text-gray-900 font-medium rounded border border-gray-300 focus:outline-none focus:border-[#2874f0] text-sm"
                               />
                               <select
                                 value={item.weightUnit || 'Kg'}
@@ -250,8 +250,8 @@ const Cart = () => {
                                 onClick={() => updateQuantity(index, (item.quantity || 1) - 1)}
                                 disabled={(item.quantity || 1) <= 1}
                                 className={`w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center rounded-full border ${(item.quantity || 1) <= 1
-                                    ? 'border-gray-200 text-gray-300 cursor-not-allowed'
-                                    : 'border-gray-300 text-gray-600 hover:bg-gray-50 cursor-pointer'
+                                  ? 'border-gray-200 text-gray-300 cursor-not-allowed'
+                                  : 'border-gray-300 text-gray-600 hover:bg-gray-50 cursor-pointer'
                                   }`}
                               >
                                 <Minus className="h-3 w-3 sm:h-4 sm:w-4" />
