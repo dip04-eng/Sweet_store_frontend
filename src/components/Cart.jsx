@@ -77,22 +77,24 @@ const Cart = () => {
 
   if (orderPlaced) {
     return (
-      <div className="min-h-screen bg-[#FFFBF5] flex items-center justify-center px-3 xs:px-4">
+      <div className="min-h-screen bg-gray-100 flex items-center justify-center px-4">
         <motion.div
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
-          className="bg-white border-2 border-[#C41E3A]/20 rounded-2xl shadow-xl p-6 xs:p-8 sm:p-10 md:p-12 text-center max-w-md w-full"
+          className="bg-white rounded-lg shadow-lg p-8 sm:p-12 text-center max-w-md w-full"
         >
-          <div className="text-6xl sm:text-7xl mb-6">✓</div>
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#C41E3A] mb-4 font-['Playfair_Display']">
+          <div className="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-6">
+            <span className="text-white text-3xl">✓</span>
+          </div>
+          <h2 className="text-2xl sm:text-3xl font-semibold text-gray-800 mb-4">
             Order Placed Successfully!
           </h2>
-          <p className="text-gray-600 mb-8 leading-relaxed">
+          <p className="text-gray-600 mb-8">
             Thank you for your order. We'll prepare your delicious sweets with care!
           </p>
           <Link
             to="/"
-            className="inline-flex items-center bg-[#C41E3A] text-white px-8 py-3 rounded-lg font-semibold shadow-lg hover:bg-[#A01828] transition-colors"
+            className="inline-flex items-center bg-[#2874f0] text-white px-8 py-3 rounded-sm font-medium shadow hover:bg-[#1a5dc9] transition-colors"
           >
             Continue Shopping
           </Link>
@@ -102,277 +104,176 @@ const Cart = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[#FFFBF5] flex flex-col">
+    <div className="min-h-screen bg-gray-100 flex flex-col">
       <Navbar cart={cart} />
 
-      <div className="flex-1 pt-20 xs:pt-22 sm:pt-24 md:pt-28 pb-12 xs:pb-16 px-3 xs:px-4 sm:px-6 safe-area-insets">
-        <div className="max-w-6xl mx-auto">
+      <div className="flex-1 pt-20 sm:pt-24 pb-8 px-2 sm:px-4 md:px-6 lg:px-8">
+        <div className="max-w-5xl mx-auto">
           {/* Header */}
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="relative mb-6 xs:mb-8 sm:mb-10 md:mb-12"
-          >
-            {/* Gradient BacKground */}
-            <div className="absolute inset-0 bg-gradient-to-r from-purple-500/10 via-pink-500/10 to-red-500/10 rounded-3xl blur-xl"></div>
-
-            <div className="relative bg-white/80 backdrop-blur-sm border-2 border-purple-200/50 rounded-2xl p-4 xs:p-5 sm:p-6 md:p-8 shadow-xl">
-              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-                <Link
-                  to="/"
-                  className="flex items-center text-[#C41E3A] hover:text-[#A01828] transition-all hover:scale-105 font-semibold group"
-                >
-                  <motion.div
-                    whileHover={{ x: -5 }}
-                    className="mr-2"
-                  >
-                    <ArrowLeft className="h-5 w-5 sm:h-6 sm:w-6 group-hover:drop-shadow-lg" />
-                  </motion.div>
-                  <span className="text-sm sm:text-base">Back to Store</span>
-                </Link>
-                <div className="hidden sm:block h-8 w-px bg-gradient-to-b from-purple-300 via-pink-300 to-red-300"></div>
-                <div className="flex items-center gap-3">
-                  <motion.div
-                    animate={{
-                      rotate: [0, 10, -10, 0],
-                      scale: [1, 1.1, 1]
-                    }}
-                    transition={{
-                      duration: 2,
-                      repeat: Infinity,
-                      repeatDelay: 3
-                    }}
-                  >
-                    <ShoppingCart className="h-8 w-8 sm:h-10 sm:w-10 text-[#C41E3A] drop-shadow-lg" />
-                  </motion.div>
-                  <h1 className="text-xl xs:text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-[#C41E3A] via-[#FF1744] to-[#C41E3A] bg-clip-text text-transparent font-['Playfair_Display'] drop-shadow-sm">
-                    Your Sweet Cart
-                  </h1>
-                </div>
-              </div>
-            </div>
-          </motion.div>
+          <div className="mb-4">
+            <Link
+              to="/"
+              className="inline-flex items-center text-[#2874f0] hover:underline text-sm mb-4"
+            >
+              <ArrowLeft className="h-4 w-4 mr-1" />
+              Back to Store
+            </Link>
+          </div>
 
           {cart.length === 0 ? (
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              className="relative max-w-2xl mx-auto"
-            >
-              {/* Animated gradient bacKground */}
-              <div className="absolute inset-0 bg-gradient-to-br from-purple-400/20 via-pink-400/20 to-red-400/20 rounded-3xl blur-2xl animate-pulse"></div>
-
-              <div className="relative bg-white/90 backdrop-blur-md border-2 border-purple-200 rounded-3xl shadow-2xl p-8 xs:p-10 sm:p-12 md:p-16 text-center overflow-hidden">
-                {/* Decorative elements */}
-                <div className="absolute top-0 left-0 w-32 h-32 bg-gradient-to-br from-yellow-300/30 to-orange-300/30 rounded-full blur-3xl"></div>
-                <div className="absolute bottom-0 right-0 w-40 h-40 bg-gradient-to-tl from-pink-300/30 to-purple-300/30 rounded-full blur-3xl"></div>
-
-                <motion.div
-                  animate={{
-                    y: [0, -10, 0],
-                    rotate: [0, 5, -5, 0]
-                  }}
-                  transition={{
-                    duration: 3,
-                    repeat: Infinity,
-                    ease: "easeInOut"
-                  }}
-                  className="relative z-10"
-                >
-                  <ShoppingBag className="h-24 w-24 text-[#C41E3A]/70 mx-auto mb-6 drop-shadow-lg" />
-                </motion.div>
-
-                <h2 className="relative z-10 text-2xl xs:text-3xl sm:text-4xl font-bold bg-gradient-to-r from-[#C41E3A] to-[#FF1744] bg-clip-text text-transparent mb-4 font-['Playfair_Display']">
-                  Your cart is empty
-                </h2>
-                <p className="relative z-10 text-gray-600 mb-8 text-lg">
-                  Add some delicious sweets to get started!
-                </p>
-                <Link
-                  to="/#sweets-collection"
-                  className="relative z-10 inline-flex items-center bg-gradient-to-r from-[#C41E3A] to-[#FF1744] text-white px-10 py-4 rounded-xl font-semibold shadow-2xl hover:shadow-[#C41E3A]/50 hover:scale-105 transition-all duration-300"
-                >
-                  <ShoppingBag className="h-5 w-5 mr-2" />
-                  Browse Sweets
-                </Link>
-              </div>
-            </motion.div>
+            <div className="bg-white rounded-sm shadow p-8 sm:p-16 text-center">
+              <ShoppingBag className="h-20 w-20 text-gray-300 mx-auto mb-6" />
+              <h2 className="text-xl sm:text-2xl font-medium text-gray-800 mb-2">
+                Your cart is empty
+              </h2>
+              <p className="text-gray-500 mb-8">
+                Add some delicious sweets to get started!
+              </p>
+              <Link
+                to="/#sweets-collection"
+                className="inline-flex items-center bg-[#2874f0] text-white px-8 py-3 rounded-sm font-medium shadow hover:bg-[#1a5dc9] transition-colors"
+              >
+                Browse Sweets
+              </Link>
+            </div>
           ) : (
-            <div className="grid lg:grid-cols-3 gap-6 md:gap-8">
-              {/* Cart Items */}
-              <div className="lg:col-span-2 space-y-4">
+            <div className="space-y-4">
+              {/* Cart Items Container */}
+              <div className="bg-white rounded-sm shadow">
+                {/* Cart Header */}
+                <div className="p-4 border-b border-gray-200">
+                  <h1 className="text-lg font-medium text-gray-800">
+                    My Cart ({getTotalItems()})
+                  </h1>
+                </div>
+
+                {/* Cart Items */}
                 <AnimatePresence>
                   {cart.map((item, index) => (
                     <motion.div
                       key={`${item.id}-${index}`}
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      exit={{ opacity: 0, x: 20 }}
-                      transition={{ delay: index * 0.1 }}
-                      whileHover={{ scale: 1.02, y: -4 }}
-                      className="relative bg-white border-2 border-purple-100 rounded-2xl shadow-lg p-3 sm:p-4 md:p-6 hover:shadow-2xl hover:shadow-purple-200/50 hover:border-purple-300 transition-all duration-300 overflow-hidden"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0, height: 0 }}
+                      className="border-b border-gray-100 last:border-b-0"
                     >
-                      {/* Gradient accent */}
-                      <div className="absolute top-0 left-0 w-2 h-full bg-gradient-to-b from-purple-500 via-pink-500 to-red-500"></div>
-                      <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4">
-                        <div className="relative flex-shrink-0 group">
-                          <div className="absolute inset-0 bg-gradient-to-br from-yellow-300/50 to-orange-300/50 rounded-xl blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                      <div className="p-4 flex gap-4">
+                        {/* Product Image */}
+                        <div className="flex-shrink-0">
                           <img
-                            src={item.image || 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="100" height="100"%3E%3Crect fill="%23f0f0f0" width="100" height="100"/%3E%3Ctext fill="%23999" font-size="40" x="50%25" y="50%25" text-anchor="middle" dominant-baseline="middle"%3E🍬%3C/text%3E%3C/svg%3E'}
+                            src={item.image || 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="100" height="100"%3E%3Crect fill="%23f5f5f5" width="100" height="100"/%3E%3Ctext fill="%23999" font-size="30" x="50%25" y="50%25" text-anchor="middle" dominant-baseline="middle"%3E🍬%3C/text%3E%3C/svg%3E'}
                             alt={item.name}
-                            className="relative w-20 h-20 sm:w-24 sm:h-24 object-cover rounded-xl border-2 border-purple-200 shadow-md group-hover:shadow-lg group-hover:scale-105 transition-all duration-300"
+                            className="w-20 h-20 sm:w-24 sm:h-24 object-cover rounded"
                           />
                         </div>
 
+                        {/* Product Details */}
                         <div className="flex-1 min-w-0">
-                          <h3 className="text-lg sm:text-xl font-bold text-[#C41E3A] truncate font-['Playfair_Display']">
+                          <h3 className="text-sm sm:text-base font-medium text-gray-800 truncate">
                             {item.name}
                           </h3>
-                          <p className="text-gray-600 text-sm">
-                            ₹{item.rate} per {item.unit || 'piece'}
+                          <p className="text-xs sm:text-sm text-gray-500 mt-0.5">
+                            {item.unit === 'Kg' || item.unit === 'kg'
+                              ? `${Number(item.quantity || 0).toFixed(3).replace(/\.?0+$/, '')} Kg`
+                              : `${item.quantity || 1} piece${(item.quantity || 1) > 1 ? 's' : ''}`}
                           </p>
 
-                          {/* Quantity/Weight Controls with Price and Delete */}
-                          {(item.unit === 'Kg' || item.unit === 'kg') ? (
-                            // Weight input with unit selector, price, and delete for Kg items - all in one row
-                            <div className="mt-3 flex items-center gap-2 sm:gap-3 overflow-x-auto">
-                              <div className="flex items-center gap-1 sm:gap-2 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-full px-2 sm:px-4 py-1.5 sm:py-2">
-                                <span className="text-white text-xs sm:text-sm font-semibold">Weight:</span>
-                                <input
-                                  type="text"
-                                  value={weightInputs[index] !== undefined ? weightInputs[index] : (item.quantity > 0 ? ((item.weightUnit || 'Kg') === 'Kg' ? Number(item.quantity).toFixed(3).replace(/\.?0+$/, '') : Math.round(item.quantity * 1000)) : '0')}
-                                  onFocus={(e) => e.target.select()}
-                                  onPaste={(e) => {
-                                    e.preventDefault();
-                                    const pastedText = e.clipboardData.getData('text');
-                                    // Clean pasted value to max 3 decimals
-                                    if (/^\d*\.?\d{0,3}$/.test(pastedText)) {
-                                      e.target.dispatchEvent(new Event('change', { bubbles: true }));
-                                    }
-                                  }}
-                                  onInput={(e) => {
-                                    // Additional safeguard - limit input length
-                                    const value = e.target.value;
-                                    if (!/^\d*\.?\d{0,3}$/.test(value)) {
-                                      e.target.value = weightInputs[index] || '';
-                                    }
-                                  }}
-                                  onChange={(e) => {
-                                    const inputValue = e.target.value;
-                                    // Allow decimal input with up to 3 decimal places
-                                    if (inputValue === '' || /^\d*\.?\d{0,3}$/.test(inputValue)) {
-                                      setWeightInputs({ ...weightInputs, [index]: inputValue });
+                          {/* Price */}
+                          <div className="mt-2">
+                            <span className="text-base sm:text-lg font-semibold text-gray-900">
+                              ₹{(item.rate * (item.quantity || 1)).toFixed(0)}
+                            </span>
+                          </div>
+                        </div>
 
-                                      if (inputValue === '' || inputValue === '0') {
-                                        // Set quantity to 0 when input is empty or 0
-                                        const updatedCart = [...cart];
-                                        updatedCart[index].quantity = 0;
-                                        setCart(updatedCart);
-                                        sessionStorage.setItem('sweetCart', JSON.stringify(updatedCart));
-                                      } else {
-                                        const value = parseFloat(inputValue);
-                                        if (!isNaN(value) && value > 0) {
-                                          // Round to 3 decimal places before converting to Kg
-                                          const roundedValue = Math.round(value * 1000) / 1000;
-                                          const weightInKg = item.weightUnit === 'Kg' ? roundedValue : roundedValue / 1000;
-                                          updateQuantity(index, weightInKg);
-                                        }
+                        {/* Quantity Controls - Right Side */}
+                        <div className="flex-shrink-0 flex flex-col items-end justify-between">
+                          {(item.unit === 'Kg' || item.unit === 'kg') ? (
+                            /* Weight Input for Kg items */
+                            <div className="flex items-center gap-1">
+                              <input
+                                type="text"
+                                value={weightInputs[index] !== undefined ? weightInputs[index] : (item.quantity > 0 ? ((item.weightUnit || 'Kg') === 'Kg' ? Number(item.quantity).toFixed(3).replace(/\.?0+$/, '') : Math.round(item.quantity * 1000)) : '0')}
+                                onFocus={(e) => e.target.select()}
+                                onChange={(e) => {
+                                  const inputValue = e.target.value;
+                                  if (inputValue === '' || /^\d*\.?\d{0,3}$/.test(inputValue)) {
+                                    setWeightInputs({ ...weightInputs, [index]: inputValue });
+
+                                    if (inputValue === '' || inputValue === '0') {
+                                      const updatedCart = [...cart];
+                                      updatedCart[index].quantity = 0;
+                                      setCart(updatedCart);
+                                      sessionStorage.setItem('sweetCart', JSON.stringify(updatedCart));
+                                    } else {
+                                      const value = parseFloat(inputValue);
+                                      if (!isNaN(value) && value > 0) {
+                                        const roundedValue = Math.round(value * 1000) / 1000;
+                                        const weightInKg = item.weightUnit === 'Kg' ? roundedValue : roundedValue / 1000;
+                                        updateQuantity(index, weightInKg);
                                       }
                                     }
-                                  }}
-                                  onBlur={() => {
-                                    // Reset input to show "0" if quantity is 0 or empty
-                                    if (cart[index].quantity === 0 || weightInputs[index] === '' || weightInputs[index] === '0') {
-                                      setWeightInputs({ ...weightInputs, [index]: '0' });
-                                    } else {
-                                      setWeightInputs({ ...weightInputs, [index]: undefined });
-                                    }
-                                  }}
-                                  className="w-16 sm:w-24 px-1 py-1 text-center bg-white text-gray-900 font-bold rounded border-0 focus:outline-none focus:ring-2 focus:ring-white text-sm"
-                                />
-                                <select
-                                  value={item.weightUnit || 'Kg'}
-                                  onChange={(e) => {
-                                    const newUnit = e.target.value;
-                                    const updatedCart = [...cart];
-                                    updatedCart[index] = { ...updatedCart[index], weightUnit: newUnit };
-                                    setCart(updatedCart);
-                                    sessionStorage.setItem('sweetCart', JSON.stringify(updatedCart));
+                                  }
+                                }}
+                                onBlur={() => {
+                                  if (cart[index].quantity === 0 || weightInputs[index] === '' || weightInputs[index] === '0') {
+                                    setWeightInputs({ ...weightInputs, [index]: '0' });
+                                  } else {
                                     setWeightInputs({ ...weightInputs, [index]: undefined });
-                                  }}
-                                  className="bg-purple-600 text-white px-1 py-1 rounded-md font-bold text-xs border-2 border-white focus:outline-none cursor-pointer shadow-md"
-                                >
-                                  <option value="Kg" className="bg-white text-gray-900">Kg</option>
-                                  <option value="grams" className="bg-white text-gray-900">g</option>
-                                </select>
-                              </div>
-
-                              {/* Price with equals sign and Delete button */}
-                              <div className="flex items-center gap-2">
-                                <span className="text-gray-500 font-bold text-lg">=</span>
-                                <div className="text-lg sm:text-xl font-bold text-[#C41E3A]">
-                                  ₹{(item.rate * (item.quantity ?? 0)).toFixed(2)}
-                                </div>
-                                <motion.button
-                                  whileHover={{ scale: 1.1 }}
-                                  whileTap={{ scale: 0.9 }}
-                                  onClick={() => removeFromCart(index)}
-                                  className="p-1.5 sm:p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
-                                >
-                                  <Trash2 className="h-4 w-4 sm:h-5 sm:w-5" />
-                                </motion.button>
-                              </div>
+                                  }
+                                }}
+                                className="w-20 sm:w-24 px-2 py-1.5 text-center bg-white text-gray-900 font-medium rounded border border-gray-300 focus:outline-none focus:border-[#2874f0] text-sm"
+                              />
+                              <select
+                                value={item.weightUnit || 'Kg'}
+                                onChange={(e) => {
+                                  const newUnit = e.target.value;
+                                  const updatedCart = [...cart];
+                                  updatedCart[index] = { ...updatedCart[index], weightUnit: newUnit };
+                                  setCart(updatedCart);
+                                  sessionStorage.setItem('sweetCart', JSON.stringify(updatedCart));
+                                  setWeightInputs({ ...weightInputs, [index]: undefined });
+                                }}
+                                className="px-2 py-1.5 bg-white text-gray-700 font-medium text-sm border border-gray-300 rounded focus:outline-none focus:border-[#2874f0] cursor-pointer"
+                              >
+                                <option value="Kg">Kg</option>
+                                <option value="grams">gm</option>
+                              </select>
                             </div>
                           ) : (
-                            // Quantity controls with price and delete for piece items - yellow pill shape like Kg items
-                            <div className="mt-3 flex items-center gap-2 sm:gap-3 overflow-x-auto">
-                              <div className="flex items-center gap-1 sm:gap-2 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-full px-2 sm:px-4 py-1.5 sm:py-2">
-                                <span className="text-white text-xs sm:text-sm font-semibold">Piece:</span>
-                                <motion.button
-                                  whileHover={{ scale: 1.1 }}
-                                  whileTap={{ scale: 0.9 }}
-                                  onClick={() => updateQuantity(index, (item.quantity || 1) - 1)}
-                                  disabled={(item.quantity || 1) <= 1}
-                                  className={`p-1 sm:p-1.5 rounded-md transition-all ${(item.quantity || 1) <= 1
-                                    ? 'bg-white/50 text-gray-400 cursor-not-allowed'
-                                    : 'bg-white text-[#C41E3A] hover:bg-gray-100'
-                                    }`}
-                                >
-                                  <Minus className="h-3 w-3 sm:h-4 sm:w-4" />
-                                </motion.button>
-                                <div className="w-12 sm:w-16 px-1 sm:px-2 py-1 text-center bg-white text-gray-900 font-bold rounded border-0 text-sm min-w-[40px]">
+                            /* Quantity Buttons for Piece items - Flipkart Style */
+                            <div className="flex items-center">
+                              <button
+                                onClick={() => updateQuantity(index, (item.quantity || 1) - 1)}
+                                disabled={(item.quantity || 1) <= 1}
+                                className={`w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center rounded-full border ${(item.quantity || 1) <= 1
+                                  ? 'border-gray-200 text-gray-300 cursor-not-allowed'
+                                  : 'border-gray-300 text-gray-600 hover:bg-gray-50 cursor-pointer'
+                                  }`}
+                              >
+                                <Minus className="h-3 w-3 sm:h-4 sm:w-4" />
+                              </button>
+                              <div className="w-8 sm:w-10 text-center">
+                                <span className="text-sm sm:text-base font-medium text-gray-800">
                                   {item.quantity || 1}
-                                </div>
-                                <motion.button
-                                  whileHover={{ scale: 1.1 }}
-                                  whileTap={{ scale: 0.9 }}
-                                  onClick={() => updateQuantity(index, (item.quantity || 1) + 1)}
-                                  className="p-1 sm:p-1.5 rounded-md bg-white text-[#C41E3A] hover:bg-gray-100 transition-all"
-                                >
-                                  <Plus className="h-3 w-3 sm:h-4 sm:w-4" />
-                                </motion.button>
-                                <div className="bg-purple-600 text-white px-3 sm:px-4 py-1.5 rounded-lg font-bold text-sm border-2 border-white shadow-md">
-                                  piece
-                                </div>
+                                </span>
                               </div>
-
-                              {/* Price with equals sign and Delete button */}
-                              <div className="flex items-center gap-2">
-                                <span className="text-gray-500 font-bold text-lg">=</span>
-                                <div className="text-lg sm:text-xl font-bold text-[#C41E3A]">
-                                  ₹{(item.rate * (item.quantity ?? 0)).toFixed(2)}
-                                </div>
-                                <motion.button
-                                  whileHover={{ scale: 1.1 }}
-                                  whileTap={{ scale: 0.9 }}
-                                  onClick={() => removeFromCart(index)}
-                                  className="p-1.5 sm:p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
-                                >
-                                  <Trash2 className="h-4 w-4 sm:h-5 sm:w-5" />
-                                </motion.button>
-                              </div>
+                              <button
+                                onClick={() => updateQuantity(index, (item.quantity || 1) + 1)}
+                                className="w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center rounded-full border border-gray-300 text-gray-600 hover:bg-gray-50 cursor-pointer"
+                              >
+                                <Plus className="h-3 w-3 sm:h-4 sm:w-4" />
+                              </button>
                             </div>
                           )}
+
+                          {/* Remove Button */}
+                          <button
+                            onClick={() => removeFromCart(index)}
+                            className="text-gray-500 hover:text-red-500 text-xs sm:text-sm font-medium uppercase tracking-wide mt-3 transition-colors"
+                          >
+                            Remove
+                          </button>
                         </div>
                       </div>
                     </motion.div>
@@ -380,53 +281,34 @@ const Cart = () => {
                 </AnimatePresence>
               </div>
 
-              {/* Order Summary */}
-              <div className="lg:col-span-1">
-                <motion.div
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  className="relative bg-white border-2 border-purple-200 rounded-2xl shadow-2xl p-6 lg:sticky lg:top-24 overflow-hidden"
-                >
-                  {/* Decorative gradient bacKground */}
-                  <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-purple-300/20 to-pink-300/20 rounded-full blur-3xl"></div>
-                  <div className="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-yellow-300/20 to-orange-300/20 rounded-full blur-2xl"></div>
-
-                  <div className="relative z-10">
-                    <div className="flex items-center gap-3 mb-6">
-                      <div className="p-2 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl">
-                        <ShoppingCart className="h-6 w-6 text-white" />
-                      </div>
-                      <h3 className="text-2xl font-bold bg-gradient-to-r from-[#C41E3A] to-[#FF1744] bg-clip-text text-transparent font-['Playfair_Display']">
-                        Order Summary
-                      </h3>
+              {/* Price Summary & Place Order - Sticky Bottom on Mobile */}
+              <div className="bg-white rounded-sm shadow sticky bottom-0 z-10">
+                <div className="p-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+                  {/* Price Details */}
+                  <div className="flex items-center gap-4 w-full sm:w-auto">
+                    <div className="text-center sm:text-left">
+                      <p className="text-xs text-gray-500">Total Amount</p>
+                      <p className="text-xl sm:text-2xl font-semibold text-gray-900">
+                        ₹{getTotalAmount().toFixed(0)}
+                      </p>
                     </div>
-
-                    <div className="bg-gradient-to-br from-purple-50/50 to-pink-50/50 rounded-xl p-4 mb-6 border border-purple-100">
-                      <div className="flex justify-between text-gray-700 mb-3">
-                        <span className="flex items-center gap-2">
-                          <ShoppingBag className="h-4 w-4 text-purple-500" />
-                          Items ({getTotalItems()})
-                        </span>
-                        <span className="font-semibold text-gray-900">₹{getTotalAmount().toFixed(2)}</span>
-                      </div>
-                      <div className="h-px bg-gradient-to-r from-purple-200 via-pink-200 to-purple-200 my-3"></div>
-                      <div className="flex justify-between text-xl font-bold">
-                        <span className="text-gray-900">Total</span>
-                        <span className="bg-gradient-to-r from-[#C41E3A] to-[#FF1744] bg-clip-text text-transparent">₹{getTotalAmount().toFixed(2)}</span>
-                      </div>
-                    </div>
-
-                    <motion.button
-                      whileHover={{ scale: 1.05, y: -2 }}
-                      whileTap={{ scale: 0.95 }}
-                      onClick={handlePlaceOrderClick}
-                      className="w-full bg-gradient-to-r from-[#C41E3A] to-[#FF1744] text-white py-4 rounded-xl font-bold shadow-xl hover:shadow-2xl hover:shadow-[#C41E3A]/50 transition-all duration-300 text-lg flex items-center justify-center gap-2"
+                    {/* <Link
+                      to="#"
+                      onClick={(e) => e.preventDefault()}
+                      className="text-[#2874f0] text-xs sm:text-sm hover:underline"
                     >
-                      <ShoppingCart className="h-5 w-5" />
-                      Place Order
-                    </motion.button>
+                      View price details
+                    </Link> */}
                   </div>
-                </motion.div>
+
+                  {/* Place Order Button */}
+                  <button
+                    onClick={handlePlaceOrderClick}
+                    className="w-full sm:w-auto bg-[#fb641b] text-white px-12 py-3 sm:py-3.5 rounded-sm font-semibold shadow-lg hover:bg-[#e85d19] transition-colors text-sm sm:text-base uppercase tracking-wide"
+                  >
+                    Place Order
+                  </button>
+                </div>
               </div>
             </div>
           )}

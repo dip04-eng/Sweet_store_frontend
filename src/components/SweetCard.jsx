@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { ShoppingCart, Sparkles, Plus, Minus } from 'lucide-react';
+import { ShoppingCart, Plus, Minus } from 'lucide-react';
 
 const SweetCard = ({ sweet, onAddToCart }) => {
   const [isAdding, setIsAdding] = useState(false);
   const [quantity, setQuantity] = useState(1);
-  const [weight, setWeight] = useState('1'); // Weight as string for better input handling
-  const [weightUnit, setWeightUnit] = useState('Kg'); // 'Kg' or 'grams'
+  const [weight, setWeight] = useState('1');
+  const [weightUnit, setWeightUnit] = useState('Kg');
   const isKgItem = sweet.unit && sweet.unit.toLowerCase() === 'kg';
 
   const handleQuantityChange = (change) => {
@@ -18,7 +18,6 @@ const SweetCard = ({ sweet, onAddToCart }) => {
 
   const handleWeightChange = (e) => {
     const value = e.target.value;
-    // Allow empty input and numeric values with up to 3 decimal places
     if (value === '' || /^\d*\.?\d{0,3}$/.test(value)) {
       setWeight(value);
     }
@@ -28,11 +27,9 @@ const SweetCard = ({ sweet, onAddToCart }) => {
     setWeightUnit(e.target.value);
   };
 
-  // Convert weight to Kg for calculation
   const getWeightInKg = () => {
     const numWeight = parseFloat(weight) || 0;
     const weightInKg = weightUnit === 'Kg' ? numWeight : numWeight / 1000;
-    // Round to 3 decimal places
     return Math.round(weightInKg * 1000) / 1000;
   };
 
@@ -50,158 +47,103 @@ const SweetCard = ({ sweet, onAddToCart }) => {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 30 }}
+      initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      className="card-premium overflow-hidden group w-full"
+      className="bg-white rounded-xl shadow-lg overflow-hidden group w-full border border-gray-100"
     >
-      {/* Image Container */}
-      <div className="relative overflow-hidden border-b-2 border-[#C41E3A]/20 bg-white">
+      {/* Image Container - More compact */}
+      <div className="relative overflow-hidden bg-gray-50">
         <motion.img
           whileHover={{ scale: 1.05 }}
-          transition={{ duration: 0.4 }}
+          transition={{ duration: 0.3 }}
           src={sweet.image || 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="300"%3E%3Crect fill="%23FFD700" width="400" height="300"/%3E%3Ctext fill="%230D0D0D" font-size="24" font-weight="bold" x="50%25" y="50%25" text-anchor="middle" dominant-baseline="middle"%3E🍬 Sweet%3C/text%3E%3C/svg%3E'}
-          alt={`${sweet.name} - Traditional Indian sweet from Mansoor Hotel & Sweets, Baisi Bihar. ${sweet.description ? sweet.description.substring(0, 100) : 'Handcrafted with pure ingredients.'}`}
-          title={`Order ${sweet.name} online - ₹${sweet.rate}/${sweet.unit === 'piece' ? 'piece' : 'Kg'}`}
+          alt={sweet.name}
           loading="lazy"
-          className="w-full h-40 xs:h-44 sm:h-48 md:h-52 lg:h-56 object-cover img-responsive"
+          className="w-full h-32 xs:h-36 sm:h-40 md:h-44 object-cover"
           onError={(e) => {
-            console.error('❌ Image load error for:', sweet.name);
-            console.error('Image data:', {
-              hasImage: !!sweet.image,
-              imageLength: sweet.image?.length,
-              imageStart: sweet.image?.substring(0, 100),
-              isBase64: sweet.image?.startsWith('data:image/')
-            });
-            // Better fallback image with sweet name
             e.target.src = `data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="300" style="bacKground:%23FFD700"%3E%3Crect fill="%23FFD700" width="400" height="300"/%3E%3Ctext fill="%23C41E3A" font-size="20" font-weight="bold" x="50%25" y="40%25" text-anchor="middle" dominant-baseline="middle"%3E🍬%3C/text%3E%3Ctext fill="%23C41E3A" font-size="16" font-weight="bold" x="50%25" y="60%25" text-anchor="middle" dominant-baseline="middle"%3E${encodeURIComponent(sweet.name || 'Sweet')}%3C/text%3E%3C/svg%3E`;
           }}
-          onLoad={() => {
-            console.log('✅ Image loaded successfully for:', sweet.name);
-          }}
         />
-
-        {/* Dark Overlay on Hover */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
       </div>
 
-      {/* Content */}
-      <div className="p-4 xs:p-5 sm:p-6 spacing-responsive">
-        {/* Title */}
-        <h3 className="text-base xs:text-lg sm:text-xl font-bold text-[#C41E3A] mb-2 truncate font-['Playfair_Display']">
-          {sweet.name}
-        </h3>
-
-        {/* Description */}
-        <p className="text-gray-600 text-sm mb-4 line-clamp-2 leading-relaxed">
-          {sweet.description}
-        </p>
-
-        {/* Divider */}
-        <div className="h-px bg-gradient-to-r from-transparent via-[#C41E3A]/20 to-transparent mb-4"></div>
-
-        {/* Price Display */}
-        <div className="flex items-center justify-between mb-4 p-3 border border-[#FFD700]/30 rounded-xl bg-gradient-to-br from-[#FFF8F0] to-[#FFFAE6]">
-          <div className="text-left">
-            <div className="text-xs text-gray-500">Price</div>
-            <div className="text-xl font-bold text-[#C41E3A]">₹{sweet.rate}<span className="text-sm text-gray-600">/{sweet.unit === 'piece' ? 'piece' : 'Kg'}</span></div>
+      {/* Content - Compact */}
+      <div className="p-3 xs:p-4">
+        {/* Title & Price Row */}
+        <div className="flex items-start justify-between gap-2 mb-2">
+          <h3 className="text-sm xs:text-base font-bold text-[#C41E3A] truncate flex-1">
+            {sweet.name}
+          </h3>
+          <div className="text-right flex-shrink-0">
+            <span className="text-base xs:text-lg font-bold text-gray-900">₹{sweet.rate}</span>
+            <span className="text-xs text-gray-500">/{sweet.unit === 'piece' ? 'pc' : 'Kg'}</span>
           </div>
         </div>
 
-        {/* Quantity/Weight Selector */}
-        <div className="flex items-center justify-center mb-4 -mx-4">
-          {isKgItem ? (
-            // Weight input for Kg items with dropdown first
-            <div className="flex flex-col gap-2 bg-gradient-to-r from-[#C41E3A] to-[#8B0000] rounded-2xl px-4 py-3 min-w-full border-2 border-[#FFD700]/50">
-              {/* Unit selector - First */}
-              <div className="flex items-center justify-center gap-2">
-                <label className="text-xs text-white/90 font-semibold">Select Unit:</label>
-                <select
-                  value={weightUnit}
-                  onChange={handleWeightUnitChange}
-                  className="flex-1 bg-[#FFD700] text-[#C41E3A] rounded-lg px-3 py-2 font-bold focus:outline-none focus:ring-2 focus:ring-white text-sm cursor-pointer"
-                >
-                  <option value="Kg" className="text-[#C41E3A]">Kilogram (Kg)</option>
-                  <option value="grams" className="text-[#C41E3A]">Grams (gm)</option>
-                </select>
-              </div>
-
-              {/* Weight input - Second */}
-              <div className="flex items-center justify-center gap-2">
-                <label className="text-xs text-white/90 font-semibold">Enter Value:</label>
-                
-                {/* Weight input field */}
+        {/* Quantity/Weight Selector - Compact */}
+        {isKgItem ? (
+          // Weight input for Kg items - Compact horizontal layout
+          <div className="bg-gradient-to-r from-[#C41E3A] to-[#a01828] rounded-lg p-2.5 mb-3">
+            <div className="flex items-center justify-between gap-2">
+              <div className="flex items-center gap-1.5 flex-1">
                 <input
                   type="text"
                   value={weight}
                   onChange={handleWeightChange}
-                  placeholder="0.0"
-                  className="w-20 bg-white text-[#C41E3A] text-center rounded-lg px-2 py-2 text-base font-bold focus:outline-none focus:ring-2 focus:ring-[#FFD700]"
+                  placeholder="1"
+                  className="w-14 bg-white text-gray-900 text-center rounded px-1.5 py-1.5 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-[#FFD700]"
                 />
-
-                <span className="text-xs text-white/90 font-semibold ml-1">
-                  {weightUnit}
-                </span>
+                <select
+                  value={weightUnit}
+                  onChange={handleWeightUnitChange}
+                  className="bg-[#FFD700] text-[#8B0000] rounded px-2 py-1.5 font-bold text-xs focus:outline-none cursor-pointer"
+                >
+                  <option value="Kg">Kg</option>
+                  <option value="grams">gm</option>
+                </select>
               </div>
-
-              {/* Price display */}
-              <div className="text-center border-t border-white/20 pt-2">
-                <span className="text-xs text-white/70">Total Price: </span>
-                <span className="text-lg text-[#FFD700] font-bold">
-                  ₹{weight === '' ? '0.00' : (sweet.rate * getWeightInKg()).toFixed(2)}
+              <div className="text-right">
+                <span className="text-[#FFD700] font-bold text-sm">
+                  = ₹{weight === '' ? '0' : (sweet.rate * getWeightInKg()).toFixed(0)}
                 </span>
               </div>
             </div>
-          ) : (
-            // Quantity selector for piece items
-            <div className="flex items-center justify-between gap-2 bg-gradient-to-r from-[#C41E3A] to-[#8B0000] rounded-full px-3 py-2 w-full border-2 border-[#FFD700]/50">
-              <span className="text-xs text-white font-semibold">Piece:</span>
-
-              {/* Minus Button */}
-              <motion.button
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
+          </div>
+        ) : (
+          // Quantity selector for piece items - Compact
+          <div className="flex items-center justify-between bg-gradient-to-r from-[#C41E3A] to-[#a01828] rounded-lg px-3 py-2 mb-3">
+            <div className="flex items-center gap-2">
+              <button
                 onClick={() => handleQuantityChange(-1)}
                 disabled={quantity <= 1}
-                className={`w-7 h-7 flex items-center justify-center rounded-full transition-all ${quantity <= 1
-                    ? 'bg-white/20 text-white/30 cursor-not-allowed'
-                    : 'bg-[#FFD700] text-[#C41E3A] hover:bg-[#FFC107]'
+                className={`w-6 h-6 flex items-center justify-center rounded-full transition-all ${quantity <= 1
+                    ? 'bg-white/20 text-white/40 cursor-not-allowed'
+                    : 'bg-[#FFD700] text-[#8B0000] hover:bg-[#FFC107]'
                   }`}
               >
-                <Minus className="h-4 w-4" />
-              </motion.button>
-
-              {/* Quantity Display */}
-              <div className="min-w-[28px] text-center">
-                <span className="text-lg font-bold text-[#FFD700]">{quantity}</span>
-              </div>
-
-              {/* Plus Button */}
-              <motion.button
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
+                <Minus className="h-3 w-3" />
+              </button>
+              <span className="text-[#FFD700] font-bold text-base min-w-[24px] text-center">{quantity}</span>
+              <button
                 onClick={() => handleQuantityChange(1)}
-                className="w-7 h-7 flex items-center justify-center rounded-full bg-[#FFD700] text-[#C41E3A] hover:bg-[#FFC107] transition-all"
+                className="w-6 h-6 flex items-center justify-center rounded-full bg-[#FFD700] text-[#8B0000] hover:bg-[#FFC107] transition-all"
               >
-                <Plus className="h-4 w-4" />
-              </motion.button>
-
-              <span className="text-xs text-[#FFD700] font-bold whitespace-nowrap">
-                = ₹{(sweet.rate * quantity).toFixed(0)}
-              </span>
+                <Plus className="h-3 w-3" />
+              </button>
+              <span className="text-white/80 text-xs ml-1">pcs</span>
             </div>
-          )}
-        </div>
+            <span className="text-[#FFD700] font-bold text-sm">= ₹{(sweet.rate * quantity).toFixed(0)}</span>
+          </div>
+        )}
 
-        {/* Add to Cart Button */}
+        {/* Add to Cart Button - Compact */}
         <motion.button
           onClick={handleAddToCart}
           disabled={isAdding}
-          whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
-          className={`w-full btn-premium flex items-center justify-center py-3 px-6 rounded-full font-bold transition-all duration-300 shadow-lg text-sm sm:text-base border-2 touch-manipulation min-h-[48px] ${isAdding
-              ? 'bg-green-600 text-white border-green-700'
-              : 'bg-gradient-to-r from-[#FFD700] to-[#FFC107] text-[#8B0000] hover:shadow-[#FFD700]/50 border-[#C41E3A]/30'
+          className={`w-full flex items-center justify-center py-2.5 rounded-lg font-semibold transition-all text-sm ${isAdding
+              ? 'bg-green-500 text-white'
+              : 'bg-gradient-to-r from-[#FFD700] to-[#FFC107] text-[#8B0000] hover:shadow-lg'
             }`}
         >
           {isAdding ? (
@@ -209,21 +151,18 @@ const SweetCard = ({ sweet, onAddToCart }) => {
               <motion.div
                 animate={{ rotate: 360 }}
                 transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
-                className="h-5 w-5 border-2 border-white border-t-transparent rounded-full mr-2"
-              ></motion.div>
+                className="h-4 w-4 border-2 border-white border-t-transparent rounded-full mr-2"
+              />
               Added!
             </>
           ) : (
             <>
-              <ShoppingCart className="h-5 w-5 mr-2" />
+              <ShoppingCart className="h-4 w-4 mr-1.5" />
               Add to Cart
             </>
           )}
         </motion.button>
       </div>
-
-      {/* Decorative Corner */}
-      <div className="absolute top-0 left-0 w-20 h-20 bg-gradient-to-br from-[#C41E3A]/10 to-transparent rounded-br-full opacity-0 group-hover:opacity-100 transition-opacity"></div>
     </motion.div>
   );
 };

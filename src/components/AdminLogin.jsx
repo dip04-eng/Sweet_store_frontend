@@ -126,7 +126,8 @@ const AdminLogin = () => {
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="admin@gmail.com"
                     required
-                    className="w-full bg-[#0D0D0D]/50 border border-[#FFD700]/30 rounded-xl pl-12 pr-4 py-3.5 text-[#F5F5DC] placeholder-[#F5F5DC]/40 focus:outline-none focus:border-[#FFD700] focus:ring-2 focus:ring-[#FFD700]/20 transition-all"
+                    style={{ paddingLeft: '48px' }}
+                    className="w-full bg-[#0D0D0D]/50 border border-[#FFD700]/30 rounded-xl pr-4 py-3.5 text-[#F5F5DC] placeholder-[#F5F5DC]/40 focus:outline-none focus:border-[#FFD700] focus:ring-2 focus:ring-[#FFD700]/20 transition-all"
                   />
                 </div>
               </div>
@@ -144,7 +145,8 @@ const AdminLogin = () => {
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="Enter your password"
                     required
-                    className="w-full bg-[#0D0D0D]/50 border border-[#FFD700]/30 rounded-xl pl-12 pr-12 py-3.5 text-[#F5F5DC] placeholder-[#F5F5DC]/40 focus:outline-none focus:border-[#FFD700] focus:ring-2 focus:ring-[#FFD700]/20 transition-all"
+                    style={{ paddingLeft: '48px' }}
+                    className="w-full bg-[#0D0D0D]/50 border border-[#FFD700]/30 rounded-xl pr-12 py-3.5 text-[#F5F5DC] placeholder-[#F5F5DC]/40 focus:outline-none focus:border-[#FFD700] focus:ring-2 focus:ring-[#FFD700]/20 transition-all"
                   />
                   <button
                     type="button"
