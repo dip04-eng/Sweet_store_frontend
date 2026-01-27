@@ -89,7 +89,7 @@ const AddOrder = () => {
     } else {
       setCart([...cart, { ...sweet, quantity: 1, weightUnit: (sweet.unit === 'Kg' || sweet.unit === 'kg') ? 'Kg' : undefined }]);
     }
-    
+
     // Show toast message
     setToast({ show: true, message: `${sweet.name} added to cart` });
     setTimeout(() => setToast({ show: false, message: '' }), 2000);
@@ -361,123 +361,157 @@ const AddOrder = () => {
               </div>
             </div>
 
-            {/* Cart Summary */}
-            <div className="bg-white rounded-xl shadow-md p-4 sm:p-6">
-              <h3 className="text-base sm:text-lg font-bold text-gray-800 mb-3 sm:mb-4">Cart Summary</h3>
+            {/* Cart Summary - Flipkart Style */}
+            <div className="bg-white rounded-sm shadow">
+              {/* Cart Header */}
+              <div className="p-4 border-b border-gray-200">
+                <h3 className="text-lg font-medium text-gray-800">
+                  Cart Summary ({cart.length} {cart.length === 1 ? 'item' : 'items'})
+                </h3>
+              </div>
+
               {cart.length === 0 ? (
-                <p className="text-gray-500 text-center py-4 text-sm sm:text-base">No items added yet</p>
+                <p className="text-gray-500 text-center py-8 text-sm">No items added yet</p>
               ) : (
-                <div className="space-y-2 sm:space-y-3">
-                  {cart.map((item, index) => (
-                    <div key={index} className="flex items-center justify-between bg-gray-50 p-2 sm:p-3 rounded-lg gap-2 flex-wrap">
-                      <div className="flex-1 min-w-0">
-                        <p className="font-semibold text-xs sm:text-sm truncate">{item.name}</p>
-                        <p className="text-xs text-gray-600">₹{item.rate} per {item.unit || 'piece'}</p>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        {(item.unit !== 'Kg' && item.unit !== 'kg') && (
+                <>
+                  {/* Cart Items */}
+                  <div className="divide-y divide-gray-100">
+                    {cart.map((item, index) => (
+                      <div key={index} className="p-4 flex gap-4">
+                        {/* Product Image */}
+                        <div className="flex-shrink-0">
+                          <img
+                            src={item.image || '/placeholder.png'}
+                            alt={item.name}
+                            className="w-16 h-16 sm:w-20 sm:h-20 object-cover rounded"
+                          />
+                        </div>
+
+                        {/* Product Details */}
+                        <div className="flex-1 min-w-0">
+                          <h4 className="text-sm font-medium text-gray-800 truncate">
+                            {item.name}
+                          </h4>
+                          <p className="text-xs text-gray-500 mt-0.5">
+                            {item.unit === 'Kg' || item.unit === 'kg'
+                              ? `${Number(item.quantity || 0).toFixed(3).replace(/\.?0+$/, '')} ${item.weightUnit || 'Kg'}`
+                              : `${item.quantity || 1} piece${(item.quantity || 1) > 1 ? 's' : ''}`}
+                          </p>
+
+                          {/* Price */}
+                          <div className="mt-2">
+                            <span className="text-base font-semibold text-gray-900">
+                              ₹{(() => {
+                                const qty = item.quantity === '' ? 0 : item.quantity;
+                                const qtyInKg = (item.weightUnit === 'grams') ? qty / 1000 : qty;
+                                return (item.rate * qtyInKg).toFixed(0);
+                              })()}
+                            </span>
+                          </div>
+                        </div>
+
+                        {/* Quantity Controls - Right Side */}
+                        <div className="flex-shrink-0 flex flex-col items-end justify-between">
+                          {(item.unit === 'Kg' || item.unit === 'kg') ? (
+                            /* Weight Input for Kg items */
+                            <div className="flex items-center gap-1">
+                              <input
+                                type="text"
+                                value={item.quantity === '' ? '' : item.quantity}
+                                onChange={(e) => {
+                                  const inputValue = e.target.value;
+                                  const updatedCart = [...cart];
+
+                                  if (inputValue === '') {
+                                    updatedCart[index].quantity = '';
+                                    setCart(updatedCart);
+                                    return;
+                                  }
+
+                                  if (!/^\d*\.?\d{0,3}$/.test(inputValue)) {
+                                    return;
+                                  }
+                                  updatedCart[index].quantity = inputValue;
+                                  setCart(updatedCart);
+                                }}
+                                onBlur={(e) => {
+                                  const inputValue = e.target.value;
+                                  const value = parseFloat(inputValue);
+                                  const isInGrams = item.weightUnit === 'grams';
+
+                                  if (inputValue === '' || isNaN(value) || value <= 0) {
+                                    const minValue = isInGrams ? 1 : 0.01;
+                                    const updatedCart = [...cart];
+                                    updatedCart[index].quantity = minValue;
+                                    setCart(updatedCart);
+                                  } else {
+                                    const updatedCart = [...cart];
+                                    updatedCart[index].quantity = Math.round(value * 1000) / 1000;
+                                    setCart(updatedCart);
+                                  }
+                                }}
+                                style={{ paddingLeft: '8px', paddingRight: '8px' }}
+                                className="w-16 sm:w-20 text-center font-medium text-sm border border-gray-300 rounded py-1.5 focus:outline-none focus:border-[#2874f0]"
+                              />
+                              <select
+                                value={item.weightUnit || 'Kg'}
+                                onChange={(e) => updateWeightUnit(index, e.target.value)}
+                                className="px-2 py-1.5 bg-white text-gray-700 font-medium text-sm border border-gray-300 rounded focus:outline-none focus:border-[#2874f0] cursor-pointer"
+                              >
+                                <option value="Kg">Kg</option>
+                                <option value="grams">gm</option>
+                              </select>
+                            </div>
+                          ) : (
+                            /* Quantity Buttons for Piece items - Flipkart Style */
+                            <div className="flex items-center">
+                              <button
+                                type="button"
+                                onClick={() => updateQuantity(index, (item.quantity || 1) - 1)}
+                                disabled={(item.quantity || 1) <= 1}
+                                className={`w-7 h-7 flex items-center justify-center rounded-full border ${(item.quantity || 1) <= 1
+                                    ? 'border-gray-200 text-gray-300 cursor-not-allowed'
+                                    : 'border-gray-300 text-gray-600 hover:bg-gray-50 cursor-pointer'
+                                  }`}
+                              >
+                                <Minus className="h-3 w-3" />
+                              </button>
+                              <div className="w-8 text-center">
+                                <span className="text-sm font-medium text-gray-800">
+                                  {item.quantity || 1}
+                                </span>
+                              </div>
+                              <button
+                                type="button"
+                                onClick={() => updateQuantity(index, (item.quantity || 1) + 1)}
+                                className="w-7 h-7 flex items-center justify-center rounded-full border border-gray-300 text-gray-600 hover:bg-gray-50 cursor-pointer"
+                              >
+                                <Plus className="h-3 w-3" />
+                              </button>
+                            </div>
+                          )}
+
+                          {/* Remove Button */}
                           <button
                             type="button"
-                            onClick={() => updateQuantity(index, item.quantity - 1)}
-                            className="p-1 bg-red-100 text-red-600 rounded hover:bg-red-200"
+                            onClick={() => removeFromCart(index)}
+                            className="text-gray-500 hover:text-red-500 text-xs font-medium uppercase tracking-wide mt-3 transition-colors"
                           >
-                            <Minus className="h-4 w-4" />
+                            Remove
                           </button>
-                        )}
-                        <input
-                          type="text"
-                          value={item.quantity === '' ? '' : item.quantity}
-                          onChange={(e) => {
-                            const inputValue = e.target.value;
-                            const updatedCart = [...cart];
-
-                            // Allow empty input
-                            if (inputValue === '') {
-                              updatedCart[index].quantity = '';
-                              setCart(updatedCart);
-                              return;
-                            }
-
-                            const isKgItem = item.unit === 'Kg' || item.unit === 'kg';
-
-                            // Validate input based on item type
-                            if (isKgItem) {
-                              // For Kg items, allow decimals with up to 3 decimal places
-                              if (!/^\d*\.?\d{0,3}$/.test(inputValue)) {
-                                return;
-                              }
-                              // Store as string while typing to preserve decimal point
-                              updatedCart[index].quantity = inputValue;
-                              setCart(updatedCart);
-                            } else {
-                              // For piece items, only allow whole numbers
-                              if (!/^\d+$/.test(inputValue)) {
-                                return;
-                              }
-                              updatedCart[index].quantity = parseInt(inputValue);
-                              setCart(updatedCart);
-                            }
-                          }}
-                          onBlur={(e) => {
-                            // Convert to number on blur and validate
-                            const inputValue = e.target.value;
-                            const value = parseFloat(inputValue);
-                            const isKgItem = item.unit === 'Kg' || item.unit === 'kg';
-                            const isInGrams = item.weightUnit === 'grams';
-                            
-                            if (inputValue === '' || isNaN(value) || value <= 0) {
-                              const minValue = isKgItem ? (isInGrams ? 1 : 0.01) : 1;
-                              const updatedCart = [...cart];
-                              updatedCart[index].quantity = minValue;
-                              setCart(updatedCart);
-                            } else if (isKgItem) {
-                              // Round to 3 decimal places on blur
-                              const updatedCart = [...cart];
-                              updatedCart[index].quantity = Math.round(value * 1000) / 1000;
-                              setCart(updatedCart);
-                            }
-                          }}
-                          className="w-16 text-center font-semibold text-sm border border-gray-300 rounded px-1 py-1 focus:outline-none focus:ring-2 focus:ring-purple-500"
-                        />
-                        {(item.unit !== 'Kg' && item.unit !== 'kg') && (
-                          <button
-                            type="button"
-                            onClick={() => updateQuantity(index, item.quantity + 1)}
-                            className="p-1 bg-green-100 text-green-600 rounded hover:bg-green-200"
-                          >
-                            <Plus className="h-4 w-4" />
-                          </button>
-                        )}
-                        {(item.unit === 'Kg' || item.unit === 'kg') && (
-                          <select
-                            value={item.weightUnit || 'Kg'}
-                            onChange={(e) => updateWeightUnit(index, e.target.value)}
-                            className="text-xs px-3 py-1.5 border-2 border-purple-300 bg-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 cursor-pointer font-semibold text-gray-700 hover:border-purple-400 transition-colors"
-                          >
-                            <option value="Kg">Kg</option>
-                            <option value="grams">grams</option>
-                          </select>
-                        )}
-                        {(item.unit !== 'Kg' && item.unit !== 'kg') && (
-                          <span className="text-xs text-gray-600 px-1">{item.unit || 'pcs'}</span>
-                        )}
-                        <button
-                          type="button"
-                          onClick={() => removeFromCart(index)}
-                          className="p-1 bg-gray-200 text-gray-600 rounded hover:bg-gray-300"
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </button>
+                        </div>
                       </div>
-                    </div>
-                  ))}
-                  <div className="border-t pt-3 mt-3">
-                    <div className="flex justify-between items-center text-lg font-bold">
-                      <span>Total Amount:</span>
-                      <span className="text-purple-600">₹{getTotalAmount()}</span>
+                    ))}
+                  </div>
+
+                  {/* Total Amount */}
+                  <div className="p-4 border-t border-gray-200 bg-gray-50">
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm text-gray-600">Total Amount</span>
+                      <span className="text-xl font-semibold text-gray-900">₹{getTotalAmount().toFixed(0)}</span>
                     </div>
                   </div>
-                </div>
+                </>
               )}
             </div>
           </div>

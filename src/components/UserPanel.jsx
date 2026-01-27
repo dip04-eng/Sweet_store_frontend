@@ -47,7 +47,7 @@ const UserPanel = () => {
   // Refetch sweets when user returns to this page (only after initial load)
   useEffect(() => {
     if (!initialLoadDone) return;
-    
+
     let lastFetchTime = Date.now();
     const DEBOUNCE_TIME = 3000; // Minimum 3 seconds between fetches
 
@@ -68,7 +68,7 @@ const UserPanel = () => {
 
   const fetchSweets = async (retryCount = 0) => {
     const MAX_RETRIES = 2;
-    
+
     try {
       setLoading(true);
       setError(null);
@@ -92,13 +92,13 @@ const UserPanel = () => {
       setError(null);
     } catch (err) {
       console.error('Error fetching sweets:', err);
-      
+
       // Retry logic for timeout errors
       if ((err.name === 'AbortError' || err.message.includes('Failed to fetch')) && retryCount < MAX_RETRIES) {
         console.log(`🔄 Retrying... (${retryCount + 1}/${MAX_RETRIES})`);
         return fetchSweets(retryCount + 1);
       }
-      
+
       if (err.name === 'AbortError') {
         setError('Request timed out. The server is taking too long to respond. Please try again.');
       } else if (err.message.includes('Failed to fetch')) {
@@ -116,7 +116,7 @@ const UserPanel = () => {
   const addToCart = (sweet, quantity = 1) => {
     // Round quantity to 3 decimal places
     const roundedQuantity = Math.round(quantity * 1000) / 1000;
-    
+
     // Check if item already exists in cart
     const existingItemIndex = cart.findIndex(item => item._id === sweet._id);
 
@@ -268,167 +268,10 @@ const UserPanel = () => {
 
         {/* Sweets Catalog Section */}
         <section id="sweets-collection" className="py-8 xs:py-10 sm:py-12 md:py-16 lg:py-20 px-3 xs:px-4 sm:px-6 relative bg-[#E08B8B]">
-        {/* Decorative BacKground Elements */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-20 left-10 w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
-          <div className="absolute bottom-20 right-10 w-80 h-80 bg-white/10 rounded-full blur-3xl"></div>
-        </div>
-
-        <div className="max-w-7xl mx-auto relative z-10">
-          {/* Section Header */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-8 sm:mb-12 md:mb-16"
-          >
-            <div className="flex items-center justify-center mb-4">
-              <Sparkles className="h-4 w-4 xs:h-5 xs:w-5 sm:h-6 sm:w-6 text-white mr-2" />
-              <h2 className="text-xl xs:text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white font-['Playfair_Display']">
-                Our Sweet Collection
-              </h2>
-              <Sparkles className="h-4 w-4 xs:h-5 xs:w-5 sm:h-6 sm:w-6 text-white ml-2" />
-            </div>
-            <p className="text-white/80 text-sm sm:text-base md:text-lg max-w-2xl mx-auto px-4">
-              Handcrafted with love, tradition, and the finest ingredients
-            </p>
-            <div className="w-24 h-1 bg-white/50 mx-auto mt-4 rounded-full"></div>
-          </motion.div>
-
-          {/* Search Bar */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="mb-6 sm:mb-8 max-w-xl mx-auto px-3 xs:px-4"
-          >
-            <div className="relative">
-              <div className="absolute inset-y-0 left-0 pl-3 sm:pl-4 flex items-center pointer-events-none z-10">
-                <Search className="h-4 w-4 sm:h-5 sm:w-5 text-[#C41E3A]" />
-              </div>
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search sweets, snacks..."
-                className="w-full pl-10 sm:pl-12 pr-10 sm:pr-12 py-3 sm:py-4 rounded-full border-2 border-[#C41E3A]/30 bg-white/95 backdrop-blur-sm text-gray-800 placeholder-gray-500 focus:outline-none focus:border-[#C41E3A] focus:ring-2 focus:ring-[#C41E3A]/20 transition-all shadow-lg text-sm sm:text-base"
-              />
-              {searchQuery && (
-                <button
-                  onClick={() => setSearchQuery('')}
-                  className="absolute inset-y-0 right-0 pr-3 sm:pr-4 flex items-center text-gray-400 hover:text-[#C41E3A] transition-colors z-10"
-                >
-                  <X className="h-4 w-4 sm:h-5 sm:w-5" />
-                </button>
-              )}
-            </div>
-          </motion.div>
-
-          {/* Category Filter */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="mb-6 sm:mb-8 md:mb-12"
-          >
-            <div className="flex items-center justify-center gap-2 mb-4 sm:mb-6">
-              <Filter className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
-              <h3 className="text-base sm:text-lg font-semibold text-white">Filter by Category</h3>
-            </div>
-            <div className="flex flex-wrap justify-center gap-2 sm:gap-3 px-2">
-              {categories.map((category) => (
-                <motion.button
-                  key={category}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={() => setSelectedCategory(category)}
-                  className={`px-4 xs:px-5 sm:px-6 py-2.5 sm:py-3 rounded-full font-semibold transition-all shadow-md text-xs xs:text-sm sm:text-base touch-manipulation min-h-[44px] ${selectedCategory === category
-                    ? 'bg-white text-[#C41E3A] shadow-lg'
-                    : 'bg-white/20 text-white hover:bg-white/30 backdrop-blur-sm'
-                    }`}
-                >
-                  {category}
-                </motion.button>
-              ))}
-            </div>
-          </motion.div>
-
-          {/* Loading State */}
-          {loading ? (
-            <div className="text-center py-20">
-              <motion.div
-                animate={{ rotate: 360 }}
-                transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
-                className="inline-block"
-              >
-                <Loader2 className="h-16 w-16 text-[#FFD700]" />
-              </motion.div>
-              <p className="text-[#F5F5DC]/70 mt-6 text-lg">Loading delicious sweets...</p>
-            </div>
-          ) : error ? (
-            /* Enhanced Error State */
-            <div className="text-center py-20">
-              <ErrorMessage
-                error={error}
-                onRetry={fetchSweets}
-                type="api"
-                className="max-w-md mx-auto"
-              />
-            </div>
-          ) : filteredSweets.length === 0 ? (
-            /* No Results for Selected Category */
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              className="text-center py-20"
-            >
-              <div className="card-premium max-w-md mx-auto p-8">
-                <div className="text-6xl mb-6">🔍</div>
-                <h3 className="text-2xl font-bold text-[#FFD700] mb-3 font-['Playfair_Display']">
-                  No items in this category
-                </h3>
-                <p className="text-[#F5F5DC]/70 mb-6">Try selecting a different category</p>
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={() => setSelectedCategory('All')}
-                  className="btn-premium bg-gradient-to-r from-[#FFD700] to-[#D2691E] text-[#0D0D0D] px-8 py-3 rounded-full font-bold"
-                >
-                  View All
-                </motion.button>
-              </div>
-            </motion.div>
-          ) : (
-            /* Responsive Sweets Grid */
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5 md:gap-6 lg:gap-8 justify-items-center">
-              {filteredSweets.map((sweet, index) => (
-                <motion.div
-                  key={`${sweet.id || sweet._id || sweet.name}-${index}`}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.1 }}
-                  className="w-full max-w-[320px]"
-                >
-                  <SweetCard
-                    sweet={sweet}
-                    onAddToCart={addToCart}
-                  />
-                </motion.div>
-              ))}
-            </div>
-          )}
-        </div>
-      </section>
-
-      {/* Festival Special Sweets Section - Om Sweets Style */}
-      {!loading && (
-        <section id="festival-collection" className="py-16 sm:py-20 md:py-24 px-4 relative bg-[#D4A017]">
-          {/* Decorative BacKground Pattern */}
-          <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-10">
-            <div className="absolute inset-0" style={{
-              bacKgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000000' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
-            }}></div>
+          {/* Decorative BacKground Elements */}
+          <div className="absolute inset-0 overflow-hidden pointer-events-none">
+            <div className="absolute top-20 left-10 w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
+            <div className="absolute bottom-20 right-10 w-80 h-80 bg-white/10 rounded-full blur-3xl"></div>
           </div>
 
           <div className="max-w-7xl mx-auto relative z-10">
@@ -437,55 +280,213 @@ const UserPanel = () => {
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="text-center mb-12 sm:mb-16"
+              className="text-center mb-8 sm:mb-12 md:mb-16"
             >
-              <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold text-[#5C3317] font-['Playfair_Display'] mb-4">
-                Festival Special
-              </h2>
-              <p className="text-[#5C3317]/80 text-base sm:text-lg max-w-2xl mx-auto">
-                Our festival special treats will instantly sweeten your day!
+              <div className="flex items-center justify-center mb-4">
+                <Sparkles className="h-4 w-4 xs:h-5 xs:w-5 sm:h-6 sm:w-6 text-white mr-2" />
+                <h2 className="text-xl xs:text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white font-['Playfair_Display']">
+                  Our Sweet Collection
+                </h2>
+                <Sparkles className="h-4 w-4 xs:h-5 xs:w-5 sm:h-6 sm:w-6 text-white ml-2" />
+              </div>
+              <p className="text-white/80 text-sm sm:text-base md:text-lg max-w-2xl mx-auto px-4">
+                Handcrafted with love, tradition, and the finest ingredients
               </p>
+              <div className="w-24 h-1 bg-white/50 mx-auto mt-4 rounded-full"></div>
             </motion.div>
 
-            {/* Festival Sweets Grid or Empty State */}
-            {festivalSweets.length > 0 ? (
+            {/* Search Bar */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="mb-6 sm:mb-8 max-w-xl mx-auto px-3 xs:px-4"
+            >
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-4 sm:pl-5 flex items-center pointer-events-none z-10">
+                  <Search className="h-4 w-4 sm:h-5 sm:w-5 text-[#C41E3A]" />
+                </div>
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder="Search sweets, snacks..."
+                  style={{ paddingLeft: '48px' }}
+                  className="w-full pr-10 sm:pr-12 py-3 sm:py-4 rounded-full border-2 border-[#C41E3A]/30 bg-white/95 backdrop-blur-sm text-gray-800 placeholder-gray-500 focus:outline-none focus:border-[#C41E3A] focus:ring-2 focus:ring-[#C41E3A]/20 transition-all shadow-lg text-sm sm:text-base"
+                />
+                {searchQuery && (
+                  <button
+                    onClick={() => setSearchQuery('')}
+                    className="absolute inset-y-0 right-0 pr-3 sm:pr-4 flex items-center text-gray-400 hover:text-[#C41E3A] transition-colors z-10"
+                  >
+                    <X className="h-4 w-4 sm:h-5 sm:w-5" />
+                  </button>
+                )}
+              </div>
+            </motion.div>
+
+            {/* Category Filter */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="mb-6 sm:mb-8 md:mb-12"
+            >
+              <div className="flex items-center justify-center gap-2 mb-4 sm:mb-6">
+                <Filter className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
+                <h3 className="text-base sm:text-lg font-semibold text-white">Filter by Category</h3>
+              </div>
+              <div className="flex flex-wrap justify-center gap-2 sm:gap-3 px-2">
+                {categories.map((category) => (
+                  <motion.button
+                    key={category}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => setSelectedCategory(category)}
+                    className={`px-4 xs:px-5 sm:px-6 py-2.5 sm:py-3 rounded-full font-semibold transition-all shadow-md text-xs xs:text-sm sm:text-base touch-manipulation min-h-[44px] ${selectedCategory === category
+                      ? 'bg-white text-[#C41E3A] shadow-lg'
+                      : 'bg-white/20 text-white hover:bg-white/30 backdrop-blur-sm'
+                      }`}
+                  >
+                    {category}
+                  </motion.button>
+                ))}
+              </div>
+            </motion.div>
+
+            {/* Loading State */}
+            {loading ? (
+              <div className="text-center py-20">
+                <motion.div
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
+                  className="inline-block"
+                >
+                  <Loader2 className="h-16 w-16 text-[#FFD700]" />
+                </motion.div>
+                <p className="text-[#F5F5DC]/70 mt-6 text-lg">Loading delicious sweets...</p>
+              </div>
+            ) : error ? (
+              /* Enhanced Error State */
+              <div className="text-center py-20">
+                <ErrorMessage
+                  error={error}
+                  onRetry={fetchSweets}
+                  type="api"
+                  className="max-w-md mx-auto"
+                />
+              </div>
+            ) : filteredSweets.length === 0 ? (
+              /* No Results for Selected Category */
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="text-center py-20"
+              >
+                <div className="card-premium max-w-md mx-auto p-8">
+                  <div className="text-6xl mb-6">🔍</div>
+                  <h3 className="text-2xl font-bold text-[#FFD700] mb-3 font-['Playfair_Display']">
+                    No items in this category
+                  </h3>
+                  <p className="text-[#F5F5DC]/70 mb-6">Try selecting a different category</p>
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => setSelectedCategory('All')}
+                    className="btn-premium bg-gradient-to-r from-[#FFD700] to-[#D2691E] text-[#0D0D0D] px-8 py-3 rounded-full font-bold"
+                  >
+                    View All
+                  </motion.button>
+                </div>
+              </motion.div>
+            ) : (
+              /* Responsive Sweets Grid */
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5 md:gap-6 lg:gap-8 justify-items-center">
-                {festivalSweets.map((sweet, index) => (
+                {filteredSweets.map((sweet, index) => (
                   <motion.div
-                    key={`festival-${sweet.id || sweet._id || sweet.name}-${index}`}
+                    key={`${sweet.id || sweet._id || sweet.name}-${index}`}
                     initial={{ opacity: 0, y: 30 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ delay: index * 0.1 }}
                     className="w-full max-w-[320px]"
                   >
-                    <FestivalCard
+                    <SweetCard
                       sweet={sweet}
                       onAddToCart={addToCart}
                     />
                   </motion.div>
                 ))}
               </div>
-            ) : (
-              <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                className="text-center py-12"
-              >
-                <div className="bg-white/90 backdrop-blur-sm rounded-2xl max-w-md mx-auto p-8 shadow-xl">
-                  <div className="text-6xl mb-4">🎉</div>
-                  <h3 className="text-2xl font-bold text-[#5C3317] mb-3 font-['Playfair_Display']">
-                    Coming Soon!
-                  </h3>
-                  <p className="text-[#5C3317]/70">
-                    Festival special sweets will be available during upcoming festivals. Stay tuned!
-                  </p>
-                </div>
-              </motion.div>
             )}
           </div>
         </section>
-      )}
+
+        {/* Festival Special Sweets Section - Om Sweets Style */}
+        {!loading && (
+          <section id="festival-collection" className="py-16 sm:py-20 md:py-24 px-4 relative bg-[#D4A017]">
+            {/* Decorative BacKground Pattern */}
+            <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-10">
+              <div className="absolute inset-0" style={{
+                bacKgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000000' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+              }}></div>
+            </div>
+
+            <div className="max-w-7xl mx-auto relative z-10">
+              {/* Section Header */}
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className="text-center mb-12 sm:mb-16"
+              >
+                <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold text-[#5C3317] font-['Playfair_Display'] mb-4">
+                  Festival Special
+                </h2>
+                <p className="text-[#5C3317]/80 text-base sm:text-lg max-w-2xl mx-auto">
+                  Our festival special treats will instantly sweeten your day!
+                </p>
+              </motion.div>
+
+              {/* Festival Sweets Grid or Empty State */}
+              {festivalSweets.length > 0 ? (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5 md:gap-6 lg:gap-8 justify-items-center">
+                  {festivalSweets.map((sweet, index) => (
+                    <motion.div
+                      key={`festival-${sweet.id || sweet._id || sweet.name}-${index}`}
+                      initial={{ opacity: 0, y: 30 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: index * 0.1 }}
+                      className="w-full max-w-[320px]"
+                    >
+                      <FestivalCard
+                        sweet={sweet}
+                        onAddToCart={addToCart}
+                      />
+                    </motion.div>
+                  ))}
+                </div>
+              ) : (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="text-center py-12"
+                >
+                  <div className="bg-white/90 backdrop-blur-sm rounded-2xl max-w-md mx-auto p-8 shadow-xl">
+                    <div className="text-6xl mb-4">🎉</div>
+                    <h3 className="text-2xl font-bold text-[#5C3317] mb-3 font-['Playfair_Display']">
+                      Coming Soon!
+                    </h3>
+                    <p className="text-[#5C3317]/70">
+                      Festival special sweets will be available during upcoming festivals. Stay tuned!
+                    </p>
+                  </div>
+                </motion.div>
+              )}
+            </div>
+          </section>
+        )}
       </main>
 
       {/* Footer */}
