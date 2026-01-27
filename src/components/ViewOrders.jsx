@@ -961,7 +961,7 @@ const ViewOrders = () => {
                                       const qtyInKg = (it.weightUnit === 'grams') ? it.quantity / 1000 : it.quantity;
                                       return sum + (it.price * qtyInKg);
                                     }, 0);
-                                    setEditForm(f => ({ ...f, total: newTotal }));
+                                    setEditForm(f => ({ ...f, total: parseFloat(newTotal.toFixed(3)) }));
                                   }
                                 }}
                                 className="p-1 bg-red-100 text-red-600 rounded hover:bg-red-200"
@@ -1004,7 +1004,7 @@ const ViewOrders = () => {
                                     const qtyInKg = (it.weightUnit === 'grams') ? qty / 1000 : qty;
                                     return sum + (it.price * qtyInKg);
                                   }, 0);
-                                  setEditForm(f => ({ ...f, total: newTotal }));
+                                  setEditForm(f => ({ ...f, total: parseFloat(newTotal.toFixed(3)) }));
                                 } else {
                                   // For piece items, only allow whole numbers
                                   if (!/^\d+$/.test(inputValue)) {
@@ -1021,7 +1021,7 @@ const ViewOrders = () => {
                                       const qtyInKg = (it.weightUnit === 'grams') ? qty / 1000 : qty;
                                       return sum + (it.price * qtyInKg);
                                     }, 0);
-                                    setEditForm(f => ({ ...f, total: newTotal }));
+                                    setEditForm(f => ({ ...f, total: parseFloat(newTotal.toFixed(3)) }));
                                   }
                                 }
                               }}
@@ -1062,7 +1062,7 @@ const ViewOrders = () => {
                                     const qtyInKg = (it.weightUnit === 'grams') ? qty / 1000 : qty;
                                     return sum + (it.price * qtyInKg);
                                   }, 0);
-                                  setEditForm(f => ({ ...f, total: newTotal }));
+                                  setEditForm(f => ({ ...f, total: parseFloat(newTotal.toFixed(3)) }));
                                 }
                               }}
                               className="w-20 text-center font-semibold text-sm border border-gray-300 rounded px-1 py-1 focus:outline-none focus:ring-2 focus:ring-purple-500"
@@ -1080,7 +1080,7 @@ const ViewOrders = () => {
                                     const qtyInKg = (it.weightUnit === 'grams') ? it.quantity / 1000 : it.quantity;
                                     return sum + (it.price * qtyInKg);
                                   }, 0);
-                                  setEditForm(f => ({ ...f, total: newTotal }));
+                                  setEditForm(f => ({ ...f, total: parseFloat(newTotal.toFixed(3)) }));
                                 }}
                                 className="p-1 bg-green-100 text-green-600 rounded hover:bg-green-200"
                               >
@@ -1108,7 +1108,7 @@ const ViewOrders = () => {
                                     const qtyInKg = (it.weightUnit === 'grams') ? it.quantity / 1000 : it.quantity;
                                     return sum + (it.price * qtyInKg);
                                   }, 0);
-                                  setEditForm(f => ({ ...f, total: newTotal }));
+                                  setEditForm(f => ({ ...f, total: parseFloat(newTotal.toFixed(3)) }));
                                 }}
                                 className="text-xs px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-500"
                               >
@@ -1129,7 +1129,7 @@ const ViewOrders = () => {
                                   const qtyInKg = (it.weightUnit === 'grams') ? it.quantity / 1000 : it.quantity;
                                   return sum + (it.price * qtyInKg);
                                 }, 0);
-                                setEditForm(f => ({ ...f, total: newTotal }));
+                                setEditForm(f => ({ ...f, total: parseFloat(newTotal.toFixed(3)) }));
                               }}
                               className="text-red-500 hover:text-red-700 text-sm px-2 py-1"
                             >
@@ -1331,7 +1331,7 @@ const ViewOrders = () => {
                                 const qtyInKg = (item.weightUnit === 'grams') ? qty / 1000 : qty;
                                 return sum + (item.price * qtyInKg);
                               }, 0);
-                              setEditForm(f => ({ ...f, total: newTotal }));
+                              setEditForm(f => ({ ...f, total: parseFloat(newTotal.toFixed(3)) }));
                               setSelectedSweet('');
                               setSelectedQuantity(1);
                               setSelectedWeightUnit('Kg');
