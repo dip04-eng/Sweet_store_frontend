@@ -309,7 +309,7 @@ const UserPanel = () => {
               className="mb-6 sm:mb-8 max-w-xl mx-auto px-3 xs:px-4"
             >
               <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-4 sm:pl-5 flex items-center pointer-events-none z-10">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none z-10">
                   <Search className="h-4 w-4 sm:h-5 sm:w-5 text-[#C41E3A]" />
                 </div>
                 <input
@@ -317,8 +317,7 @@ const UserPanel = () => {
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Search sweets, snacks..."
-                  style={{ paddingLeft: '48px' }}
-                  className="w-full pr-10 sm:pr-12 py-3 sm:py-4 rounded-full border-2 border-[#C41E3A]/30 bg-white/95 backdrop-blur-sm text-gray-800 placeholder-gray-500 focus:outline-none focus:border-[#C41E3A] focus:ring-2 focus:ring-[#C41E3A]/20 transition-all shadow-lg text-sm sm:text-base"
+                  className="w-full pl-9 sm:pl-10 pr-10 sm:pr-12 py-3 sm:py-4 rounded-full border-2 border-[#C41E3A]/30 bg-white/95 backdrop-blur-sm text-gray-800 placeholder-gray-500 focus:outline-none focus:border-[#C41E3A] focus:ring-2 focus:ring-[#C41E3A]/20 transition-all shadow-lg text-sm sm:text-base"
                 />
                 {searchQuery && (
                   <button
