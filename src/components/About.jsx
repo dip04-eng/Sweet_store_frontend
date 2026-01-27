@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Award, Heart, Users, Clock, Star, ChefHat, Sparkles } from 'lucide-react';
+import { Award, Heart, Users, Clock, Star, ChefHat, Sparkles, TrendingUp } from 'lucide-react';
 import { GiCupcake, GiCandyCanes } from 'react-icons/gi';
 import Navbar from './Navbar';
 import Footer from './Footer';
@@ -222,7 +222,7 @@ const About = () => {
             >
               <div className="relative rounded-2xl overflow-hidden shadow-2xl">
                 <img
-                  src="/BacKground.png"
+                  src="/Background.png"
                   alt="Mansoor Hotel & Sweets - Traditional Sweet Making"
                   className="w-full h-[400px] sm:h-[500px] object-cover"
                 />
@@ -323,12 +323,12 @@ const About = () => {
             initial={{ opacity: 0, scale: 0.9 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            className="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl rounded-3xl p-8 border border-[#FFD700]/20"
+            className="bg-[#1A0F0A] rounded-3xl p-8 border border-[#FFD700]/20 shadow-2xl"
           >
             <div className="grid md:grid-cols-2 gap-8 items-center">
               <div className="space-y-6">
                 <div className="flex items-start gap-4">
-                  <div className="p-3 bg-[#C41E3A]/20 rounded-lg">
+                  <div className="p-3 bg-[#C41E3A]/30 rounded-lg">
                     <Award className="h-6 w-6 text-[#FFD700]" />
                   </div>
                   <div>
@@ -341,7 +341,7 @@ const About = () => {
                 </div>
 
                 <div className="flex items-start gap-4">
-                  <div className="p-3 bg-[#C41E3A]/20 rounded-lg">
+                  <div className="p-3 bg-[#C41E3A]/30 rounded-lg">
                     <Clock className="h-6 w-6 text-[#FFD700]" />
                   </div>
                   <div>
@@ -354,7 +354,7 @@ const About = () => {
                 </div>
 
                 <div className="flex items-start gap-4">
-                  <div className="p-3 bg-[#C41E3A]/20 rounded-lg">
+                  <div className="p-3 bg-[#C41E3A]/30 rounded-lg">
                     <Users className="h-6 w-6 text-[#FFD700]" />
                   </div>
                   <div>
@@ -368,17 +368,17 @@ const About = () => {
                 </div>
               </div>
 
-              <div className="relative h-[400px] rounded-2xl overflow-hidden shadow-2xl">
+              <div className="relative h-[350px] sm:h-[400px] rounded-2xl overflow-hidden shadow-2xl border-2 border-[#FFD700]/30">
                 <iframe
                   src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3591.123456789!2d87.7311!3d25.8597!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjXCsDUxJzM1LjAiTiA4N8KwNDMnNTIuMCJF!5e0!3m2!1sen!2sin!4v1234567890"
                   width="100%"
                   height="100%"
-                  style={{ border: 0 }}
+                  style={{ border: 0, display: 'block' }}
                   allowFullScreen=""
                   loading="lazy"
                   referrerPolicy="no-referrer-when-downgrade"
                   title="Mansoor Hotel & Sweets Location"
-                  className="brightness-90"
+                  className="w-full h-full"
                 ></iframe>
               </div>
             </div>

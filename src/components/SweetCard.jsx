@@ -102,7 +102,7 @@ const SweetCard = ({ sweet, onAddToCart }) => {
               value={weight}
               onChange={handleWeightChange}
               placeholder="1"
-              className="w-16 px-2 py-2 text-center bg-gray-50 text-gray-800 font-medium rounded-lg border border-gray-200 focus:outline-none focus:border-[#C41E3A] text-sm"
+              className="w-20 px-2 py-2 text-center bg-gray-50 text-gray-800 font-medium rounded-lg border border-gray-200 focus:outline-none focus:border-[#C41E3A] text-sm"
             />
             <select
               value={weightUnit}
