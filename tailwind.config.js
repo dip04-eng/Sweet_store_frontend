@@ -5,6 +5,7 @@ export default {
   theme: {
     extend: {
       screens: {
+        'xxs': '320px',
         'xs': '375px',
         'sm': '640px',
         'md': '768px',
@@ -15,6 +16,8 @@ export default {
         'mobile': { 'max': '767px' },
         'tablet': { 'min': '768px', 'max': '1023px' },
         'desktop': { 'min': '1024px' },
+        // Ultra-small screens (folded phones, small devices)
+        'ultra-small': { 'max': '359px' },
       },
       spacing: {
         'safe-top': 'env(safe-area-inset-top)',
@@ -25,7 +28,7 @@ export default {
     },
   },
   plugins: [
-    function({ addUtilities, addComponents }) {
+    function ({ addUtilities, addComponents }) {
       const newUtilities = {
         '.touch-manipulation': {
           'touch-action': 'manipulation',
@@ -44,7 +47,7 @@ export default {
           'padding-right': 'env(safe-area-inset-right)',
         },
       };
-      
+
       const newComponents = {
         '.container-responsive': {
           'max-width': '100%',
@@ -87,7 +90,7 @@ export default {
           },
         },
       };
-      
+
       addUtilities(newUtilities);
       addComponents(newComponents);
     },
