@@ -17,10 +17,8 @@ const SweetCard = ({ sweet, onAddToCart }) => {
   };
 
   const handleWeightChange = (e) => {
-    const value = e.target.value;
-    if (value === '' || /^\d*\.?\d{0,3}$/.test(value)) {
-      setWeight(value);
-    }
+    // Simply accept any input - no restrictions while typing
+    setWeight(e.target.value);
   };
 
   const handleWeightUnitChange = (e) => {
@@ -87,11 +85,13 @@ const SweetCard = ({ sweet, onAddToCart }) => {
             <div className="flex items-center justify-between gap-2">
               <div className="flex items-center gap-1.5 flex-1">
                 <input
-                  type="text"
+                  type="number"
+                  step="0.001"
+                  min="0"
                   value={weight}
                   onChange={handleWeightChange}
                   placeholder="1"
-                  className="w-14 bg-white text-gray-900 text-center rounded px-1.5 py-1.5 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-[#FFD700]"
+                  className="w-14 bg-white text-gray-900 text-center rounded px-1.5 py-1.5 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-[#FFD700] [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                 />
                 <select
                   value={weightUnit}

@@ -25,6 +25,7 @@ const UserPanel = () => {
   const [initialLoadDone, setInitialLoadDone] = useState(false);
 
   useEffect(() => {
+    console.log('🎯 UserPanel mounted, starting initial fetch...');
     fetchSweets().then(() => setInitialLoadDone(true));
     const savedCart = sessionStorage.getItem('sweetCart');
     if (savedCart) {
@@ -73,6 +74,8 @@ const UserPanel = () => {
       setLoading(true);
       setError(null);
 
+      console.log('🌐 Fetching sweets from:', `${API_BASE_URL}${API_ENDPOINTS.GET_SWEETS}`);
+
       // Increased timeout to 30 seconds for large image payloads
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 30000);
@@ -82,6 +85,7 @@ const UserPanel = () => {
       });
 
       clearTimeout(timeoutId);
+      console.log('📡 Response received:', response.status, response.statusText);
 
       if (!response.ok) {
         throw new Error(`Server responded with ${response.status}: ${response.statusText}`);
@@ -351,6 +355,23 @@ const UserPanel = () => {
                     {category}
                   </motion.button>
                 ))}
+                {/* Festival Special Button */}
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => {
+                    const festivalSection = document.getElementById('festival-collection');
+                    if (festivalSection) {
+                      festivalSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                  }}
+                  className="px-4 xs:px-5 sm:px-6 py-2.5 sm:py-3 rounded-full font-semibold transition-all shadow-md text-xs xs:text-sm sm:text-base touch-manipulation min-h-[44px] bg-gradient-to-r from-[#FFD700] to-[#D4A017] text-[#5C3317] hover:from-[#FFC000] hover:to-[#C49000] shadow-lg border-2 border-[#B8860B]"
+                >
+                  <span className="flex items-center gap-1.5">
+                    <PartyPopper className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+                    Festival Special
+                  </span>
+                </motion.button>
               </div>
             </motion.div>
 

@@ -17,11 +17,8 @@ const FestivalCard = ({ sweet, onAddToCart }) => {
   };
 
   const handleWeightChange = (e) => {
-    const value = e.target.value;
-    // Allow empty input and numeric values with up to 3 decimal places
-    if (value === '' || /^\d*\.?\d{0,3}$/.test(value)) {
-      setWeight(value);
-    }
+    // Simply accept any input - no restrictions while typing
+    setWeight(e.target.value);
   };
 
   const handleWeightUnitChange = (e) => {
@@ -120,11 +117,13 @@ const FestivalCard = ({ sweet, onAddToCart }) => {
                 
                 {/* Weight input field */}
                 <input
-                  type="text"
+                  type="number"
+                  step="0.001"
+                  min="0"
                   value={weight}
                   onChange={handleWeightChange}
                   placeholder="0.0"
-                  className="w-20 bg-white text-[#C41E3A] text-center rounded-lg px-2 py-2 text-base font-bold focus:outline-none focus:ring-2 focus:ring-[#FFD700]"
+                  className="w-20 bg-white text-[#C41E3A] text-center rounded-lg px-2 py-2 text-base font-bold focus:outline-none focus:ring-2 focus:ring-[#FFD700] [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                 />
 
                 <span className="text-xs text-white/90 font-semibold ml-1">
