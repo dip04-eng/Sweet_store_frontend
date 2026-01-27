@@ -192,22 +192,24 @@ const Cart = () => {
                             /* Weight Input for Kg items */
                             <div className="flex items-center gap-1">
                               <input
-                                type="number"
-                                step="0.001"
-                                min="0"
+                                type="text"
+                                inputMode="decimal"
+                                pattern="[0-9]*\.?[0-9]*"
                                 value={weightInputs[index] !== undefined ? weightInputs[index] : (item.quantity > 0 ? ((item.weightUnit || 'Kg') === 'Kg' ? Number(item.quantity).toFixed(3).replace(/\.?0+$/, '') : Math.round(item.quantity * 1000)) : '0')}
                                 onFocus={(e) => e.target.select()}
                                 onChange={(e) => {
-                                  // Simply accept any input while typing
+                                  // Allow numbers and decimal point only
                                   const inputValue = e.target.value;
-                                  setWeightInputs({ ...weightInputs, [index]: inputValue });
-                                  
-                                  // Try to parse and update cart if valid number
-                                  const value = parseFloat(inputValue);
-                                  if (!isNaN(value) && value >= 0) {
-                                    const roundedValue = Math.round(value * 1000) / 1000;
-                                    const weightInKg = item.weightUnit === 'Kg' ? roundedValue : roundedValue / 1000;
-                                    updateQuantity(index, weightInKg > 0 ? weightInKg : 0.001);
+                                  if (inputValue === '' || /^[0-9]*\.?[0-9]*$/.test(inputValue)) {
+                                    setWeightInputs({ ...weightInputs, [index]: inputValue });
+                                    
+                                    // Try to parse and update cart if valid number
+                                    const value = parseFloat(inputValue);
+                                    if (!isNaN(value) && value >= 0) {
+                                      const roundedValue = Math.round(value * 1000) / 1000;
+                                      const weightInKg = item.weightUnit === 'Kg' ? roundedValue : roundedValue / 1000;
+                                      updateQuantity(index, weightInKg > 0 ? weightInKg : 0.001);
+                                    }
                                   }
                                 }}
                                 onBlur={() => {
@@ -217,7 +219,7 @@ const Cart = () => {
                                     setWeightInputs({ ...weightInputs, [index]: undefined });
                                   }
                                 }}
-                                className="w-20 sm:w-24 px-2 py-1.5 text-center bg-white text-gray-900 font-medium rounded border border-gray-300 focus:outline-none focus:border-[#2874f0] text-sm [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                                className="w-20 sm:w-24 px-2 py-1.5 text-center bg-white text-gray-900 font-medium rounded border border-gray-300 focus:outline-none focus:border-[#2874f0] text-sm"
                               />
                               <select
                                 value={item.weightUnit || 'Kg'}

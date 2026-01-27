@@ -18,6 +18,8 @@ const UserPanel = () => {
   const [error, setError] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState('Sweet');
   const [searchQuery, setSearchQuery] = useState('');
+  const [visibleCount, setVisibleCount] = useState(8); // Show 8 sweets initially
+  const [visibleFestivalCount, setVisibleFestivalCount] = useState(8); // Show 8 festival sweets initially
 
   const categories = ['Sweet', 'Dry-Fruits', 'Snacks', 'Breakfast', 'Lunch', 'Dinner', 'Other'];
 
@@ -346,7 +348,10 @@ const UserPanel = () => {
                     key={category}
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
-                    onClick={() => setSelectedCategory(category)}
+                    onClick={() => {
+                      setSelectedCategory(category);
+                      setVisibleCount(8); // Reset to show first 8 when category changes
+                    }}
                     className={`px-4 xs:px-5 sm:px-6 py-2.5 sm:py-3 rounded-full font-semibold transition-all shadow-md text-xs xs:text-sm sm:text-base touch-manipulation min-h-[44px] ${selectedCategory === category
                       ? 'bg-white text-[#C41E3A] shadow-lg'
                       : 'bg-white/20 text-white hover:bg-white/30 backdrop-blur-sm'
@@ -421,24 +426,45 @@ const UserPanel = () => {
                 </div>
               </motion.div>
             ) : (
-              /* Responsive Sweets Grid */
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5 md:gap-6 lg:gap-8 justify-items-center">
-                {filteredSweets.map((sweet, index) => (
+              /* Responsive Sweets Grid with View More */
+              <>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5 md:gap-6 lg:gap-8 justify-items-center">
+                  {filteredSweets.slice(0, visibleCount).map((sweet, index) => (
+                    <motion.div
+                      key={`${sweet.id || sweet._id || sweet.name}-${index}`}
+                      initial={{ opacity: 0, y: 30 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: (index % 10) * 0.1 }}
+                      className="w-full max-w-[320px]"
+                    >
+                      <SweetCard
+                        sweet={sweet}
+                        onAddToCart={addToCart}
+                      />
+                    </motion.div>
+                  ))}
+                </div>
+                
+                {/* View More Button */}
+                {visibleCount < filteredSweets.length && (
                   <motion.div
-                    key={`${sweet.id || sweet._id || sweet.name}-${index}`}
-                    initial={{ opacity: 0, y: 30 }}
+                    initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    transition={{ delay: index * 0.1 }}
-                    className="w-full max-w-[320px]"
+                    className="text-center mt-10"
                   >
-                    <SweetCard
-                      sweet={sweet}
-                      onAddToCart={addToCart}
-                    />
+                    <motion.button
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      onClick={() => setVisibleCount(prev => prev + 8)}
+                      className="px-8 py-3 bg-white text-[#C41E3A] font-semibold rounded-full shadow-lg hover:shadow-xl transition-all border-2 border-[#C41E3A] hover:bg-[#C41E3A] hover:text-white"
+                    >
+                      View More ({filteredSweets.length - visibleCount} remaining)
+                    </motion.button>
                   </motion.div>
-                ))}
-              </div>
+                )}
+              </>
             )}
           </div>
         </section>
@@ -471,23 +497,44 @@ const UserPanel = () => {
 
               {/* Festival Sweets Grid or Empty State */}
               {festivalSweets.length > 0 ? (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5 md:gap-6 lg:gap-8 justify-items-center">
-                  {festivalSweets.map((sweet, index) => (
+                <>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5 md:gap-6 lg:gap-8 justify-items-center">
+                    {festivalSweets.slice(0, visibleFestivalCount).map((sweet, index) => (
+                      <motion.div
+                        key={`festival-${sweet.id || sweet._id || sweet.name}-${index}`}
+                        initial={{ opacity: 0, y: 30 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: (index % 10) * 0.1 }}
+                        className="w-full max-w-[320px]"
+                      >
+                        <FestivalCard
+                          sweet={sweet}
+                          onAddToCart={addToCart}
+                        />
+                      </motion.div>
+                    ))}
+                  </div>
+                  
+                  {/* View More Button for Festival Sweets */}
+                  {visibleFestivalCount < festivalSweets.length && (
                     <motion.div
-                      key={`festival-${sweet.id || sweet._id || sweet.name}-${index}`}
-                      initial={{ opacity: 0, y: 30 }}
+                      initial={{ opacity: 0, y: 20 }}
                       whileInView={{ opacity: 1, y: 0 }}
                       viewport={{ once: true }}
-                      transition={{ delay: index * 0.1 }}
-                      className="w-full max-w-[320px]"
+                      className="text-center mt-10"
                     >
-                      <FestivalCard
-                        sweet={sweet}
-                        onAddToCart={addToCart}
-                      />
+                      <motion.button
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        onClick={() => setVisibleFestivalCount(prev => prev + 8)}
+                        className="px-8 py-3 bg-white text-[#5C3317] font-semibold rounded-full shadow-lg hover:shadow-xl transition-all border-2 border-[#5C3317] hover:bg-[#5C3317] hover:text-white"
+                      >
+                        View More ({festivalSweets.length - visibleFestivalCount} remaining)
+                      </motion.button>
                     </motion.div>
-                  ))}
-                </div>
+                  )}
+                </>
               ) : (
                 <motion.div
                   initial={{ opacity: 0, scale: 0.9 }}

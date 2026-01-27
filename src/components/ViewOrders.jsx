@@ -588,8 +588,8 @@ const ViewOrders = () => {
                       >
                         <span>Order Date</span>
                         <div className="flex flex-col -space-y-1">
-                          <ArrowUp className={`h-3 w-3 ${activeSortColumn === 'order' && orderSort === 'asc' ? 'text-yellow-300' : 'text-white/40'}`} />
-                          <ArrowDown className={`h-3 w-3 ${activeSortColumn === 'order' && orderSort === 'desc' ? 'text-yellow-300' : 'text-white/40'}`} />
+                          <ArrowUp className={`h-3 w-3 ${activeSortColumn === 'order' && orderSort === 'asc' ? 'text-yellow-300' : 'text-white/70'}`} />
+                          <ArrowDown className={`h-3 w-3 ${activeSortColumn === 'order' && orderSort === 'desc' ? 'text-yellow-300' : 'text-white/70'}`} />
                         </div>
                       </button>
                     </th>
@@ -601,8 +601,8 @@ const ViewOrders = () => {
                       >
                         <span>Delivery Date</span>
                         <div className="flex flex-col -space-y-1">
-                          <ArrowUp className={`h-3 w-3 ${activeSortColumn === 'delivery' && deliverySort === 'asc' ? 'text-yellow-300' : 'text-white/40'}`} />
-                          <ArrowDown className={`h-3 w-3 ${activeSortColumn === 'delivery' && deliverySort === 'desc' ? 'text-yellow-300' : 'text-white/40'}`} />
+                          <ArrowUp className={`h-3 w-3 ${activeSortColumn === 'delivery' && deliverySort === 'asc' ? 'text-yellow-300' : 'text-white/70'}`} />
+                          <ArrowDown className={`h-3 w-3 ${activeSortColumn === 'delivery' && deliverySort === 'desc' ? 'text-yellow-300' : 'text-white/70'}`} />
                         </div>
                       </button>
                     </th>
