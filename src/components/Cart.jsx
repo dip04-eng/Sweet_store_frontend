@@ -324,34 +324,27 @@ const Cart = () => {
                               </div>
                             </div>
                           ) : (
-                            // Quantity controls with price and delete for piece items - yellow pill shape like Kg items
-                            <div className="mt-3 flex flex-wrap items-center gap-1.5 xxs:gap-2 sm:gap-3">
-                              <div className="flex items-center gap-0.5 xxs:gap-1 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-full px-1.5 xxs:px-2 sm:px-4 py-1 xxs:py-1.5 sm:py-2">
-                                <span className="text-white text-[10px] xxs:text-xs sm:text-sm font-semibold whitespace-nowrap">Piece:</span>
-                                <motion.button
-                                  whileHover={{ scale: 1.1 }}
-                                  whileTap={{ scale: 0.9 }}
+                            // Quantity controls with price and delete for piece items - compact like Kg items
+                            <div className="mt-3 flex flex-wrap items-center gap-1.5 xxs:gap-2 sm:gap-3 md:gap-4">
+                              <div className="flex items-center gap-0.5 sm:gap-1 md:gap-2 lg:gap-3 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-full px-2 sm:px-3 md:px-4 py-1 sm:py-1.5">
+                                <span className="text-white text-[10px] xxs:text-xs sm:text-sm font-semibold">Piece:</span>
+                                <button
                                   onClick={() => updateQuantity(index, (item.quantity || 1) - 1)}
                                   disabled={(item.quantity || 1) <= 1}
-                                  className={`p-0.5 rounded transition-all ${(item.quantity || 1) <= 1
-                                    ? 'bg-white/50 text-gray-400 cursor-not-allowed'
-                                    : 'bg-white text-[#C41E3A] hover:bg-gray-100'
-                                    }`}
+                                  className={`text-white font-bold text-sm sm:text-base md:text-lg leading-none px-1 ${(item.quantity || 1) <= 1 ? 'opacity-40 cursor-not-allowed' : 'hover:opacity-80'}`}
                                 >
-                                  <Minus className="h-3 w-3" />
-                                </motion.button>
-                                <div className="min-w-[24px] xxs:min-w-[32px] sm:min-w-[40px] px-0.5 xxs:px-1 py-0.5 text-center bg-white text-gray-900 font-bold rounded text-xs xxs:text-sm">
+                                  −
+                                </button>
+                                <div className="min-w-[20px] sm:min-w-[28px] md:min-w-[36px] px-1 sm:px-2 py-0.5 text-center bg-white text-gray-900 font-bold rounded text-xs sm:text-sm md:text-base">
                                   {item.quantity || 1}
                                 </div>
-                                <motion.button
-                                  whileHover={{ scale: 1.1 }}
-                                  whileTap={{ scale: 0.9 }}
+                                <button
                                   onClick={() => updateQuantity(index, (item.quantity || 1) + 1)}
-                                  className="p-0.5 rounded bg-white text-[#C41E3A] hover:bg-gray-100 transition-all"
+                                  className="text-white font-bold text-sm sm:text-base md:text-lg leading-none px-1 hover:opacity-80"
                                 >
-                                  <Plus className="h-3 w-3" />
-                                </motion.button>
-                                <div className="bg-purple-600 text-white px-1 xxs:px-2 sm:px-3 py-0.5 xxs:py-1 rounded-md font-bold text-[10px] xxs:text-xs sm:text-sm border-2 border-white shadow-md whitespace-nowrap">
+                                  +
+                                </button>
+                                <div className="bg-purple-600 text-white px-1.5 sm:px-2 md:px-3 py-0.5 sm:py-1 rounded-md font-bold text-[10px] xxs:text-xs sm:text-sm border border-white">
                                   piece
                                 </div>
                               </div>
