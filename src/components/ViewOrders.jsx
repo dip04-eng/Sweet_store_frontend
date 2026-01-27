@@ -16,7 +16,7 @@ const ViewOrders = () => {
   }); // Date filter defaults to today
   const [searchQuery, setSearchQuery] = useState(''); // Search query
   const [deliverySort, setDeliverySort] = useState('asc'); // 'asc' or 'desc' or null
-  const [orderSort, setOrderSort] = useState('asc'); // 'asc' or 'desc' or null
+  const [orderSort, setOrderSort] = useState('desc'); // 'asc' or 'desc' or null - Default to descending for newest first
   const [activeSortColumn, setActiveSortColumn] = useState('order'); // 'order' or 'delivery' - which column is actively sorting
   const [showPendingPaymentOnly, setShowPendingPaymentOnly] = useState(false); // Filter for delivered with pending payment
   const [loading, setLoading] = useState(true);
@@ -583,27 +583,25 @@ const ViewOrders = () => {
                     <th className="px-2 sm:px-3 md:px-4 py-3 sm:py-4 text-left text-xs sm:text-sm font-semibold whitespace-nowrap">
                       <button
                         onClick={toggleOrderSort}
-                        className={`flex items-center gap-2 transition-colors ${activeSortColumn === 'order' ? 'text-yellow-300' : 'hover:text-yellow-300'}`}
+                        className={`flex items-center gap-1 transition-colors ${activeSortColumn === 'order' ? 'text-yellow-300' : 'hover:text-yellow-300'}`}
                         title="Click to sort by order date (Up=Ascending, Down=Descending)"
                       >
                         <span>Order Date</span>
-                        <div className="flex flex-col -space-y-1">
-                          <ArrowUp className={`h-3 w-3 ${activeSortColumn === 'order' && orderSort === 'asc' ? 'text-yellow-300' : 'text-white/70'}`} />
-                          <ArrowDown className={`h-3 w-3 ${activeSortColumn === 'order' && orderSort === 'desc' ? 'text-yellow-300' : 'text-white/70'}`} />
-                        </div>
+                        <span className="inline-flex items-center ml-1">
+                          {activeSortColumn === 'order' && orderSort === 'asc' ? '↑' : activeSortColumn === 'order' && orderSort === 'desc' ? '↓' : '↕'}
+                        </span>
                       </button>
                     </th>
                     <th className="px-2 sm:px-3 md:px-4 py-3 sm:py-4 text-left text-xs sm:text-sm font-semibold whitespace-nowrap">
                       <button
                         onClick={toggleDeliverySort}
-                        className={`flex items-center gap-2 transition-colors ${activeSortColumn === 'delivery' ? 'text-yellow-300' : 'hover:text-yellow-300'}`}
+                        className={`flex items-center gap-1 transition-colors ${activeSortColumn === 'delivery' ? 'text-yellow-300' : 'hover:text-yellow-300'}`}
                         title="Click to sort by delivery date (Up=Ascending, Down=Descending)"
                       >
                         <span>Delivery Date</span>
-                        <div className="flex flex-col -space-y-1">
-                          <ArrowUp className={`h-3 w-3 ${activeSortColumn === 'delivery' && deliverySort === 'asc' ? 'text-yellow-300' : 'text-white/70'}`} />
-                          <ArrowDown className={`h-3 w-3 ${activeSortColumn === 'delivery' && deliverySort === 'desc' ? 'text-yellow-300' : 'text-white/70'}`} />
-                        </div>
+                        <span className="inline-flex items-center ml-1">
+                          {activeSortColumn === 'delivery' && deliverySort === 'asc' ? '↑' : activeSortColumn === 'delivery' && deliverySort === 'desc' ? '↓' : '↕'}
+                        </span>
                       </button>
                     </th>
                     <th className="px-2 sm:px-3 md:px-4 py-3 sm:py-4 text-left text-xs sm:text-sm font-semibold whitespace-nowrap">Amount</th>

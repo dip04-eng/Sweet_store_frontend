@@ -17,7 +17,11 @@ const SweetCard = ({ sweet, onAddToCart }) => {
   };
 
   const handleWeightChange = (e) => {
-    setWeight(e.target.value);
+    const value = e.target.value;
+    // Allow empty, numbers, and one decimal point with max 3 digits after decimal
+    if (value === '' || /^[0-9]*\.?[0-9]{0,3}$/.test(value)) {
+      setWeight(value);
+    }
   };
 
   const handleWeightUnitChange = (e) => {
@@ -93,13 +97,12 @@ const SweetCard = ({ sweet, onAddToCart }) => {
         {isKgItem ? (
           <div className="flex items-center justify-center gap-2 mb-4">
             <input
-              type="number"
-              step="0.001"
-              min="0"
+              type="text"
+              inputMode="decimal"
               value={weight}
               onChange={handleWeightChange}
               placeholder="1"
-              className="w-16 px-2 py-2 text-center bg-gray-50 text-gray-800 font-medium rounded-lg border border-gray-200 focus:outline-none focus:border-[#C41E3A] text-sm [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+              className="w-16 px-2 py-2 text-center bg-gray-50 text-gray-800 font-medium rounded-lg border border-gray-200 focus:outline-none focus:border-[#C41E3A] text-sm"
             />
             <select
               value={weightUnit}

@@ -194,21 +194,25 @@ const Cart = () => {
                               <input
                                 type="text"
                                 inputMode="decimal"
-                                pattern="[0-9]*\.?[0-9]*"
                                 value={weightInputs[index] !== undefined ? weightInputs[index] : (item.quantity > 0 ? ((item.weightUnit || 'Kg') === 'Kg' ? Number(item.quantity).toFixed(3).replace(/\.?0+$/, '') : Math.round(item.quantity * 1000)) : '0')}
                                 onFocus={(e) => e.target.select()}
                                 onChange={(e) => {
-                                  // Allow numbers and decimal point only
-                                  const inputValue = e.target.value;
-                                  if (inputValue === '' || /^[0-9]*\.?[0-9]*$/.test(inputValue)) {
+                                  let inputValue = e.target.value;
+                                  console.log('Cart weight input changed:', inputValue);
+                                  
+                                  // Allow only valid decimal numbers with max 3 decimal places
+                                  // This regex allows: empty, integers, decimals with 1-3 digits after point
+                                  if (inputValue === '' || /^[0-9]*\.?[0-9]{0,3}$/.test(inputValue)) {
                                     setWeightInputs({ ...weightInputs, [index]: inputValue });
                                     
                                     // Try to parse and update cart if valid number
                                     const value = parseFloat(inputValue);
-                                    if (!isNaN(value) && value >= 0) {
+                                    console.log('Parsed value:', value);
+                                    if (!isNaN(value) && value > 0) {
                                       const roundedValue = Math.round(value * 1000) / 1000;
                                       const weightInKg = item.weightUnit === 'Kg' ? roundedValue : roundedValue / 1000;
-                                      updateQuantity(index, weightInKg > 0 ? weightInKg : 0.001);
+                                      console.log('Updating cart with weight (Kg):', weightInKg);
+                                      updateQuantity(index, weightInKg);
                                     }
                                   }
                                 }}
