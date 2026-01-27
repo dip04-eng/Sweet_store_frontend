@@ -42,7 +42,6 @@ const Cart = () => {
   };
 
   const updateQuantity = (index, newQuantity) => {
-    if (newQuantity <= 0) return;
     const updatedCart = [...cart];
     // Round to 3 decimal places to prevent excessive precision
     updatedCart[index].quantity = Math.round(newQuantity * 1000) / 1000;
@@ -181,7 +180,7 @@ const Cart = () => {
                           {/* Price */}
                           <div className="mt-2">
                             <span className="text-base sm:text-lg font-semibold text-gray-900">
-                              ₹{(item.rate * (item.quantity || 1)).toFixed(0)}
+                              ₹{(item.quantity && item.quantity > 0) ? (item.rate * item.quantity).toFixed(0) : '0'}
                             </span>
                           </div>
                         </div>
@@ -208,11 +207,14 @@ const Cart = () => {
                                     // Try to parse and update cart if valid number
                                     const value = parseFloat(inputValue);
                                     console.log('Parsed value:', value);
-                                    if (!isNaN(value) && value > 0) {
+                                    if (!isNaN(value) && value >= 0) {
                                       const roundedValue = Math.round(value * 1000) / 1000;
                                       const weightInKg = item.weightUnit === 'Kg' ? roundedValue : roundedValue / 1000;
                                       console.log('Updating cart with weight (Kg):', weightInKg);
                                       updateQuantity(index, weightInKg);
+                                    } else if (inputValue === '' || inputValue === '0') {
+                                      // Handle 0 or empty input
+                                      updateQuantity(index, 0);
                                     }
                                   }
                                 }}
