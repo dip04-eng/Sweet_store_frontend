@@ -970,6 +970,7 @@ const ViewOrders = () => {
                             )}
                             <input
                               type="text"
+                              inputMode="decimal"
                               value={item.quantity === '' ? '' : item.quantity}
                               onChange={(e) => {
                                 const inputValue = e.target.value;
@@ -982,36 +983,45 @@ const ViewOrders = () => {
                                   return;
                                 }
 
-                                const isKgItem = item.unit === 'Kg';
+                                const isKgItem = item.unit === 'Kg' || item.unit === 'kg';
                                 // eslint-disable-next-line no-unused-vars
                                 const isGrams = item.weightUnit === 'grams';
 
                                 // Validate input based on item type
                                 if (isKgItem) {
                                   // For Kg items, allow decimals with up to 3 decimal places
-                                  if (!/^\d*\.?\d{0,3}$/.test(inputValue)) {
+                                  if (!/^[0-9]*\.?[0-9]{0,3}$/.test(inputValue)) {
                                     return;
                                   }
-                                } else {
-                                  // For piece items, only allow whole numbers
-                                  if (!/^\d+$/.test(inputValue)) {
-                                    return;
-                                  }
-                                }
-
-                                const value = parseFloat(inputValue);
-                                if (!isNaN(value)) {
+                                  // Store as string to preserve decimal point during typing
                                   const newItems = [...editOrderItems];
-                                  // Store value directly for kg items, round for piece items
-                                  newItems[index].quantity = isKgItem ? value : Math.floor(value);
+                                  newItems[index].quantity = inputValue;
                                   setEditOrderItems(newItems);
-                                  // Recalculate total
+                                  // Recalculate total using parsed value
                                   const newTotal = newItems.reduce((sum, it) => {
                                     const qty = it.quantity === '' ? 0 : parseFloat(it.quantity) || 0;
                                     const qtyInKg = (it.weightUnit === 'grams') ? qty / 1000 : qty;
                                     return sum + (it.price * qtyInKg);
                                   }, 0);
                                   setEditForm(f => ({ ...f, total: newTotal }));
+                                } else {
+                                  // For piece items, only allow whole numbers
+                                  if (!/^\d+$/.test(inputValue)) {
+                                    return;
+                                  }
+                                  const value = parseInt(inputValue, 10);
+                                  if (!isNaN(value)) {
+                                    const newItems = [...editOrderItems];
+                                    newItems[index].quantity = value;
+                                    setEditOrderItems(newItems);
+                                    // Recalculate total
+                                    const newTotal = newItems.reduce((sum, it) => {
+                                      const qty = it.quantity === '' ? 0 : parseFloat(it.quantity) || 0;
+                                      const qtyInKg = (it.weightUnit === 'grams') ? qty / 1000 : qty;
+                                      return sum + (it.price * qtyInKg);
+                                    }, 0);
+                                    setEditForm(f => ({ ...f, total: newTotal }));
+                                  }
                                 }
                               }}
                               onBlur={(e) => {
