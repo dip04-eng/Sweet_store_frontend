@@ -446,7 +446,7 @@ const AddOrder = () => {
                                     setCart(updatedCart);
                                   }
                                 }}
-                                className="w-16 text-center font-medium text-sm border border-gray-300 rounded px-2 py-1.5 focus:outline-none focus:border-purple-500"
+                                className="w-20 text-center font-medium text-sm border border-gray-300 rounded px-2 py-1.5 focus:outline-none focus:border-purple-500"
                               />
                               <select
                                 value={item.weightUnit || 'Kg'}
