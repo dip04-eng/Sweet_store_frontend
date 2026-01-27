@@ -442,13 +442,13 @@ const ViewOrders = () => {
         <div className="flex flex-col sm:flex-row sm:flex-wrap items-start sm:items-center gap-2 sm:gap-3 w-full">
           {/* Search Box */}
           <div className="flex items-center w-full sm:w-auto sm:min-w-[200px] lg:min-w-[250px] relative">
-            <Search className="h-4 w-4 sm:h-5 sm:w-5 text-gray-400 absolute left-3" />
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-500 pointer-events-none" />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search by name, phone, address..."
-              className="bg-white border border-gray-300 rounded-lg pl-9 pr-3 py-1.5 sm:py-2 text-sm sm:text-base text-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-500 w-full"
+              className="bg-white border border-gray-300 rounded-lg pl-14 pr-3 py-1.5 sm:py-2 text-sm sm:text-base text-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-500 w-full"
             />
             {searchQuery && (
               <button
