@@ -361,11 +361,11 @@ const AddOrder = () => {
               </div>
             </div>
 
-            {/* Cart Summary - Flipkart Style */}
-            <div className="bg-white rounded-sm shadow">
+            {/* Cart Summary - Mobile Responsive */}
+            <div className="bg-white rounded-lg shadow">
               {/* Cart Header */}
-              <div className="p-4 border-b border-gray-200">
-                <h3 className="text-lg font-medium text-gray-800">
+              <div className="p-3 sm:p-4 border-b border-gray-200">
+                <h3 className="text-base sm:text-lg font-medium text-gray-800">
                   Cart Summary ({cart.length} {cart.length === 1 ? 'item' : 'items'})
                 </h3>
               </div>
@@ -377,44 +377,40 @@ const AddOrder = () => {
                   {/* Cart Items */}
                   <div className="divide-y divide-gray-100">
                     {cart.map((item, index) => (
-                      <div key={index} className="p-4 flex gap-4">
-                        {/* Product Image */}
-                        <div className="flex-shrink-0">
+                      <div key={index} className="p-3 sm:p-4">
+                        {/* Top Row: Image + Details + Price */}
+                        <div className="flex gap-3">
+                          {/* Product Image */}
                           <img
                             src={item.image || '/placeholder.png'}
                             alt={item.name}
-                            className="w-16 h-16 sm:w-20 sm:h-20 object-cover rounded"
+                            className="w-14 h-14 sm:w-16 sm:h-16 object-cover rounded flex-shrink-0"
                           />
-                        </div>
 
-                        {/* Product Details */}
-                        <div className="flex-1 min-w-0">
-                          <h4 className="text-sm font-medium text-gray-800 truncate">
-                            {item.name}
-                          </h4>
-                          <p className="text-xs text-gray-500 mt-0.5">
-                            {item.unit === 'Kg' || item.unit === 'kg'
-                              ? `${Number(item.quantity || 0).toFixed(3).replace(/\.?0+$/, '')} ${item.weightUnit || 'Kg'}`
-                              : `${item.quantity || 1} piece${(item.quantity || 1) > 1 ? 's' : ''}`}
-                          </p>
-
-                          {/* Price */}
-                          <div className="mt-2">
-                            <span className="text-base font-semibold text-gray-900">
+                          {/* Product Details */}
+                          <div className="flex-1 min-w-0">
+                            <h4 className="text-sm font-medium text-gray-800 truncate">
+                              {item.name}
+                            </h4>
+                            <p className="text-xs text-gray-500 mt-0.5">
+                              ₹{item.rate}/{item.unit === 'Kg' || item.unit === 'kg' ? 'Kg' : 'pc'}
+                            </p>
+                            {/* Price */}
+                            <p className="text-base font-semibold text-gray-900 mt-1">
                               ₹{(() => {
                                 const qty = item.quantity === '' ? 0 : item.quantity;
                                 const qtyInKg = (item.weightUnit === 'grams') ? qty / 1000 : qty;
                                 return (item.rate * qtyInKg).toFixed(0);
                               })()}
-                            </span>
+                            </p>
                           </div>
                         </div>
 
-                        {/* Quantity Controls - Right Side */}
-                        <div className="flex-shrink-0 flex flex-col items-end justify-between">
+                        {/* Bottom Row: Quantity Controls + Remove */}
+                        <div className="flex items-center justify-between mt-3 pt-2 border-t border-gray-100">
                           {(item.unit === 'Kg' || item.unit === 'kg') ? (
                             /* Weight Input for Kg items */
-                            <div className="flex items-center gap-1">
+                            <div className="flex items-center gap-1.5">
                               <input
                                 type="text"
                                 value={item.quantity === '' ? '' : item.quantity}
@@ -450,44 +446,42 @@ const AddOrder = () => {
                                     setCart(updatedCart);
                                   }
                                 }}
-                                style={{ paddingLeft: '8px', paddingRight: '8px' }}
-                                className="w-16 sm:w-20 text-center font-medium text-sm border border-gray-300 rounded py-1.5 focus:outline-none focus:border-[#2874f0]"
+                                className="w-16 text-center font-medium text-sm border border-gray-300 rounded px-2 py-1.5 focus:outline-none focus:border-purple-500"
                               />
                               <select
                                 value={item.weightUnit || 'Kg'}
                                 onChange={(e) => updateWeightUnit(index, e.target.value)}
-                                className="px-2 py-1.5 bg-white text-gray-700 font-medium text-sm border border-gray-300 rounded focus:outline-none focus:border-[#2874f0] cursor-pointer"
+                                className="px-2 py-1.5 bg-white text-gray-700 font-medium text-sm border border-gray-300 rounded focus:outline-none cursor-pointer"
                               >
                                 <option value="Kg">Kg</option>
                                 <option value="grams">gm</option>
                               </select>
                             </div>
                           ) : (
-                            /* Quantity Buttons for Piece items - Flipkart Style */
-                            <div className="flex items-center">
+                            /* Quantity Buttons for Piece items */
+                            <div className="flex items-center gap-1">
                               <button
                                 type="button"
                                 onClick={() => updateQuantity(index, (item.quantity || 1) - 1)}
                                 disabled={(item.quantity || 1) <= 1}
                                 className={`w-7 h-7 flex items-center justify-center rounded-full border ${(item.quantity || 1) <= 1
                                     ? 'border-gray-200 text-gray-300 cursor-not-allowed'
-                                    : 'border-gray-300 text-gray-600 hover:bg-gray-50 cursor-pointer'
+                                    : 'border-gray-300 text-gray-600 hover:bg-gray-50'
                                   }`}
                               >
                                 <Minus className="h-3 w-3" />
                               </button>
-                              <div className="w-8 text-center">
-                                <span className="text-sm font-medium text-gray-800">
-                                  {item.quantity || 1}
-                                </span>
-                              </div>
+                              <span className="w-8 text-center text-sm font-medium text-gray-800">
+                                {item.quantity || 1}
+                              </span>
                               <button
                                 type="button"
                                 onClick={() => updateQuantity(index, (item.quantity || 1) + 1)}
-                                className="w-7 h-7 flex items-center justify-center rounded-full border border-gray-300 text-gray-600 hover:bg-gray-50 cursor-pointer"
+                                className="w-7 h-7 flex items-center justify-center rounded-full border border-gray-300 text-gray-600 hover:bg-gray-50"
                               >
                                 <Plus className="h-3 w-3" />
                               </button>
+                              <span className="text-xs text-gray-500 ml-1">pcs</span>
                             </div>
                           )}
 
@@ -495,7 +489,7 @@ const AddOrder = () => {
                           <button
                             type="button"
                             onClick={() => removeFromCart(index)}
-                            className="text-gray-500 hover:text-red-500 text-xs font-medium uppercase tracking-wide mt-3 transition-colors"
+                            className="text-red-500 hover:text-red-600 text-xs font-medium uppercase tracking-wide transition-colors"
                           >
                             Remove
                           </button>
@@ -505,10 +499,10 @@ const AddOrder = () => {
                   </div>
 
                   {/* Total Amount */}
-                  <div className="p-4 border-t border-gray-200 bg-gray-50">
+                  <div className="p-3 sm:p-4 border-t border-gray-200 bg-gray-50 rounded-b-lg">
                     <div className="flex justify-between items-center">
                       <span className="text-sm text-gray-600">Total Amount</span>
-                      <span className="text-xl font-semibold text-gray-900">₹{getTotalAmount().toFixed(0)}</span>
+                      <span className="text-lg sm:text-xl font-semibold text-gray-900">₹{getTotalAmount().toFixed(0)}</span>
                     </div>
                   </div>
                 </>
