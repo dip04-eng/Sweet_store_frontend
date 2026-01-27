@@ -63,6 +63,11 @@ const Cart = () => {
     setShowOrderForm(true);
   };
 
+  // Check if all items in cart have valid quantity (greater than 0)
+  const hasValidItems = () => {
+    return cart.length > 0 && cart.every(item => (item.quantity || 0) > 0);
+  };
+
   const handleOrderSuccess = () => {
     setShowOrderForm(false);
     setOrderPlaced(true);
@@ -198,12 +203,12 @@ const Cart = () => {
                                 onChange={(e) => {
                                   let inputValue = e.target.value;
                                   console.log('Cart weight input changed:', inputValue);
-                                  
+
                                   // Allow only valid decimal numbers with max 3 decimal places
                                   // This regex allows: empty, integers, decimals with 1-3 digits after point
                                   if (inputValue === '' || /^[0-9]*\.?[0-9]{0,3}$/.test(inputValue)) {
                                     setWeightInputs({ ...weightInputs, [index]: inputValue });
-                                    
+
                                     // Try to parse and update cart if valid number
                                     const value = parseFloat(inputValue);
                                     console.log('Parsed value:', value);
@@ -307,10 +312,17 @@ const Cart = () => {
                   {/* Place Order Button */}
                   <button
                     onClick={handlePlaceOrderClick}
-                    className="w-full sm:w-auto bg-[#fb641b] text-white px-12 py-3 sm:py-3.5 rounded-sm font-semibold shadow-lg hover:bg-[#e85d19] transition-colors text-sm sm:text-base uppercase tracking-wide"
+                    disabled={!hasValidItems()}
+                    className={`w-full sm:w-auto px-12 py-3 sm:py-3.5 rounded-sm font-semibold shadow-lg transition-colors text-sm sm:text-base uppercase tracking-wide ${hasValidItems()
+                        ? 'bg-[#fb641b] text-white hover:bg-[#e85d19]'
+                        : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                      }`}
                   >
                     Place Order
                   </button>
+                  {!hasValidItems() && cart.length > 0 && (
+                    <p className="text-red-500 text-xs mt-1 text-center sm:text-left">Remove items with 0 quantity</p>
+                  )}
                 </div>
               </div>
             </div>

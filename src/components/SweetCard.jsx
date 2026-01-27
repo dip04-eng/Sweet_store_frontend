@@ -35,8 +35,12 @@ const SweetCard = ({ sweet, onAddToCart }) => {
   };
 
   const handleAddToCart = () => {
-    setIsAdding(true);
     const finalWeight = isKgItem ? getWeightInKg() : quantity;
+    // Prevent adding 0 quantity items
+    if (finalWeight <= 0) {
+      return;
+    }
+    setIsAdding(true);
     onAddToCart(sweet, finalWeight);
     setTimeout(() => {
       setIsAdding(false);
@@ -45,6 +49,9 @@ const SweetCard = ({ sweet, onAddToCart }) => {
       setWeightUnit('Kg');
     }, 1000);
   };
+
+  // Check if quantity is valid (greater than 0)
+  const isQuantityValid = isKgItem ? getWeightInKg() > 0 : quantity > 0;
 
   return (
     <motion.div
@@ -77,7 +84,7 @@ const SweetCard = ({ sweet, onAddToCart }) => {
         <h3 className="text-base sm:text-lg font-semibold text-gray-800 mb-1 truncate">
           {sweet.name}
         </h3>
-        
+
         {/* Price */}
         <p className="text-[#C41E3A] font-bold text-lg mb-4">
           ₹ {sweet.rate}.00
@@ -109,11 +116,10 @@ const SweetCard = ({ sweet, onAddToCart }) => {
             <button
               onClick={() => handleQuantityChange(-1)}
               disabled={quantity <= 1}
-              className={`w-8 h-8 flex items-center justify-center rounded-full border-2 transition-all ${
-                quantity <= 1
+              className={`w-8 h-8 flex items-center justify-center rounded-full border-2 transition-all ${quantity <= 1
                   ? 'border-gray-200 text-gray-300 cursor-not-allowed'
                   : 'border-[#C41E3A] text-[#C41E3A] hover:bg-[#C41E3A] hover:text-white'
-              }`}
+                }`}
             >
               <Minus className="h-4 w-4" />
             </button>
@@ -130,13 +136,14 @@ const SweetCard = ({ sweet, onAddToCart }) => {
         {/* Add to Cart Button */}
         <motion.button
           onClick={handleAddToCart}
-          disabled={isAdding}
+          disabled={isAdding || !isQuantityValid}
           whileTap={{ scale: 0.98 }}
-          className={`w-full flex items-center justify-center py-3 rounded-full font-semibold transition-all text-sm ${
-            isAdding
+          className={`w-full flex items-center justify-center py-3 rounded-full font-semibold transition-all text-sm ${isAdding
               ? 'bg-green-500 text-white'
-              : 'bg-[#C41E3A] text-white hover:bg-[#a01828]'
-          }`}
+              : !isQuantityValid
+                ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                : 'bg-[#C41E3A] text-white hover:bg-[#a01828]'
+            }`}
         >
           {isAdding ? (
             <>
