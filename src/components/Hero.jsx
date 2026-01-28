@@ -113,6 +113,22 @@ const Hero = () => {
         </div>
       </div>
 
+      {/* Since 1968 Badge - Bottom Left */}
+      <motion.div
+        initial={{ opacity: 0, x: -50 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ delay: 1.7, duration: 0.8 }}
+        className="absolute bottom-28 sm:bottom-32 md:bottom-36 left-4 sm:left-6 md:left-10 z-20"
+      >
+        <div className="bg-white/95 backdrop-blur-sm px-4 sm:px-6 py-3 sm:py-4 rounded-2xl shadow-2xl flex items-center gap-3 border-2 border-[#FFD700] hover:scale-105 transition-transform duration-300">
+          <div className="text-3xl sm:text-4xl">🏆</div>
+          <div className="text-left">
+            <h3 className="text-[#C41E3A] text-base sm:text-lg md:text-xl font-bold leading-tight">Since 1968</h3>
+            <p className="text-gray-600 text-xs sm:text-sm font-medium">Trusted by Thousands</p>
+          </div>
+        </div>
+      </motion.div>
+
       {/* Scroll Down Indicator */}
       <motion.div
         initial={{ opacity: 0 }}

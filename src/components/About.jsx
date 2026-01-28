@@ -76,7 +76,7 @@ const About = () => {
         </div>
 
         {/* Hero Content */}
-        <div className="relative z-10 text-center px-3 xs:px-4 sm:px-6">
+        <div className="relative z-10 text-center px-3 xs:px-4 sm:px-6 max-w-5xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
@@ -101,10 +101,39 @@ const About = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.6 }}
-              className="text-lg sm:text-xl md:text-2xl text-[#F5F5DC]/80 max-w-3xl mx-auto leading-relaxed"
+              className="text-lg sm:text-xl md:text-2xl text-[#F5F5DC]/80 max-w-3xl mx-auto leading-relaxed mb-6"
             >
               Crafting happiness in every bite since <span className="text-[#FFD700] font-bold">1968</span>
             </motion.p>
+            
+            {/* Additional Description */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.9 }}
+              className="bg-black/40 backdrop-blur-md rounded-2xl p-6 sm:p-8 border border-[#FFD700]/30 max-w-4xl mx-auto"
+            >
+              <p className="text-base sm:text-lg md:text-xl text-white/90 leading-relaxed mb-4">
+                <span className="text-[#FFD700] font-bold text-xl sm:text-2xl">Mansoor Hotel & Sweets</span> has been a beacon of authentic taste and tradition in Baisi, Bihar for over half a century.
+              </p>
+              <p className="text-sm sm:text-base md:text-lg text-[#F5F5DC]/80 leading-relaxed">
+                From our humble beginnings to becoming a household name, we've preserved the art of traditional sweet-making while embracing modern quality standards. Every sweet tells a story of dedication, passion, and the pure joy of authentic flavors that have been cherished by generations.
+              </p>
+              
+              {/* Since 1968 Badge */}
+              <motion.div
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ delay: 1.2, type: "spring" }}
+                className="inline-flex items-center gap-3 bg-white/95 px-6 py-3 rounded-full mt-6 shadow-2xl border-2 border-[#FFD700]"
+              >
+                <span className="text-3xl">🏆</span>
+                <div className="text-left">
+                  <div className="text-[#C41E3A] text-lg font-bold">Since 1968</div>
+                  <div className="text-gray-600 text-sm">Trusted by Thousands</div>
+                </div>
+              </motion.div>
+            </motion.div>
           </motion.div>
         </div>
 
@@ -226,7 +255,34 @@ const About = () => {
                   alt="Mansoor Hotel & Sweets - Traditional Sweet Making"
                   className="w-full h-[400px] sm:h-[500px] object-cover"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#0D0D0D] via-transparent to-transparent"></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0D0D0D]/80 via-[#0D0D0D]/40 to-transparent"></div>
+
+                {/* Center Text Overlay */}
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.3 }}
+                  className="absolute inset-0 flex flex-col items-center justify-center text-center px-6"
+                >
+                  <motion.div
+                    animate={{ rotate: [0, 360] }}
+                    transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                    className="mb-4"
+                  >
+                    <GiCupcake className="h-16 w-16 sm:h-20 sm:w-20 text-[#FFD700]" />
+                  </motion.div>
+                  
+                  <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-3 font-['Playfair_Display'] drop-shadow-2xl">
+                    Authentic Taste
+                  </h3>
+                  <p className="text-base sm:text-lg text-[#FFD700] font-semibold mb-2 drop-shadow-lg">
+                    Handcrafted with Love
+                  </p>
+                  <p className="text-sm sm:text-base text-white/90 max-w-xs drop-shadow-lg">
+                    Traditional recipes passed down through three generations
+                  </p>
+                </motion.div>
 
                 {/* Overlay Badge */}
                 <div className="absolute bottom-6 left-6 bg-white/95 backdrop-blur-sm rounded-xl p-4 shadow-xl">
