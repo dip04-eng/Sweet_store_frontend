@@ -64,7 +64,7 @@ const About = () => {
       {/* Main Content */}
       <main className="flex-1">
         {/* Hero Section */}
-        <section className="relative h-[45vh] xs:h-[50vh] sm:h-[60vh] md:h-[70vh] flex items-center justify-center overflow-hidden mt-16 xs:mt-18 sm:mt-20 min-h-[350px] xs:min-h-[400px]">
+        <section className="relative min-h-[550px] xs:min-h-[600px] sm:h-[60vh] md:h-[70vh] flex items-center justify-center overflow-hidden mt-16 xs:mt-18 sm:mt-20 py-8">
         {/* Background Image */}
         <div className="absolute inset-0">
           <img
@@ -116,7 +116,7 @@ const About = () => {
               <p className="text-base sm:text-lg md:text-xl text-white/90 leading-relaxed mb-4">
                 <span className="text-[#FFD700] font-bold text-xl sm:text-2xl">Mansoor Hotel & Sweets</span> has been a beacon of authentic taste and tradition in Baisi, Bihar for over half a century.
               </p>
-              <p className="text-sm sm:text-base md:text-lg text-[#F5F5DC]/80 leading-relaxed">
+              <p className="text-sm sm:text-base md:text-lg text-[#F5F5DC]/80 leading-relaxed mb-6 pb-4">
                 From our humble beginnings to becoming a household name, we've preserved the art of traditional sweet-making while embracing modern quality standards. Every sweet tells a story of dedication, passion, and the pure joy of authentic flavors that have been cherished by generations.
               </p>
               
@@ -125,12 +125,12 @@ const About = () => {
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
                 transition={{ delay: 1.2, type: "spring" }}
-                className="inline-flex items-center gap-3 bg-white/95 px-6 py-3 rounded-full mt-6 shadow-2xl border-2 border-[#FFD700]"
+                className="inline-flex items-center gap-2 bg-white/95 px-4 py-2 rounded-full mt-4 shadow-2xl border-2 border-[#FFD700]"
               >
-                <span className="text-3xl">🏆</span>
+                <span className="text-2xl">🏆</span>
                 <div className="text-left">
-                  <div className="text-[#C41E3A] text-lg font-bold">Since 1968</div>
-                  <div className="text-gray-600 text-sm">Trusted by Thousands</div>
+                  <div className="text-[#C41E3A] text-base font-bold">Since 1968</div>
+                  <div className="text-gray-600 text-xs">Trusted by Thousands</div>
                 </div>
               </motion.div>
             </motion.div>

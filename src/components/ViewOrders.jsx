@@ -7,13 +7,7 @@ const ViewOrders = () => {
   const [orders, setOrders] = useState([]);
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [statusFilter, setStatusFilter] = useState('default');
-  const [dateFilter, setDateFilter] = useState(() => {
-    const today = new Date();
-    const year = today.getFullYear();
-    const month = String(today.getMonth() + 1).padStart(2, '0');
-    const day = String(today.getDate()).padStart(2, '0');
-    return `${year}-${month}-${day}`;
-  }); // Date filter defaults to today
+  const [dateFilter, setDateFilter] = useState(''); // Date filter defaults to empty (show all dates)
   const [searchQuery, setSearchQuery] = useState(''); // Search query
   const [deliverySort, setDeliverySort] = useState('asc'); // 'asc' or 'desc' or null
   const [orderSort, setOrderSort] = useState('desc'); // 'asc' or 'desc' or null - Default to descending for newest first
