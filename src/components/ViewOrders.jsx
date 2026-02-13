@@ -375,14 +375,6 @@ const ViewOrders = () => {
     if (!editOrder) return;
     const currentTotal = Number(editForm.total || 0);
     const currentAdvance = Number(editForm.advancePaid || 0);
-    const additionalAmount = Number(additionalAdvance || 0);
-    const newAdvancePaid = currentAdvance + additionalAmount;
-
-    if (newAdvancePaid > currentTotal) {
-      setToast({ message: 'Advance payment cannot exceed total amount!', type: 'danger' });
-      setTimeout(() => setToast(null), 3000);
-      return;
-    }
 
     try {
       setIsUpdating(true);
@@ -393,29 +385,108 @@ const ViewOrders = () => {
           customerName: editForm.customerName,
           mobile: editForm.mobile,
           total: currentTotal,
-          advancePaid: newAdvancePaid,
+          advancePaid: currentAdvance,
           deliveryDate: editForm.deliveryDate,
           status: editForm.status,
           items: editOrderItems
         })
       });
       if (!res.ok) throw new Error('Failed to update order');
-      setOrders(prev => prev.map(o => (o._id || o.id) === (editOrder._id || editOrder.id) ? {
-        ...o,
-        customerName: editForm.customerName,
-        mobile: editForm.mobile,
-        total: Number(editForm.total),
-        advancePaid: newAdvancePaid,
-        deliveryDate: editForm.deliveryDate,
-        status: editForm.status,
-        items: editOrderItems
-      } : o));
+      await fetchOrders(); // Refresh orders
       setEditOrder(null);
       setToast({ message: 'Order updated successfully!', type: 'success' });
       setTimeout(() => setToast(null), 2500);
     } catch (e) {
       console.error(e);
       setToast({ message: e.message || 'Failed to update order', type: 'danger' });
+      setTimeout(() => setToast(null), 2500);
+    } finally {
+      setIsUpdating(false);
+    }
+  };
+
+  const addPayment = async () => {
+    if (!editOrder || !additionalAdvance || parseFloat(additionalAdvance) <= 0) return;
+    
+    const currentTotal = Number(editForm.total || 0);
+    const currentAdvance = Number(editForm.advancePaid || 0);
+    const paymentAmount = parseFloat(additionalAdvance);
+    
+    if (currentAdvance + paymentAmount > currentTotal) {
+      setToast({ message: 'Payment would exceed total amount!', type: 'danger' });
+      setTimeout(() => setToast(null), 3000);
+      return;
+    }
+
+    try {
+      setIsUpdating(true);
+      const res = await fetch(`${API_BASE_URL}${API_ENDPOINTS.ADD_PAYMENT}/${editOrder._id || editOrder.id}/payment`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          amount: paymentAmount,
+          note: 'Payment added via admin panel'
+        })
+      });
+      if (!res.ok) throw new Error('Failed to add payment');
+      const data = await res.json();
+      
+      // Update local state with new payment history
+      setEditForm(prev => ({
+        ...prev,
+        advancePaid: data.order.advancePaid
+      }));
+      
+      // Update orders list
+      setOrders(prev => prev.map(o => 
+        (o._id || o.id) === (editOrder._id || editOrder.id) ? data.order : o
+      ));
+      
+      // Update editOrder with new data including paymentHistory
+      setEditOrder(data.order);
+      setAdditionalAdvance(0);
+      
+      setToast({ message: 'Payment added successfully!', type: 'success' });
+      setTimeout(() => setToast(null), 2500);
+    } catch (e) {
+      console.error(e);
+      setToast({ message: e.message || 'Failed to add payment', type: 'danger' });
+      setTimeout(() => setToast(null), 2500);
+    } finally {
+      setIsUpdating(false);
+    }
+  };
+
+  const deletePayment = async (paymentId) => {
+    if (!editOrder) return;
+
+    try {
+      setIsUpdating(true);
+      const res = await fetch(`${API_BASE_URL}${API_ENDPOINTS.DELETE_PAYMENT}/${editOrder._id || editOrder.id}/payment/${paymentId}`, {
+        method: 'DELETE'
+      });
+      if (!res.ok) throw new Error('Failed to delete payment');
+      const data = await res.json();
+      
+      // Update local state
+      setEditForm(prev => ({
+        ...prev,
+        advancePaid: data.order.advancePaid
+      }));
+      
+      // Update orders list
+      setOrders(prev => prev.map(o => 
+        (o._id || o.id) === (editOrder._id || editOrder.id) ? data.order : o
+      ));
+      
+      // Update editOrder with new data
+      setEditOrder(data.order);
+      
+      setToast({ message: 'Payment deleted successfully!', type: 'success' });
+      setTimeout(() => setToast(null), 2500);
+    } catch (e) {
+      console.error(e);
+      setToast({ message: e.message || 'Failed to delete payment', type: 'danger' });
       setTimeout(() => setToast(null), 2500);
     } finally {
       setIsUpdating(false);
@@ -875,54 +946,91 @@ const ViewOrders = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-xs sm:text-sm font-semibold text-yellow-600 mb-1.5 sm:mb-2">Current Advance Paid: ₹{editForm.advancePaid || 0}</label>
-                  <label className="block text-xs sm:text-sm font-semibold text-green-600 mb-1.5 sm:mb-2">Add Additional Advance Payment</label>
-                  <input
-                    type="number"
-                    min="0"
-                    step="1"
-                    value={additionalAdvance}
-                    onChange={(e) => {
-                      const inputValue = e.target.value;
-                      const remaining = (parseFloat(editForm.total) || 0) - (parseFloat(editForm.advancePaid) || 0);
+                  <label className="block text-xs sm:text-sm font-semibold text-yellow-600 mb-1.5 sm:mb-2">Payment Management</label>
+                  
+                  {/* Payment History */}
+                  {editOrder.paymentHistory && editOrder.paymentHistory.length > 0 && (
+                    <div className="bg-gray-50 border border-gray-200 rounded-lg p-3 mb-3">
+                      <p className="text-xs font-semibold text-gray-700 mb-2">Payment History:</p>
+                      <div className="space-y-2 max-h-40 overflow-y-auto">
+                        {editOrder.paymentHistory.map((payment, idx) => (
+                          <div key={payment.paymentId || idx} className="flex justify-between items-center bg-white p-2 rounded border border-gray-200">
+                            <div>
+                              <p className="text-xs font-medium text-gray-800">₹{payment.amount}</p>
+                              <p className="text-xs text-gray-500">{new Date(payment.timestamp).toLocaleString()}</p>
+                            </div>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                if (window.confirm('Delete this payment entry?')) {
+                                  deletePayment(payment.paymentId);
+                                }
+                              }}
+                              className="text-red-600 hover:text-red-800 p-1"
+                              title="Delete payment"
+                            >
+                              <XCircle className="h-4 w-4" />
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                  
+                  <p className="text-xs sm:text-sm font-semibold text-gray-700 mb-2">Current Total Paid: ₹{editForm.advancePaid || 0}</p>
+                  <p className="text-xs sm:text-sm font-semibold text-red-600 mb-2">Remaining Due: ₹{Math.max(0, (parseFloat(editForm.total) || 0) - (parseFloat(editForm.advancePaid) || 0)).toFixed(2)}</p>
+                  
+                  <label className="block text-xs sm:text-sm font-semibold text-green-600 mb-1.5 sm:mb-2">Add New Payment</label>
+                  <div className="flex gap-2">
+                    <input
+                      type="number"
+                      min="0"
+                      step="1"
+                      value={additionalAdvance}
+                      onChange={(e) => {
+                        const inputValue = e.target.value;
+                        const remaining = (parseFloat(editForm.total) || 0) - (parseFloat(editForm.advancePaid) || 0);
 
-                      // Allow empty input
-                      if (inputValue === '') {
-                        setAdditionalAdvance('');
+                        // Allow empty input
+                        if (inputValue === '') {
+                          setAdditionalAdvance('');
+                          setShowAdvanceExceedWarning(false);
+                          return;
+                        }
+
+                        const value = parseFloat(inputValue) || 0;
+
+                        // Block if value exceeds remaining due amount
+                        if (value > remaining) {
+                          setShowAdvanceExceedWarning(true);
+                          setTimeout(() => setShowAdvanceExceedWarning(false), 10000);
+                          return;
+                        }
+
                         setShowAdvanceExceedWarning(false);
-                        return;
-                      }
-
-                      const value = parseFloat(inputValue) || 0;
-
-                      // Block if value exceeds remaining due amount
-                      if (value > remaining) {
-                        // Show warning and don't update the value
-                        setShowAdvanceExceedWarning(true);
-                        // Auto-hide warning after 10 seconds
-                        setTimeout(() => setShowAdvanceExceedWarning(false), 10000);
-                        return; // Block the input
-                      }
-
-                      // Value is valid, update it
-                      setShowAdvanceExceedWarning(false);
-                      setAdditionalAdvance(inputValue);
-                    }}
-                    className={`w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base bg-white border rounded-lg sm:rounded-xl text-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all ${showAdvanceExceedWarning
-                      ? 'border-red-500 ring-2 ring-red-300'
-                      : 'border-gray-300'
-                      }`}
-                    placeholder="Enter additional amount"
-                  />
+                        setAdditionalAdvance(inputValue);
+                      }}
+                      className={`flex-1 px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base bg-white border rounded-lg sm:rounded-xl text-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all ${showAdvanceExceedWarning
+                        ? 'border-red-500 ring-2 ring-red-300'
+                        : 'border-gray-300'
+                        }`}
+                      placeholder="Enter amount"
+                    />
+                    <button
+                      type="button"
+                      onClick={addPayment}
+                      disabled={!additionalAdvance || parseFloat(additionalAdvance) <= 0 || isUpdating}
+                      className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-sm font-semibold"
+                    >
+                      Add
+                    </button>
+                  </div>
                   {showAdvanceExceedWarning && (
-                    <p className="text-xs text-red-600 mt-1 font-semibold animate-pulse bg-red-50 px-2 py-1 rounded">⚠️ Amount more than: ₹{Math.max(0, (parseFloat(editForm.total) || 0) - (parseFloat(editForm.advancePaid) || 0)).toFixed(2)} Not allowed</p>
+                    <p className="text-xs text-red-600 mt-1 font-semibold animate-pulse bg-red-50 px-2 py-1 rounded">⚠️ Amount cannot exceed ₹{Math.max(0, (parseFloat(editForm.total) || 0) - (parseFloat(editForm.advancePaid) || 0)).toFixed(2)}</p>
                   )}
                   {parseFloat(additionalAdvance) === ((parseFloat(editForm.total) || 0) - (parseFloat(editForm.advancePaid) || 0)) && parseFloat(additionalAdvance) > 0 && (
                     <p className="text-xs text-green-600 mt-1 font-semibold">✓ Full payment entered</p>
                   )}
-                  <p className="text-xs text-gray-600 mt-1">Total Advance: ₹{((parseFloat(editForm.advancePaid) || 0) + (parseFloat(additionalAdvance) || 0)).toFixed(2)}</p>
-                  <p className="text-xs text-red-600 mt-1 font-semibold">Remaining Due: ₹{Math.max(0, ((parseFloat(editForm.total) || 0) - ((parseFloat(editForm.advancePaid) || 0) + (parseFloat(additionalAdvance) || 0)))).toFixed(2)}</p>
-
                 </div>
 
                 {/* Current Order Items */}

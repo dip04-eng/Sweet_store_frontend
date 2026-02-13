@@ -7,6 +7,7 @@ const SweetCard = ({ sweet, onAddToCart }) => {
   const [quantity, setQuantity] = useState(1);
   const [weight, setWeight] = useState('1');
   const [weightUnit, setWeightUnit] = useState('Kg');
+  const [showFullDescription, setShowFullDescription] = useState(false);
   const isKgItem = sweet.unit && sweet.unit.toLowerCase() === 'kg';
 
   const handleQuantityChange = (change) => {
@@ -81,9 +82,34 @@ const SweetCard = ({ sweet, onAddToCart }) => {
       {/* Content */}
       <div className="bg-white p-4 pt-8 text-center rounded-b-2xl shadow-lg">
         {/* Title */}
-        <h3 className="text-base sm:text-lg font-semibold text-gray-800 mb-1 truncate">
+        <h3 className="text-base sm:text-lg font-semibold text-gray-800 mb-2 truncate">
           {sweet.name}
         </h3>
+
+        {/* Description */}
+        {sweet.description && (
+          <div className="mb-3 px-2">
+            <p className="text-gray-600 text-xs sm:text-sm" style={
+              showFullDescription ? {} : {
+                display: '-webkit-box',
+                WebkitLineClamp: 2,
+                WebkitBoxOrient: 'vertical',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis'
+              }
+            }>
+              {sweet.description}
+            </p>
+            {sweet.description.length > 80 && (
+              <button
+                onClick={() => setShowFullDescription(!showFullDescription)}
+                className="text-[#C41E3A] text-xs font-medium mt-1 hover:underline focus:outline-none"
+              >
+                {showFullDescription ? 'Show Less' : 'Show More'}
+              </button>
+            )}
+          </div>
+        )}
 
         {/* Price */}
         <p className="text-[#C41E3A] font-bold text-lg mb-4">

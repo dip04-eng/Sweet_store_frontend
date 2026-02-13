@@ -221,10 +221,9 @@ const AddSweet = ({ sweetType = 'normal' }) => {
                 <option value="Sweet">Sweet</option>
                 <option value="Dry-Fruits">Dry-Fruits</option>
                 <option value="Snacks">Snacks</option>
-                <option value="Breakfast">Breakfast</option>
-                <option value="Lunch">Lunch</option>
-                <option value="Dinner">Dinner</option>
-                <option value="Other">Other</option>
+                <option value="Dairy">Dairy</option>
+                <option value="Dates">Dates</option>
+                <option value="Decorate">Decorate</option>
               </select>
             </div>
 

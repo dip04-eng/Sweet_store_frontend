@@ -18,6 +18,8 @@ export const API_ENDPOINTS = {
   GET_DAILY_SUMMARY: '/admin/daily_summary',
   UPDATE_ORDER_STATUS: '/admin/update_order_status',
   EDIT_ORDER: '/admin/edit_order',
+  ADD_PAYMENT: '/admin/order',
+  DELETE_PAYMENT: '/admin/order',
   DOWNLOAD_STATEMENT: '/admin/download_statement',
   DOWNLOAD_SALES_REPORT: '/admin/download_sales_report',
   
