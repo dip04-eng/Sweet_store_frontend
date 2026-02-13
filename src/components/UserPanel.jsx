@@ -16,12 +16,12 @@ const UserPanel = () => {
   const [cart, setCart] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [selectedCategory, setSelectedCategory] = useState('Sweet');
+  const [selectedCategory, setSelectedCategory] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
   const [visibleCount, setVisibleCount] = useState(8); // Show 8 sweets initially
   const [visibleFestivalCount, setVisibleFestivalCount] = useState(8); // Show 8 festival sweets initially
 
-  const categories = ['Sweet', 'Dry-Fruits', 'Snacks', 'Breakfast', 'Lunch', 'Dinner', 'Other'];
+  const categories = ['All', 'Sweet', 'Dry-Fruits', 'Snacks', 'Dairy', 'Dates', 'Decorate'];
 
   // Track if initial load is done
   const [initialLoadDone, setInitialLoadDone] = useState(false);

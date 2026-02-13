@@ -225,21 +225,7 @@ const About = () => {
                   the heartbeat of celebrations, festivals, and everyday joys in Bihar and beyond. From weddings to Eid,Diwali, from simple family gatherings to grand
                   celebrations, our sweets have been part of countless precious memories.
                 </p>
-
-                <p className="text-[#FFD700] font-semibold italic">
-                  "We don't just make sweets; we create moments of happiness that last a lifetime."
-                </p>
               </div>
-
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                className="inline-block"
-              >
-                <div className="bg-gradient-to-r from-[#C41E3A] to-[#8B0000] text-white px-8 py-4 rounded-full font-bold shadow-2xl border-2 border-[#FFD700]/50">
-                  <TrendingUp className="inline-block mr-2 h-5 w-5" />
-                  Three Generations of Excellence
-                </div>
-              </motion.div>
             </motion.div>
 
             {/* Image */}
@@ -402,10 +388,16 @@ const About = () => {
                   </div>
                   <div>
                     <h3 className="text-xl font-bold text-white mb-2">Business Hours</h3>
-                    <p className="text-[#F5F5DC]/80">
-                      Monday - Saturday: 9:00 AM - 9:00 PM<br />
-                      Sunday: 10:00 AM - 8:00 PM
-                    </p>
+                    <div className="text-[#F5F5DC]/80 space-y-2">
+                      <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4">
+                        <span className="sm:min-w-[160px]">Monday - Sunday:</span>
+                        <span className="text-[#FFD700] whitespace-nowrap">8:00 AM - 9:00 PM</span>
+                      </div>
+                      <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4">
+                        <span className="sm:min-w-[160px]">Friday:</span>
+                        <span className="text-[#FFD700] whitespace-nowrap">12:30 - 1:30 PM Closed</span>
+                      </div>
+                    </div>
                   </div>
                 </div>
 

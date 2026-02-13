@@ -150,14 +150,14 @@ const Footer = () => {
             <h4 className="text-lg font-semibold text-yellow-400 mb-4">
               Opening Hours
             </h4>
-            <div className="space-y-2">
-              <div className="flex flex-col xs:flex-row xs:justify-between gap-1">
-                <span className="text-gray-300 text-sm">Monday - Saturday</span>
-                <span className="text-yellow-400 text-sm font-medium">9:00 AM - 9:00 PM</span>
+            <div className="space-y-3">
+              <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4">
+                <span className="text-gray-300 text-sm sm:min-w-[140px]">Monday - Sunday</span>
+                <span className="text-yellow-400 text-sm font-medium whitespace-nowrap">8:00 AM - 9:00 PM</span>
               </div>
-              <div className="flex flex-col xs:flex-row xs:justify-between gap-1">
-                <span className="text-gray-300 text-sm">Sunday</span>
-                <span className="text-yellow-400 text-sm font-medium">10:00 AM - 8:00 PM</span>
+              <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4">
+                <span className="text-gray-300 text-sm sm:min-w-[140px]">Friday</span>
+                <span className="text-yellow-400 text-sm font-medium whitespace-nowrap">12:30 - 1:30 PM Closed</span>
               </div>
             </div>
           </div>
