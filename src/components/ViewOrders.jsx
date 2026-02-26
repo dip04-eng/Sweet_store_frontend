@@ -38,7 +38,7 @@ const ViewOrders = () => {
   // Edit modal state
   const [editOrder, setEditOrder] = useState(null);
   const [editForm, setEditForm] = useState({ customerName: '', mobile: '', total: '', advancePaid: '', status: 'pending' });
-  const [additionalAdvance, setAdditionalAdvance] = useState(0);
+  const [additionalAdvance, setAdditionalAdvance] = useState('0');
   const [showAdvanceExceedWarning, setShowAdvanceExceedWarning] = useState(false); // Warning when trying to exceed due amount
   const [toast, setToast] = useState(null); // { message, type: 'success' | 'danger' }
 
@@ -343,7 +343,7 @@ const ViewOrders = () => {
 
   const openEditModal = async (order) => {
     setEditOrder(order);
-    setAdditionalAdvance(0);
+    setAdditionalAdvance('0');
     // Deep copy items to prevent mutation issues
     setEditOrderItems(order.items.map(item => ({ ...item })));
     setOriginalOrderItems(order.items.map(item => ({ ...item }))); // Deep copy for restoration
@@ -406,14 +406,22 @@ const ViewOrders = () => {
   };
 
   const addPayment = async () => {
-    if (!editOrder || !additionalAdvance || parseFloat(additionalAdvance) <= 0) return;
+    if (!editOrder || !additionalAdvance || parseFloat(additionalAdvance) === 0) return;
     
     const currentTotal = Number(editForm.total || 0);
     const currentAdvance = Number(editForm.advancePaid || 0);
     const paymentAmount = parseFloat(additionalAdvance);
     
-    if (currentAdvance + paymentAmount > currentTotal) {
+    // For positive payments: check if it exceeds total
+    if (paymentAmount > 0 && currentAdvance + paymentAmount > currentTotal) {
       setToast({ message: 'Payment would exceed total amount!', type: 'danger' });
+      setTimeout(() => setToast(null), 3000);
+      return;
+    }
+    
+    // For negative payments (revert): check if it would make paid amount negative
+    if (paymentAmount < 0 && currentAdvance + paymentAmount < 0) {
+      setToast({ message: 'Cannot revert more than paid amount!', type: 'danger' });
       setTimeout(() => setToast(null), 3000);
       return;
     }
@@ -425,10 +433,13 @@ const ViewOrders = () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           amount: paymentAmount,
-          note: 'Payment added via admin panel'
+          note: paymentAmount > 0 ? 'Payment added via admin panel' : 'Payment reverted via admin panel'
         })
       });
-      if (!res.ok) throw new Error('Failed to add payment');
+      if (!res.ok) {
+        const errorData = await res.json().catch(() => ({}));
+        throw new Error(errorData.error || 'Failed to process payment');
+      }
       const data = await res.json();
       
       // Update local state with new payment history
@@ -444,49 +455,13 @@ const ViewOrders = () => {
       
       // Update editOrder with new data including paymentHistory
       setEditOrder(data.order);
-      setAdditionalAdvance(0);
+      setAdditionalAdvance('0');
       
-      setToast({ message: 'Payment added successfully!', type: 'success' });
+      setToast({ message: paymentAmount > 0 ? 'Payment added successfully!' : 'Payment reverted successfully!', type: 'success' });
       setTimeout(() => setToast(null), 2500);
     } catch (e) {
       console.error(e);
-      setToast({ message: e.message || 'Failed to add payment', type: 'danger' });
-      setTimeout(() => setToast(null), 2500);
-    } finally {
-      setIsUpdating(false);
-    }
-  };
-
-  const deletePayment = async (paymentId) => {
-    if (!editOrder) return;
-
-    try {
-      setIsUpdating(true);
-      const res = await fetch(`${API_BASE_URL}${API_ENDPOINTS.DELETE_PAYMENT}/${editOrder._id || editOrder.id}/payment/${paymentId}`, {
-        method: 'DELETE'
-      });
-      if (!res.ok) throw new Error('Failed to delete payment');
-      const data = await res.json();
-      
-      // Update local state
-      setEditForm(prev => ({
-        ...prev,
-        advancePaid: data.order.advancePaid
-      }));
-      
-      // Update orders list
-      setOrders(prev => prev.map(o => 
-        (o._id || o.id) === (editOrder._id || editOrder.id) ? data.order : o
-      ));
-      
-      // Update editOrder with new data
-      setEditOrder(data.order);
-      
-      setToast({ message: 'Payment deleted successfully!', type: 'success' });
-      setTimeout(() => setToast(null), 2500);
-    } catch (e) {
-      console.error(e);
-      setToast({ message: e.message || 'Failed to delete payment', type: 'danger' });
+      setToast({ message: e.message || 'Failed to process payment', type: 'danger' });
       setTimeout(() => setToast(null), 2500);
     } finally {
       setIsUpdating(false);
@@ -948,60 +923,46 @@ const ViewOrders = () => {
                 <div>
                   <label className="block text-xs sm:text-sm font-semibold text-yellow-600 mb-1.5 sm:mb-2">Payment Management</label>
                   
-                  {/* Payment History */}
-                  {editOrder.paymentHistory && editOrder.paymentHistory.length > 0 && (
-                    <div className="bg-gray-50 border border-gray-200 rounded-lg p-3 mb-3">
-                      <p className="text-xs font-semibold text-gray-700 mb-2">Payment History:</p>
-                      <div className="space-y-2 max-h-40 overflow-y-auto">
-                        {editOrder.paymentHistory.map((payment, idx) => (
-                          <div key={payment.paymentId || idx} className="flex justify-between items-center bg-white p-2 rounded border border-gray-200">
-                            <div>
-                              <p className="text-xs font-medium text-gray-800">₹{payment.amount}</p>
-                              <p className="text-xs text-gray-500">{new Date(payment.timestamp).toLocaleString()}</p>
-                            </div>
-                            <button
-                              type="button"
-                              onClick={() => {
-                                if (window.confirm('Delete this payment entry?')) {
-                                  deletePayment(payment.paymentId);
-                                }
-                              }}
-                              className="text-red-600 hover:text-red-800 p-1"
-                              title="Delete payment"
-                            >
-                              <XCircle className="h-4 w-4" />
-                            </button>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                  
                   <p className="text-xs sm:text-sm font-semibold text-gray-700 mb-2">Current Total Paid: ₹{editForm.advancePaid || 0}</p>
                   <p className="text-xs sm:text-sm font-semibold text-red-600 mb-2">Remaining Due: ₹{Math.max(0, (parseFloat(editForm.total) || 0) - (parseFloat(editForm.advancePaid) || 0)).toFixed(2)}</p>
                   
-                  <label className="block text-xs sm:text-sm font-semibold text-green-600 mb-1.5 sm:mb-2">Add New Payment</label>
+                  <label className="block text-xs sm:text-sm font-semibold text-green-600 mb-1.5 sm:mb-2">Add/Adjust Payment</label>
+                  <p className="text-xs text-gray-500 mb-2">Enter positive to add payment, negative to revert payment</p>
                   <div className="flex gap-2">
                     <input
                       type="number"
-                      min="0"
                       step="1"
                       value={additionalAdvance}
+                      onFocus={(e) => e.target.select()}
+                      onBlur={() => {
+                        if (additionalAdvance === '' || additionalAdvance === '-') {
+                          setAdditionalAdvance('0');
+                          setShowAdvanceExceedWarning(false);
+                        }
+                      }}
                       onChange={(e) => {
                         const inputValue = e.target.value;
                         const remaining = (parseFloat(editForm.total) || 0) - (parseFloat(editForm.advancePaid) || 0);
+                        const currentPaid = parseFloat(editForm.advancePaid) || 0;
 
-                        // Allow empty input
-                        if (inputValue === '') {
-                          setAdditionalAdvance('');
+                        // Allow empty input or just minus sign during typing
+                        if (inputValue === '' || inputValue === '-') {
+                          setAdditionalAdvance(inputValue);
                           setShowAdvanceExceedWarning(false);
                           return;
                         }
 
                         const value = parseFloat(inputValue) || 0;
 
-                        // Block if value exceeds remaining due amount
-                        if (value > remaining) {
+                        // For positive values: check if it exceeds remaining due
+                        if (value > 0 && value > remaining) {
+                          setShowAdvanceExceedWarning(true);
+                          setTimeout(() => setShowAdvanceExceedWarning(false), 10000);
+                          return;
+                        }
+
+                        // For negative values: check if absolute value exceeds current paid amount
+                        if (value < 0 && Math.abs(value) > currentPaid) {
                           setShowAdvanceExceedWarning(true);
                           setTimeout(() => setShowAdvanceExceedWarning(false), 10000);
                           return;
@@ -1014,22 +975,30 @@ const ViewOrders = () => {
                         ? 'border-red-500 ring-2 ring-red-300'
                         : 'border-gray-300'
                         }`}
-                      placeholder="Enter amount"
+                      placeholder="e.g. 100 or -50"
                     />
                     <button
                       type="button"
                       onClick={addPayment}
-                      disabled={!additionalAdvance || parseFloat(additionalAdvance) <= 0 || isUpdating}
+                      disabled={!additionalAdvance || parseFloat(additionalAdvance) === 0 || isUpdating}
                       className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-sm font-semibold"
                     >
-                      Add
+                      {parseFloat(additionalAdvance) < 0 ? 'Revert' : 'Add'}
                     </button>
                   </div>
                   {showAdvanceExceedWarning && (
-                    <p className="text-xs text-red-600 mt-1 font-semibold animate-pulse bg-red-50 px-2 py-1 rounded">⚠️ Amount cannot exceed ₹{Math.max(0, (parseFloat(editForm.total) || 0) - (parseFloat(editForm.advancePaid) || 0)).toFixed(2)}</p>
+                    <p className="text-xs text-red-600 mt-1 font-semibold animate-pulse bg-red-50 px-2 py-1 rounded">
+                      {parseFloat(additionalAdvance) > 0 
+                        ? `⚠️ Amount cannot exceed ₹${Math.max(0, (parseFloat(editForm.total) || 0) - (parseFloat(editForm.advancePaid) || 0)).toFixed(2)}`
+                        : `⚠️ Cannot revert more than ₹${(parseFloat(editForm.advancePaid) || 0).toFixed(2)}`
+                      }
+                    </p>
                   )}
                   {parseFloat(additionalAdvance) === ((parseFloat(editForm.total) || 0) - (parseFloat(editForm.advancePaid) || 0)) && parseFloat(additionalAdvance) > 0 && (
                     <p className="text-xs text-green-600 mt-1 font-semibold">✓ Full payment entered</p>
+                  )}
+                  {parseFloat(additionalAdvance) < 0 && (
+                    <p className="text-xs text-orange-600 mt-1 font-semibold">↩ This will revert ₹{Math.abs(parseFloat(additionalAdvance))} from paid amount</p>
                   )}
                 </div>
 
